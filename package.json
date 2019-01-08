@@ -1,0 +1,22 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "fortest",
+  "main": "untitled.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nishantpradhan/test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nishantpradhan/test/issues"
+  },
+  "homepage": "https://github.com/nishantpradhan/test#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
