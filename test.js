@@ -1,4 +1,4 @@
-console.log("hello world");
+iconsole.log("hello world");
 
   var _=require('lodash');
 var moment=require('moment');
@@ -21,35 +21,7 @@ var moment=require('moment');
 //   {
 //     concurrency: 1
 //   }
-// node --max-old-space-size=8192 --optimize-for-size --max-executable-size=8192  --max_old_space_size=8192 --optimize_for_size --max_executable_size=8192 node_modules/karma/bin/karma start --single-run --max_new_space_size=8192   --prod --aot
-
-
-// let a=[1];
-// console.log(a.length);
-// let a=_.reduce([1, 2], function(sum, n) {
-//   console.log(sum)
-//   return sum + n;
-// });
-// // );
-//   console.log(a);
-
-// function flattenDeep(arr1) {
-//    return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
-// }
-
-
-
-
-// function flatten(result) {
-//           // console.log('arrayOfArrys');
-//           return result.reduce(function (flat, toFlatten) {return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-//           }, []);
-//         };
-
-
-
-
-
+// node --max-old-space-size=8192 --optimize-for-size --max-executable-size=8192  --max_old_space_size=8192 --optimize_for_size --max_executable_size=8192 node_modules/karma/bin/karma start --single-run --max_new_space_size=8192   --prod --aot 
 
 
 // // let a=[ 1541010600000,
