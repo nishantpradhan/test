@@ -24,6 +24,7 @@ var moment=require('moment');
 // node --max-old-space-size=8192 --optimize-for-size --max-executable-size=8192  --max_old_space_size=8192 --optimize_for_size --max_executable_size=8192 node_modules/karma/bin/karma start --single-run --max_new_space_size=8192   --prod --aot
 new chanfed
 adding one line
+
 // // let a=[ 1541010600000,
 // //   1542825000000,
 // //   1543257000000,
@@ -35,31 +36,7 @@ adding one line
   // console.log('a',a,'b',b)
 
   // console.log(a.indexOf('1542825000000'));
-  // console.log([1, 2, 3].includes(2));
-
-// let newDate=new Date('2018-12-28');
-// // console.log('newDate',newDate.setHours(0,0,0,0));
-// // console.log(new Date());
-//   // var d=new Date();
-//   var date1=newDate.setHours(0,0,0,0)
-//   var d = new Date().setHours(0,0,0,0);
-// // d.setHours(0,0,0,0);
-//   console.log(date1,d,date1==d)
-
-//   var now = moment(new Date()),
-// end = moment(now),
-// days = end.diff(now, 'days');
-//   console.log('GGGGG',days);
-
-//   var arr = [{p: 'X', v: 50}, {p:'Y', v: 12}, {p:'X', v:80}, {p:'X', v:140}]
-// arr.reduce(function(acc, curr){
-//   if (acc[curr.p]){
-//     acc[curr.p] = acc[curr.p] + curr.v
-//   } else {
-//     acc[curr.p] = curr.v
-//   }
-//     return acc;
-//   }, {});
+  // c
 
 
 // console.log('arr',arr);
