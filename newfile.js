@@ -22,19 +22,7 @@ g
 sdf
 gsdf
 gsdfdfg
-{ isDummy: false,
-    reverseFeedUniqueHash: null,
-    bosCode: null,
-    nseCode: null,
-    bseCode: null,
-    transactionDate: 2018-11-30T18:30:00.000Z,
-    orderDate: null,
-    status: 3,
-    transactionSubType: 1,
-    quantity: 3.523,
-    openingQuantity: null,
-    closingQuantity: null,
-    pricePerUnit: 255.75,
+
     totalAmount: 901,
     openingAmount: null,
     closingAmount: null,
