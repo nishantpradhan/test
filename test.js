@@ -24,18 +24,7 @@ var moment=require('moment');
 // node --max-old-space-size=8192 --optimize-for-size --max-executable-size=8192  --max_old_space_size=8192 --optimize_for_size --max_executable_size=8192 node_modules/karma/bin/karma start --single-run --max_new_space_size=8192   --prod --aot 
 
 
-// // let a=[ 1541010600000,
-// //   1542825000000,
-// //   1543257000000,
-// //   1543602600000,
-// //   1544553000000 ];
 
-//   let b=a;
-//   a.push(1);
-  // console.log('a',a,'b',b)
-
-  // console.log(a.indexOf('1542825000000'));
-  // console.log([1, 2, 3].includes(2));
 
 // let newDate=new Date('2018-12-28');
 // // console.log('newDate',newDate.setHours(0,0,0,0));
