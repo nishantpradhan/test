@@ -24,6 +24,10 @@ let a={
 };
 // console.log(a.assetName)
 
+
+
+
+
   console.log(typeof z);
 
   console.log(typeof a);
