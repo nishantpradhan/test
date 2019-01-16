@@ -28,6 +28,10 @@ let a={
 
 
 
+
+
+
+
   console.log(typeof z);
 
   console.log(typeof a);
