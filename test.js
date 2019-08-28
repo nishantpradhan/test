@@ -13,7 +13,6 @@ pqwiepqwie
 qwe
 qwe
 qwe
-<<<<<<< HEAD
 q
 qwe
 q e .
@@ -26,19 +25,11 @@ adsadasdasd
 startedasd
 adsadasdasd
 adsadasdas
-=======
-q e . 
+q e .
 
 uuuuuuuuuuuu
 oooooooooooooo
 pppppppppppppp
-
-
->>>>>>> dc14e265c07aa2a1347d3bebb519a626ac1ea736
-
-
-
-
 
 adsadasd
 asdas
