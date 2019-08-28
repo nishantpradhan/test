@@ -17,6 +17,22 @@
   },
   "homepage": "https://github.com/nishantpradhan/test#readme",
   "dependencies": {
-    "lodash": "^4.17.11"
+    "async": "^2.6.2",
+    "basic-ftp": "^3.6.0",
+    "bluebird": "^3.5.3",
+    "csvtojson": "^2.0.8",
+    "doasync": "^2.0.1",
+    "download-email-attachments": "^2.0.1",
+    "download-file-with-progressbar": "^1.2.3",
+    "file-regex": "^3.0.1",
+    "imap-simple": "^4.3.0",
+    "lodash": "^4.17.11",
+    "path": "^0.12.7",
+    "pdf-parse": "^1.1.1",
+    "pdf4me": "^9.9.34",
+    "pdfreader": "^1.0.4",
+    "read-excel-file": "^4.0.2",
+    "request": "^2.88.0",
+    "shelljs": "^0.8.3"
   }
 }
