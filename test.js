@@ -237,6 +237,21 @@ hashSet.add(4);
 
 
 
+// console.log(eachcategory.id, debtItem.modelPortfolioCategoryId, 'index', index)
+// if(debtItem && eachcategory.id==debtItem.modelPortfolioCategoryId && eachcategory.modelPortfolioAssetId==debtItem.modelPortfolioAssetId){
+// && eachcategory.modelPortfolioAssetId==debtItem.modelPortfolioAssetId){
+
+//                debtArr= debtArr.reduce((acc,curArr)=>{
+//                     return curArr.length>0? neglectIds.indexOf()> -1:  neglectIds.push(curObj.id)
+//                 },[])
+//   Object.assign(schemeItem,debtItem)
+// console.log('debtItem',debtItem)
+// debtArr=_.filter(debtArr,item=>!item.id)
+
+// debtArr= debtArr.length==index? debtArr.splice(index+1):debtArr
+// console.log('debtArr',debtArr)
+
+// }
 
 
 
