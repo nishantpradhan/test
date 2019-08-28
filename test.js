@@ -237,19 +237,6 @@ hashSet.add(4);
 
 
 
-//         console.log(schemeItem)
-//     _.each(debtAddetArr,debtArrArr=>{
-//         console.log(debtArrArr)
-//         _.each(debtArrArr,(eachObj,index)=>{
-//             console.log('eachObj',eachObj)
-//                 Object.assign(eachObj,schemeItem)
-//            debtAddetArr=debtArrArr.splice(index+1);
-//         })
-//     })
-// })
-// }
-//
-// console.log(debtAsset.categories.schemes)
 
 
 
