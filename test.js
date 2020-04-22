@@ -1,5 +1,8 @@
 // iconsole.log("hello world");
 
+
+console.log('need to revert this commmit')
+
 // var _ = require("lodash");
 var moment = require("moment");
 var Promise = require("bluebird");
@@ -26,7 +29,42 @@ let words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
 let spArr = ["0,1,2,3,4,13,14"];
 console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
 // console.log('newObj', newObj)
+let obj1 = [{
+    instrumentId: 34872,
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
 
+let obj2 = [{
+    instrumentId: '34872',
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
+
+
+promise1
+.then(function(){
+    return Promise.delay(500);
+}).then(function(){
+
+    return resolve()
+})
 
 console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effectiveDate'].join(',') , '<<<<<<<', 'addition');
 
@@ -380,6 +418,33 @@ console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effec
 
 
 
+
+// Interest payment-S
+// Capital call-B
+// Dividend cash-B
+// Redemption-B
+// Credit-B
+// Redemption-S
+// Capital call-S
+// Close loan-S
+// Close loan-B
+// Payment-S
+// Fee-S
+// Delivery free of payment-S
+// FX spot-S
+// FX spot-B
+// Open new deposit-B
+// Open new deposit-S
+// Raise loan-S
+// Raise loan-B
+// Cancellation: raise loan-B
+// Unwind-S
+// Interest-B
+// Cancellation: raise loan-S
+// Payment-B
+// let string = "608768.84";
+// console.log('Number :',Number(string))
+
 // console.log(  string.split('##')[0] ? Number((string.split('##')[0]).replace(/,/g, '')) :0  );
 
 // const fs = require('fs');
@@ -712,150 +777,115 @@ let newObj = {
 // })
 
 
+if ([]) {
+    // console.log('true>>>')
+}
+
+// console.log(Number(Number(1)))
+// let jsonData = JSON.parse(fs.readFileSync('untitled.json', 'utf-8'))
+
+// console.log(require('./untitled.json'));
+
+
+// console.log(_.first([{'firstName':'AVQ.SG.3RDP.LIGHTHOUSE.TRANS_20190801.csv','lastName':'pradhan'},{'firstName':'asd','lastName':'rew'}]).firstName.includes('csv'));
+//
+
+// console.log('parsefloat', ''.replace(/,/g, ''))
+
+// _.reduce([1,2,3], function(acc,curval,idx){
+//     console.log(acc+curval)
+//     return acc
+// },1)
+
+
+
 
 
 // const parser = require('xmljson').to_json;
 var xmlParserValidator = require('fast-xml-parser');
 
+// readXMLfile().then(function() {
 
-// var debtAsset = {
-//     "weightage": 0.5,
-//     "priority": 2,
-//     "id": 45,
-//     "isActive": true,
-//     "createdDate": "2019-08-20T08:18:09.000Z",
-//     "lastModifiedDate": "2019-08-20T08:18:09.000Z",
-//     "modelPortfolioId": 23,
-//     "assetId": 4,
-//     "investmentAmount": 250000,
-//     "numberOfSchemes": 4,
-//     "categories": [{
-//             "weightage": 0.65,
-//             "priority": 1,
-//             "id": 177,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 54,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 162500,
-//             "schemes": [{
-//                     "amount": 75000
-//                 },
-//                 {
-//                     "amount": 75000
-//                 },
-//                 {
-//                     "amount": 12500
-//                 }
-//             ],
-//             "NumberOfSchemesToShow": 3
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 2,
-//             "id": 178,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 53,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 50000,
-//             "schemes": [{
-//                 "amount": 50000
-//             }],
-//             "NumberOfSchemesToShow": 1
-//         },
-//         {
-//             "weightage": 0.15,
-//             "priority": 4,
-//             "id": 180,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 22,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 37500,
-//             "schemes": [{
-//                 "amount": 37500
-//             }],
-//             "NumberOfSchemesToShow": 1
+
+// })
+
+
+// function readXMLfile() {
+//     let xmlData = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+
+//     var jsonObj = xmlParserValidator.parse(xmlData);
+//     // var he = require('he');
+
+//     var options = {
+//         // attributeNamePrefix: "",
+//         // attrNodeName: "Workbook", //default is 'false'
+//         // textNodeName: "#text",
+//         ignoreAttributes: true,       //removes datatype of each cell
+//         ignoreNameSpace: true,    //removes ss:
+//         allowBooleanAttributes: false,
+//         parseNodeValue: true,
+//         parseAttributeValue: true,
+//         trimValues: true,
+//         cdataTagName: "Worksheet", //default is 'false'
+//         // cdataPositionChar: "\\c",
+//         // localeRange: "", //To support non english character in tag/attribute values.
+//         parseTrueNumberOnly: true,
+//         // attrValueProcessor: a => he.decode(a, { isAttributeValue: true }), //default is a=>a
+//         // tagValueProcessor: a => he.decode(a) //default is a=>a
+//     };
+
+//     if (xmlParserValidator.validate(xmlData) === true) { //optional (it'll return an object in case it's not valid)
+//         var jsonObj = xmlParserValidator.parse(xmlData, options);
+//     }
+
+//     // Intermediate obj
+//     var tObj = xmlParserValidator.getTraversalObj(xmlData, options);
+//     var jsonObj = xmlParserValidator.convertToJson(tObj, options);
+
+//     console.log('tObj',tObj)
+//     console.log('jsonObj',JSON.stringify(jsonObj,null,2))
+
+//     // console.log(tObj,jsonObj)
+//     return Promise.resolve()
+
+// }
+
+
+
+
+
+// return new Promise((resolve, reject) => {
+
+//       // console.log('indsie convertXMLtoJSON filePath', filePath)
+//       let xml = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+//       parser(xml, function (error, data) {
+//         if (error) {
+//           reject(error);
 //         }
-//     ],
-//     "numberOfCategories": 3,
-//     "additionalAmountToRebase": 0,
-//     "weightageForRebase": 1
-// };
+
+//         console.log('data', JSON.stringify(data, null, 2))
+//         // let xmlData = _.values(data['m2:M006']['M005']);
+//         return resolve(xmlData);
+//       });
+//     });
 
 
 
-// curl -X DELETE 'http://localhost:9200/instrumentpricesreporting'
-// var debtArrArr = [
-//     [{
-//             "weightage": 0.8,
-//             "priority": 1,
-//             "id": 7,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 79512,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 177,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 2,
-//             "id": 8,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 177,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         }
-//     ],
-//     [{
-//             "weightage": 0.2,
-//             "priority": 1,
-//             "id": 10,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 178,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 3,
-//             "id": 6,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 178,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         }
-//     ],
-//     []
-// ];
-// // console.log(debtAsset.categories)
-// let azzz = { 'abc': 123 };
-// let bzzz = { 'def': 456, 'vvv': 567 };
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
