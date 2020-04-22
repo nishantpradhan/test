@@ -32,54 +32,54 @@ console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effec
 
 
 let instrumentArray = [{
-    "instrumentId": 34873,
-    "assetProductClassificationId": 10,
-    "instrumentCategoryName": "Equity - Sectoral Fund - Auto",
-    "instrumentSubAsset": "Equity ETF",
-    "countryId": 1,
-    "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-    "assetId": 5,
-    "instrumentAsset": "Equities",
-    "assetName": "Equity",
-    "instrumentQuantity": 500,
-    "instrumentWeight": 0.25,
-    "priority": 1
+  "instrumentId": 34873,
+  "assetProductClassificationId": 10,
+  "instrumentCategoryName": "Equity - Sectoral Fund - Auto",
+  "instrumentSubAsset": "Equity ETF",
+  "countryId": 1,
+  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+  "assetId": 5,
+  "instrumentAsset": "Equities",
+  "assetName": "Equity",
+  "instrumentQuantity": 500,
+  "instrumentWeight": 0.25,
+  "priority": 1
 },
 {
-    "instrumentId": 34872,
-    "assetProductClassificationId": 11,
-    "instrumentSubAsset": "Cash Equivalents",
-    "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-    "assetId": 5,
-    "instrumentAsset": "Cash and Cash Equivalents",
-    "assetName": "Equity",
-    "instrumentQuantity": 500,
-    "instrumentWeight": 0.25,
-    "priority": 2
+  "instrumentId": 34872,
+  "assetProductClassificationId": 11,
+  "instrumentSubAsset": "Cash Equivalents",
+  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+  "assetId": 5,
+  "instrumentAsset": "Cash and Cash Equivalents",
+  "assetName": "Equity",
+  "instrumentQuantity": 500,
+  "instrumentWeight": 0.25,
+  "priority": 2
 },
 {
-    "instrumentId": 34871,
-    "assetProductClassificationId": 10,
-    "instrumentSubAsset": "Equity Structured Products",
-    "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-    "assetId": 5,
-    "instrumentAsset": "Equities",
-    "assetName": "Equity",
-    "instrumentQuantity": 500,
-    "instrumentWeight": 0.2,
-    "priority": 3
+  "instrumentId": 34871,
+  "assetProductClassificationId": 10,
+  "instrumentSubAsset": "Equity Structured Products",
+  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+  "assetId": 5,
+  "instrumentAsset": "Equities",
+  "assetName": "Equity",
+  "instrumentQuantity": 500,
+  "instrumentWeight": 0.2,
+  "priority": 3
 },
 {
-    "instrumentId": 34870,
-    "assetProductClassificationId": 1,
-    "instrumentSubAsset": "Current Accounts",
-    "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-    "assetId": 5,
-    "instrumentAsset": "Cash and Cash Equivalents",
-    "assetName": "Equity",
-    "instrumentQuantity": 500,
-    "instrumentWeight": 0.2,
-    "priority": 4
+  "instrumentId": 34870,
+  "assetProductClassificationId": 1,
+  "instrumentSubAsset": "Current Accounts",
+  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+  "assetId": 5,
+  "instrumentAsset": "Cash and Cash Equivalents",
+  "assetName": "Equity",
+  "instrumentQuantity": 500,
+  "instrumentWeight": 0.2,
+  "priority": 4
 }
 ];
 // async.parallel({
@@ -106,6 +106,209 @@ let instrumentArray = [{
 
 
 
+
+const groupByConfiguration = {
+  productId: {
+    fieldsToInclude: ['productId', 'productName']
+  },
+  assetId: {
+    fieldsToInclude: ['assetId', 'assetName']
+  },
+  taxAssetId: {
+    fieldsToInclude: ['taxAssetId', 'taxAssetName']
+  },
+  monthYear: {
+    fieldsToInclude: ['month', 'year', 'monthYear', 'monthLabel']
+  },
+  relationshipManagerId: {
+    fieldsToInclude: ['relationshipManagerId', 'relationshipManagerName', 'relationshipManagerEmail']
+  },
+  accountId: {
+    fieldsToInclude: ['accountId', 'accountName', 'accountUniqueId']
+  },
+  appUserId: {
+    fieldsToInclude: ['appUserId', 'appUserName', 'appUserEmail']
+  },
+  familyId: {
+    fieldsToInclude: ['familyId', 'familyName']
+  },
+  serviceProviderId: {
+    fieldsToInclude: ['serviceProviderId', 'serviceProviderName', 'serviceProviderShortName']
+  },
+  serviceProviderAccountId: {
+    fieldsToInclude: ['serviceProviderAccountId', 'serviceProviderAccountNumber']
+  },
+  instrumentId: {
+    fieldsToInclude: ['instrumentId', 'instrumentName', 'instrumentISINCode']
+  }
+};
+let filter = {
+  body: {
+    query: {
+      bool: {
+        filter: {
+          bool: {
+            must: 'termClause'
+          }
+        }
+      }
+    }
+  }
+};
+// console.log('filter', JSON.stringify(filter, null, 2));
+
+let groupBy = ['productId'];
+filter.body.aggs = {};
+let fieldsToInclude = [];
+
+try {
+  for (let i = 0; i < groupBy.length; i++) {
+    if (!groupByConfiguration[groupBy[i]]) {
+      return
+            // reject(new RestError(400, `Incorrect group by clause!`));
+          }
+        // console.log('inside for');
+
+        fieldsToInclude = fieldsToInclude.concat(groupByConfiguration[groupBy[i]].fieldsToInclude);
+        let currentClause = {
+          terms: {
+            field: groupBy[i],
+            size: 'limit'
+          },
+          aggs: {}
+        };
+        if (previousAggegationClause) {
+          previousAggegationClause[groupBy[i]] = currentClause;
+        } else {
+            // console.log("**************");
+            // console.log('inside else', JSON.stringify(filter, null, 2));
+            filter.body.aggs[groupBy[i]] = currentClause;
+
+            // console.log("##########");
+            // console.log(JSON.stringify(filter, null, 2));
+          }
+        // console.log(' currentClause.aggs', currentClause.aggs);
+
+        var previousAggegationClause = currentClause.aggs;
+        // console.log(i == groupBy.length - 1, 'previousAggegationClause******', previousAggegationClause);
+        if (i == groupBy.length - 1) {
+            // console.log('insdie group')
+            previousAggegationClause.totalRevenue = {
+              'sum': {
+                'field': 'revenueAmount'
+              }
+            };
+            // console.log(JSON.stringify(filter,null,2));
+            // console.log('^^^^^^^^^^^^^^^^^^^^')
+            previousAggegationClause.results = {
+              'top_hits': {
+                sort: 'orderBy',
+                size: 1,
+                _source: ['_id'].concat(fieldsToInclude)
+              }
+            };
+            // console.log('$$$$$$$$$$$$$')
+
+            // console.log('%%%%%', JSON.stringify(filter, null, 2));
+
+          }
+        // console.log('previousAggegationClause******', previousAggegationClause);
+      };
+    } catch (e) {
+      console.log(e)
+    }
+// console.log('filter', JSON.stringify(filter, null, 2));
+
+const data = {
+  value1: {
+    bucket: [{
+      value2: {
+        bucket: [{
+          result: {
+            hits: {
+              hits: [{ finalValue: 5 }, { finalValue: 4 }]
+            }
+          }
+        }]
+      }
+    },
+    {
+      value2: {
+        bucket: [{
+          result: {
+            hits: {
+              hits: [{ finalValue: 3 }, { finalValue: 2 }]
+            }
+          }
+        }]
+      }
+    }
+    ]
+  }
+}
+
+var _ = require('lodash');
+
+const flatData = [];
+// console.log('typeof flatData', typeof flatData)
+
+// console.log(JSON.stringify(data, null, 2));
+
+var finalArray = [];
+checkIfObjectOrArray(data)
+var cnt = 0;
+
+function checkIfObjectOrArray(data) {
+
+    // console.log(Array.isArray(data),data)
+    if (Array.isArray(data)) {
+        // console.log('insdie if***')
+        // console.log("array data==>",'AAA', data)
+        _.map(data, (item) => {
+          console.log('insdieeach', item)
+          return checkIfObjectOrArray(item)
+        })
+      } else {
+        console.log('OOO', data)
+        Object.keys(data).forEach(function(key, index) {
+          console.log('key', key, key == 'result');
+          if (key == 'result') {
+            console.log(data['result'], 'HHHHHHHHHHHHHH===>>', key);
+            finalArray.push(data['result']);
+          }
+          data = data[key];
+            // console.log(key)
+            // if(data[key]=='hits'){
+            //   console.log('key')
+            //   finalArray.push(data);
+            //   console.log(finalArray)
+            // }
+            // console.log(data)
+            return checkIfObjectOrArray(data)
+          });
+      }
+    }
+    console.log('finalArray', finalArray)
+
+// function flatter(data, pushTo, currentBucket) {
+//     if (data) {
+//         const keys = Object.keys(data);
+//         console.log('keys',keys);
+//         const values = keys.map(x => x);
+//         console.log('values',values);
+//         if ((values || []).indexOf('result') > -1) {
+//             return pushTo.push(data.result);
+//         }
+//         values.forEach(function(index) {
+//           console.log('values',values,'index',index,'inside finEach',data[index])
+//             return flatter(data[index], pushTo);
+//         })
+//     }
+// }
+
+// flatter(data, flatData)
+
+// console.log(JSON.stringify(flatData,null,2));
 
 // groupByIdAndCalculateWeightage(instrumentArray, ['instrumentAsset', 'instrumentSubAsset']);
 // var data = [{
@@ -634,7 +837,7 @@ let mainObj = [{}, {}, {}, {}];
 //     { transactionDate: '2019-08-11T00:00:00.000Z' }
 // ]
 let newObj = {
-    b: 1
+  b: 1
 };
 
 
@@ -1333,15 +1536,15 @@ c = 3;
 let obj = {};
 
 let item = {
-    hldPos: {
+  hldPos: {
         //     posnQty: 2,
         //     hldId: {
         //         asstDetail: {
         //             prcFactor: 1
         //         }
         //     }
-    }
-};
+      }
+    };
 
 
 // if (item.hldPos && item.hldPos.posnQty && item.hldPos.hldId && item.hldPos.hldId.asstDetail && item.hldPos.hldId.asstDetail.prcFactor) {
@@ -1363,30 +1566,30 @@ let mat = '3.08 % TIME LOANS MAT 31/07/19 coupon 3.08';
 // let str = "accountNumber": "DEMAND IB ACCOUNT - 6225780300";
 // let str1 = "accountNumber": "DEMAND IB ACCOUNT - 6525780401##Interest 01 MAR 2019 - 26 MAR 2019",
 obj = {
-    "1": {
-        "_": "19930049",
-        "$": {
-            "refType": "Valor"
-        }
-    },
-    "0": {
-        "_": "IE00B84J9L26",
-        "$": {
-            "refType": "BSIN"
-        }
-    },
-    "2": {
-        "_": "000064235309",
-        "$": {
-            "refType": "ZARA"
-        }
-    },
-    "3": {
-        "_": "000064235309",
-        "$": {
-            "refType": "AARA"
-        }
+  "1": {
+    "_": "19930049",
+    "$": {
+      "refType": "Valor"
     }
+  },
+  "0": {
+    "_": "IE00B84J9L26",
+    "$": {
+      "refType": "BSIN"
+    }
+  },
+  "2": {
+    "_": "000064235309",
+    "$": {
+      "refType": "ZARA"
+    }
+  },
+  "3": {
+    "_": "000064235309",
+    "$": {
+      "refType": "AARA"
+    }
+  }
 }; //[3,2,1]
 // function sortObjectKeys(obj) {
 //     return Object.keys(obj).sort().reduce((acc, key) => {
@@ -1404,33 +1607,33 @@ obj = {
 
 // test it
 obj = {
-    telephone: '069911234124',
-    name: 'Lola',
-    access: true,
-    cars: [{
-        name: 'Family',
-        brand: 'Volvo',
-        cc: 1600
-    },
-    {
-        name: 'City',
-        brand: 'VW',
-        cc: 1200,
-        interior: {
-            wheel: 'plastic',
-            radio: 'blaupunkt'
-        }
-    },
-    {
-        cc: 2600,
-        name: 'Killer',
-        brand: 'Plymouth',
-        interior: {
-            wheel: 'wooden',
-            radio: 'earache!'
-        }
+  telephone: '069911234124',
+  name: 'Lola',
+  access: true,
+  cars: [{
+    name: 'Family',
+    brand: 'Volvo',
+    cc: 1600
+  },
+  {
+    name: 'City',
+    brand: 'VW',
+    cc: 1200,
+    interior: {
+      wheel: 'plastic',
+      radio: 'blaupunkt'
     }
-    ]
+  },
+  {
+    cc: 2600,
+    name: 'Killer',
+    brand: 'Plymouth',
+    interior: {
+      wheel: 'wooden',
+      radio: 'earache!'
+    }
+  }
+  ]
 };
 // console.log(JSON.stringify(sortObjectKeys(obj), null, 2))
 // console.log(Object.values(obj).sort((a,b)=> a['$'].refType>b['$'].refType))
@@ -1495,61 +1698,61 @@ obj = {
 
 
 var param = {
-    "startTransfer": {
-        "version": "2",
-        "uniqueRequestNo": "Vishwa40141",
-        "appID": "453733",
-        "customerID": "453733",
-        "debitAccountNo": "000190600017042",
-        "beneficiary": {
+  "startTransfer": {
+    "version": "2",
+    "uniqueRequestNo": "Vishwa40141",
+    "appID": "453733",
+    "customerID": "453733",
+    "debitAccountNo": "000190600017042",
+    "beneficiary": {
 
-            "beneficiaryDetail": {
+      "beneficiaryDetail": {
 
 
-                "beneficiaryName": {
+        "beneficiaryName": {
 
-                    "fullName": "Motilal Oswal  LTD"
-                },
-                "beneficiaryAddress": {
-
-                    "address1": "IFC",
-                    "country": "IN"
-                },
-                "beneficiaryContact": {
-                    "mobileNo": "919920655985",
-                    "emailID": "XYZ@MS.com"
-                },
-                "beneficiaryAccountNo": "200300000824",
-                "beneficiaryIFSC": "ICIC00PCTBL",
-            }
+          "fullName": "Motilal Oswal  LTD"
         },
-        "transferType": "IMPS",
-        "transferCurrencyCode": "INR",
-        "transferAmount": "1000",
-        "remitterToBeneficiaryInfo": "FUND TRANSFER"
-    }
+        "beneficiaryAddress": {
+
+          "address1": "IFC",
+          "country": "IN"
+        },
+        "beneficiaryContact": {
+          "mobileNo": "919920655985",
+          "emailID": "XYZ@MS.com"
+        },
+        "beneficiaryAccountNo": "200300000824",
+        "beneficiaryIFSC": "ICIC00PCTBL",
+      }
+    },
+    "transferType": "IMPS",
+    "transferCurrencyCode": "INR",
+    "transferAmount": "1000",
+    "remitterToBeneficiaryInfo": "FUND TRANSFER"
+  }
 };
 
 
 
 
 var getBalance = {
-    "getBalance": {
-        "version": "2",
-        "appID": "453733",
-        "customerID": "453733",
-        "AccountNumber": "188201500403"
-    }
+  "getBalance": {
+    "version": "2",
+    "appID": "453733",
+    "customerID": "453733",
+    "AccountNumber": "188201500403"
+  }
 };
 
 
 var getStatus = {
-    "getStatus": {
-        "version": "1",
-        "appID": "453733",
-        "customerID": "453733",
-        "requestReferenceNo": "Vishwa40145"
-    }
+  "getStatus": {
+    "version": "1",
+    "appID": "453733",
+    "customerID": "453733",
+    "requestReferenceNo": "Vishwa40145"
+  }
 };
 
 // const fs = require('fs')
@@ -2087,7 +2290,7 @@ var getStatus = {
 
 function callInScenario4(data) {
     // console.log('inside callInScenario4', data)
-}
+  }
 
 
 // function getRequiredSurplus(categoryData) {
@@ -2993,52 +3196,52 @@ function callInScenario4(data) {
 // console.log(_unArray)
 
 const groupByConfiguration = {
-    productId: {
-        fieldsToInclude: ['productId', 'productName']
-    },
-    assetId: {
-        fieldsToInclude: ['assetId', 'assetName']
-    },
-    taxAssetId: {
-        fieldsToInclude: ['taxAssetId', 'taxAssetName']
-    },
-    monthYear: {
-        fieldsToInclude: ['month', 'year', 'monthYear', 'monthLabel']
-    },
-    relationshipManagerId: {
-        fieldsToInclude: ['relationshipManagerId', 'relationshipManagerName', 'relationshipManagerEmail']
-    },
-    accountId: {
-        fieldsToInclude: ['accountId', 'accountName', 'accountUniqueId']
-    },
-    appUserId: {
-        fieldsToInclude: ['appUserId', 'appUserName', 'appUserEmail']
-    },
-    familyId: {
-        fieldsToInclude: ['familyId', 'familyName']
-    },
-    serviceProviderId: {
-        fieldsToInclude: ['serviceProviderId', 'serviceProviderName', 'serviceProviderShortName']
-    },
-    serviceProviderAccountId: {
-        fieldsToInclude: ['serviceProviderAccountId', 'serviceProviderAccountNumber']
-    },
-    instrumentId: {
-        fieldsToInclude: ['instrumentId', 'instrumentName', 'instrumentISINCode']
-    }
+  productId: {
+    fieldsToInclude: ['productId', 'productName']
+  },
+  assetId: {
+    fieldsToInclude: ['assetId', 'assetName']
+  },
+  taxAssetId: {
+    fieldsToInclude: ['taxAssetId', 'taxAssetName']
+  },
+  monthYear: {
+    fieldsToInclude: ['month', 'year', 'monthYear', 'monthLabel']
+  },
+  relationshipManagerId: {
+    fieldsToInclude: ['relationshipManagerId', 'relationshipManagerName', 'relationshipManagerEmail']
+  },
+  accountId: {
+    fieldsToInclude: ['accountId', 'accountName', 'accountUniqueId']
+  },
+  appUserId: {
+    fieldsToInclude: ['appUserId', 'appUserName', 'appUserEmail']
+  },
+  familyId: {
+    fieldsToInclude: ['familyId', 'familyName']
+  },
+  serviceProviderId: {
+    fieldsToInclude: ['serviceProviderId', 'serviceProviderName', 'serviceProviderShortName']
+  },
+  serviceProviderAccountId: {
+    fieldsToInclude: ['serviceProviderAccountId', 'serviceProviderAccountNumber']
+  },
+  instrumentId: {
+    fieldsToInclude: ['instrumentId', 'instrumentName', 'instrumentISINCode']
+  }
 };
 let filter = {
-    body: {
-        query: {
-            bool: {
-                filter: {
-                    bool: {
-                        must: 'termClause'
-                    }
-                }
-            }
+  body: {
+    query: {
+      bool: {
+        filter: {
+          bool: {
+            must: 'termClause'
+          }
         }
+      }
     }
+  }
 };
 // console.log('filter', JSON.stringify(filter, null, 2));
 
@@ -3047,23 +3250,23 @@ filter.body.aggs = {};
 let fieldsToInclude = [];
 
 try {
-    for (let i = 0; i < groupBy.length; i++) {
-        if (!groupByConfiguration[groupBy[i]]) {
-            return
+  for (let i = 0; i < groupBy.length; i++) {
+    if (!groupByConfiguration[groupBy[i]]) {
+      return
             // reject(new RestError(400, `Incorrect group by clause!`));
-        }
+          }
         // console.log('inside for');
 
         fieldsToInclude = fieldsToInclude.concat(groupByConfiguration[groupBy[i]].fieldsToInclude);
         let currentClause = {
-            terms: {
-                field: groupBy[i],
-                size: 'limit'
-            },
-            aggs: {}
+          terms: {
+            field: groupBy[i],
+            size: 'limit'
+          },
+          aggs: {}
         };
         if (previousAggegationClause) {
-            previousAggegationClause[groupBy[i]] = currentClause;
+          previousAggegationClause[groupBy[i]] = currentClause;
         } else {
             // console.log("**************");
             // console.log('inside else', JSON.stringify(filter, null, 2));
@@ -3071,7 +3274,7 @@ try {
 
             // console.log("##########");
             // console.log(JSON.stringify(filter, null, 2));
-        }
+          }
         // console.log(' currentClause.aggs', currentClause.aggs);
 
         var previousAggegationClause = currentClause.aggs;
@@ -3079,57 +3282,57 @@ try {
         if (i == groupBy.length - 1) {
             // console.log('insdie group')
             previousAggegationClause.totalRevenue = {
-                'sum': {
-                    'field': 'revenueAmount'
-                }
+              'sum': {
+                'field': 'revenueAmount'
+              }
             };
             // console.log(JSON.stringify(filter,null,2));
             // console.log('^^^^^^^^^^^^^^^^^^^^')
             previousAggegationClause.results = {
-                'top_hits': {
-                    sort: 'orderBy',
-                    size: 1,
-                    _source: ['_id'].concat(fieldsToInclude)
-                }
+              'top_hits': {
+                sort: 'orderBy',
+                size: 1,
+                _source: ['_id'].concat(fieldsToInclude)
+              }
             };
             // console.log('$$$$$$$$$$$$$')
 
             // console.log('%%%%%', JSON.stringify(filter, null, 2));
 
-        }
+          }
         // console.log('previousAggegationClause******', previousAggegationClause);
-    };
-} catch (e) {
-    console.log(e)
-}
+      };
+    } catch (e) {
+      console.log(e)
+    }
 // console.log('filter', JSON.stringify(filter, null, 2));
 
 const data = {
-    value1: {
+  value1: {
+    bucket: [{
+      value2: {
         bucket: [{
-            value2: {
-                bucket: [{
-                    result: {
-                        hits: {
-                            hits: [{ finalValue: 5 }, { finalValue: 4 }]
-                        }
-                    }
-                }]
+          result: {
+            hits: {
+              hits: [{ finalValue: 5 }, { finalValue: 4 }]
             }
-        },
-        {
-            value2: {
-                bucket: [{
-                    result: {
-                        hits: {
-                            hits: [{ finalValue: 3 }, { finalValue: 2 }]
-                        }
-                    }
-                }]
+          }
+        }]
+      }
+    },
+    {
+      value2: {
+        bucket: [{
+          result: {
+            hits: {
+              hits: [{ finalValue: 3 }, { finalValue: 2 }]
             }
-        }
-        ]
+          }
+        }]
+      }
     }
+    ]
+  }
 }
 
 var _ = require('lodash');
@@ -3150,18 +3353,18 @@ function checkIfObjectOrArray(data) {
         // console.log('insdie if***')
         // console.log("array data==>",'AAA', data)
         _.map(data, (item) => {
-            console.log('insdieeach', item)
-            return checkIfObjectOrArray(item)
+          console.log('insdieeach', item)
+          return checkIfObjectOrArray(item)
         })
-    } else {
+      } else {
         console.log('OOO', data)
         Object.keys(data).forEach(function(key, index) {
-            console.log('key', key, key == 'result');
-            if (key == 'result') {
-                console.log(data['result'], 'HHHHHHHHHHHHHH===>>', key);
-                finalArray.push(data['result']);
-            }
-            data = data[key];
+          console.log('key', key, key == 'result');
+          if (key == 'result') {
+            console.log(data['result'], 'HHHHHHHHHHHHHH===>>', key);
+            finalArray.push(data['result']);
+          }
+          data = data[key];
             // console.log(key)
             // if(data[key]=='hits'){
             //   console.log('key')
@@ -3170,10 +3373,10 @@ function checkIfObjectOrArray(data) {
             // }
             // console.log(data)
             return checkIfObjectOrArray(data)
-        });
+          });
+      }
     }
-}
-console.log('finalArray', finalArray)
+    console.log('finalArray', finalArray)
 
 // function flatter(data, pushTo, currentBucket) {
 //     if (data) {
