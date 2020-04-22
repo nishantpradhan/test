@@ -1,207 +1,1058 @@
 // iconsole.log("hello world");
 
-var _ = require("lodash");
+// var _ = require("lodash");
 var moment = require("moment");
 var Promise = require("bluebird");
-// const fs = require('fs');
-const path = require('path');
-
-
 const fs = require('fs');
+const path = require('path');
+var _ = require('underscore');
+var uniqid = require('uniqid');
+let async = require('async');
+console.log(uniqid() + 'testCreation'); // -> 4n5pxq24kpiob12og9
+// console.log(uniqid(), uniqid());
+
+// console.log(Object.keys({ a: '', b: '' }).length);
+let Client = require('ssh2-sftp-client');
+const os = require('os');
+// const privKeyPath = path.join(os.homedir(), '.ssh', 'id_rsa');
+// const privKey = fs.readFileSync(privKeyPath);o
+// console.log(stooges,'stooges')
+
+let words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+// words = _.map(words, item => {
+//     return item.length > 6;
+// });
+// console.log('words', words)
+let spArr = ["0,1,2,3,4,13,14"];
+console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
+// console.log('newObj', newObj)
+let obj1 = [{
+    instrumentId: 34872,
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
+
+let obj2 = [{
+    instrumentId: '34872',
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
+
+
+promise1
+.then(function(){
+    return Promise.delay(500);
+}).then(function(){
+
+    return resolve()
+})
+
+console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effectiveDate'].join(',') , '<<<<<<<', 'addition');
+
+// let instrumentArray = [{
+//     "instrumentId": 34873,
+//     "assetProductClassificationId": 10,
+//     "instrumentCategoryName": "Equity - Sectoral Fund - Auto",
+//     "instrumentSubAsset": "Equity ETF",
+//     "countryId": 1,
+//     "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+//     "assetId": 5,
+//     "instrumentAsset": "Equities",
+//     "assetName": "Equity",
+//     "instrumentQuantity": 500,
+//     "instrumentWeight": 0.25,
+//     "priority": 1
+// },
+// {
+//     "instrumentId": 34872,
+//     "assetProductClassificationId": 11,
+//     "instrumentSubAsset": "Cash Equivalents",
+//     "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+//     "assetId": 5,
+//     "instrumentAsset": "Cash and Cash Equivalents",
+//     "assetName": "Equity",
+//     "instrumentQuantity": 500,
+//     "instrumentWeight": 0.25,
+//     "priority": 2
+// },
+// {
+//     "instrumentId": 34871,
+//     "assetProductClassificationId": 10,
+//     "instrumentSubAsset": "Equity Structured Products",
+//     "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+//     "assetId": 5,
+//     "instrumentAsset": "Equities",
+//     "assetName": "Equity",
+//     "instrumentQuantity": 500,
+//     "instrumentWeight": 0.2,
+//     "priority": 3
+// },
+// {
+//     "instrumentId": 34870,
+//     "assetProductClassificationId": 1,
+//     "instrumentSubAsset": "Current Accounts",
+//     "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+//     "assetId": 5,
+//     "instrumentAsset": "Cash and Cash Equivalents",
+//     "assetName": "Equity",
+//     "instrumentQuantity": 500,
+//     "instrumentWeight": 0.2,
+//     "priority": 4
+// }
+// ];
+// async.parallel({
+//     one: function(callback) {
+//         setTimeout(function() {
+//             callback(null, 1);
+//         }, 200);
+//     },
+//     two: function(callback) {
+//         setTimeout(function() {
+//             callback(2, '');
+//         }, 100);
+//     }
+// }, function(err, results) {
+//     if (err) {
+//         console.log(results, 'inside rror')
+//     }
+
+
+
+//     console.log(results)
+//     // results is now equals to: {one: 1, two: 2}
+// });
+
+
+
+
+// groupByIdAndCalculateWeightage(instrumentArray, ['instrumentAsset', 'instrumentSubAsset']);
+// var data = [{
+//     currencyShortCode: 'fears'
+// },
+// {
+//     currencyShortCode: 'da'
+// }
+// ];
+// let data = [{ id: 1 }, { id: 5 }, { id: 4 }, { id: 3 }, { id: null }];
+// console.log(_.pluck(data, 'id').filter(item => item != null));
+// console.log(stooges,'stooges after dec')
+// let moment=require('moment-timezone');
+// let tenureDate='2019-11-12'
+// console.log(moment(tenureDate,'YYYY-MM-DD').format('DDMMYYYY'),'<<<<')
+
+//     let data=[{id:1},{id:1},{id:1}];
+//      let data1=  _.uniq( _.pluck(data,'id'));
+//      console.log('data1',data1)
+
+// fs.stat("./testfile1", function(err, stats){
+//     var mtime = stats.mtime;
+//     console.log(moment(mtime).format('YYYY-MM-DD'),'<<<<mtime');
+// });
+
+// scp ubuntu@lighthouse-uat:/home/ubuntu/wealthfyfiles/holdingfiles/<fileName>  .
+
+
+
+
+// let years=21;let output=product[0].weightage ?  'true':'false';
+//     console.log('output',output)
+// let arr = [11,22,12,23];
+
+// let hasDup = product.map(item=>{return item.priority}).some(function(val, i){
+//     console.log('i',i,'val',val);
+//       return    product.map(item=>{return item.priority}).indexOf(val) !== i;
+// })
+// console.log(hasDup,'<<<<<hasDup>>>>>>',_.isEmpty([{"a":""}]));
+
+// product = _.map(product, item => {
+//     return _.pick(item, 'priority', 'weightage', 'productId');
+// });
+// console.log('product', product);
+
+// Number(1) ? console.log('trueTTTTTT') :console.log('false>>>>');
+// var curlysWorstFear = _.keys(stooges);
+// let
+//       asstRef2= {
+//         "_": "USD",
+//         "$": {
+//           "refType": "CURRENCY"
+//         }
+//       };
+// const makeDisplayName = name =>
+//   (name.charAt(0) + name.slice(1).replace(/a|e|i|o|u/g, ""))
+//     .toUpperCase()
+// setTimeout(function(){
+//   console.log('a')
+// }, 5);
+// console.log('b');
+
+
+// setTimeout(function(){
+//   console.log('a')
+// }, 0);
+// console.log('b');
+
+// console.log(null===undefined,'nullcheck');
+
+// _.each([1,2,3,4],item=>{
+//     if(item==2){
+//         return;
+//     }
+//     return;
+//     console.log(item)
+// });
+// function counter() {
+//   for (var count = 1; ; count++) {  // infinite loop
+//     console.log(count + 'A'); // until 5
+//       if (count === 5) {
+//         return;
+//       }
+//       console.log(count + 'B');  // until 4
+//     }
+//   console.log(count + 'C');  // never appears
+// }
+
+// counter();
+// let shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+// let arr = '20190820072858419_2019-05-23_ZAN_83008699_AI5661_BAIBHDVSRBK7C8SA.txt'; //M006_MOV_lghths-sg_20191126_01.xml
+// console.log(arr.includes('_POS_'),'<<includes');
+// let arr='Transaction_29Nov-2Dec.xls';
+// console.log(arr.split('_')[1],arr.split('_')[2]);
+// console.log(arr.substring(arr.indexOf("_")+1,28),'<<');
+// let dateAndMonth=arr.substring(21,arr.lastIndexOf("."));
+// console.log(dateAndMonth,'dateAndMonth');
+// var thenum  = dateR.match([/\d/g]) // "3"
+// var re = /[\d -]+/g;
+// var str = thenum
+// var re = new RegExp(/[\d]+/g); //match digits
+// var re = new RegExp(/[\a-zA-Z]+/g); //match digits
+// var d = moment('2016-11-17').format('YYYY-MM-DD');
+// console.log('>>>',d)
+// var myArray = dateAndMonth.match(re);
+// console.log(myArray,'myArray');
+// var theAphha=dateR.match(/[a-zA-Z]+/g)
+// String  digits = dateR.replaceAll("[^0-9]", "");
+// let secondHalf=arr[0].lastIndexOf('.');
+// console.log('thenum',thenum,'<<<<','theAphha',theAphha)
+// console.log('Transaction', '20-21 Jan.xls');
+
+// .map(makeDisplayName);
+// a.forEach((item, key) => {
+//     console.log(item.name);
+//     if(item.color == 'orange') {
+//         break;
+//     }
+
+
+// const iterable = [10, 20, 30];
+
+// for (const value of iterable) {
+//     console.log(value);
+// }
+
+// })
+// Promise.resolve()
+//     .then(function() {
+//         for (let i = 0; i < [1, 2].length; i++) {
+//             console.log('iiiiii>>',i)
+//             return Promise.reject('rejected');
+//         }
+//         return anotherFunction()
+//     }).then(function() {
+//         console.log('after another function');
+//     }).catch(err => {
+//         console.log('insdie catch')
+//     })
+
+// function anotherFunction() {
+//     console.log('insdie another function');
+//     return Promise.resolve();
+// }
+
+// let output= bothRecordsHaveCurrency(data);
+
+// console.log(output, '<<output', null != undefined);
+
+// console.log(sentence.toLowerCase().includes("my"),'<<<<<<<<<');
+// console.log('')
+
+
+// trade date ==trx  date
+
+// value date=order date for BOS security movement
+
+//  'TradeDate': 'transactionDate',
+//    'ValueDate': 'orderDate',
+// let nullCheck= undefined && 'asd';
+//
+
+// console.log(moment().subtract(1,'days'),'<<<<')
+
+// console.log(moment('2010-10-20').isBetween('2010-10-19', '2010-10-20'),'<<isBetween'); // true)
+// console.log(nullCheck,'nullCheck');
+
+// let aObj = [{ 'ad': 'da1', 'hasDailyHoldingForTransactionDate': true }, { 'ad': 'ddd2' }];
+
+// let bObj = [{ 'ad': 'da1', 'hasDailyHoldingForTransactionDate': true }, { 'ad': 'ddd2' }];
+
+// let aObjMap = {};
+// _.each(aObj, item => {
+//     aObjMap[item.ad] = item;
+// });
+// console.log('aObjMap', aObjMap);
+// _.each(bObj, item => {
+//         console.log(aObjMap[item.ad].hasDailyHoldingForTransactionDate==true,'asdsd');
+// });
+
+// let totalData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+// let litmi = 2;
+// let offset = 0;
+
+
+
+// let emptyArr = new Set();
+// let hashSet = [1, 1, 2, 3, 4];
+// _.each(hashSet, item => {
+//     if (!emptyArr.has(item)) {
+//         emptyArr.add(item)
+//     }
+// });
+
+// const today = moment('2019-01-01');
+// let dateArr = [];
+
+// function callRecursively(from_date) {
+//     let startDate = moment(from_date).add(1, 'days').weekday();
+//     if (startDate < 6 && startDate > 0 && moment(from_date).add(1, 'days').format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD')) {
+//         dateArr.push([from_date, moment(from_date).add(1, 'days')]);
+//         return callRecursively(moment(from_date).add(1, 'days'));
+//     } else if ((startDate == 6 || startDate == 0) && moment(from_date).add(1, 'days').format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD')) {
+//         dateArr.push([from_date, moment(from_date).add(3, 'days')]);
+//         return callRecursively(moment(from_date).add(3, 'days'));
+//     }
+// };
+// let from_date = moment('2019-12-01').startOf('isoweek');
+// callRecursively(from_date);
+// console.log(dateArr, 'dateArr');
+
+// const to_date = today.endOf('week');
+// console.log('from_date',from_date,moment(from_date).format('YYYY-MM-DD'),'from_date','to_date',to_date,'to_date',moment(to_date).format('YYYY-MM-DD'));
+
+
+// console.log(emptyArr);
+
+// var fibonacci = _.memoize(function(n) {
+//     // console.log(n)
+//   return n < 2 ? n: fibonacci(n - 1) + fibonacci(n - 2);
+// });
+// console.log(fibonacci(10));
+// console.log([0,2,3].splice(1,2),'dd', Number(0));
+// if(!['dsa']){
+//     console.log('true')
+// }else{
+//     console.log('false')
+// }
+// const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+// // console.log(animals.slice(4,7),'slice');
+// // console.log);
+// let aaa=animals.splice(2);
+
+// var stooge = {name: 'moe'};
+// // stooge === _.identity(stooge);
+// let active = _.keys(_.pick(stooge, _.identity));
+// console.log(active,'<<active');
+// let sample = "The human body is a remarkably adaptable machine. Even if years and years of neglect have allowed pound after pound of fat to fill out your frame, you can rid yourself of that lard at a much faster rate than you brought it on board. In that sense, time is your side!";
+// console.log(_.defaults({}, {'abd':'1'}),'<<<defaults');
+// console.log('das',sample.includes("year"));
+
+
+// let instruementMap= {'abc':{
+
+//  },
+//  'cbs':{
+
+//  }}
+//          _.each(instument,item=>{
+//  let item.fndooCode='abc';
+//        item.instruement  =instruementMap[item.fndooCode]
+//  })
+
+// let sftp = new Client();
+// sftp.connect({
+//     host:'sftp.karvymfs.com',
+//     port: 990,
+//     username: 'BIMB_DDN_DATA_sftp',
+//     // password:'Bim$23-D09#19Sftp'
+//       password: privKey
+// }).then(() => {
+//     return sftp.list();
+//   //  return sftp.fastGet('/sftp/data/SG_LGT_POS_EXP_CSLHC_20190627.csv', 'download2.csv');
+// }).then((data) => {
+//    console.log(JSON.stringify(data, 'the data info'));
+// }).catch((err) => {
+//    console.log(err, 'catch error');
+// });
+
+
+
+
+// Interest payment-S
+// Capital call-B
+// Dividend cash-B
+// Redemption-B
+// Credit-B
+// Redemption-S
+// Capital call-S
+// Close loan-S
+// Close loan-B
+// Payment-S
+// Fee-S
+// Delivery free of payment-S
+// FX spot-S
+// FX spot-B
+// Open new deposit-B
+// Open new deposit-S
+// Raise loan-S
+// Raise loan-B
+// Cancellation: raise loan-B
+// Unwind-S
+// Interest-B
+// Cancellation: raise loan-S
+// Payment-B
+// let string = "608768.84";
+// console.log('Number :',Number(string))
+
+// console.log(  string.split('##')[0] ? Number((string.split('##')[0]).replace(/,/g, '')) :0  );
+
+// const fs = require('fs');
 // const doAsync = require('dpoasyn);
 
-const arr = [1, 2, 3, 4, 5];
+// const arr = [1, 2, 3, 4, 5];
+// let limit = 2,
+//     offset = 1;
+// function empty(data) {
+//     if (typeof(data) == 'number' || typeof(data) == 'boolean') {
+//         console.log('first if')
+//         if (typeof(data.length) != 'undefined') {
+//             console.log('third if')
 
-console.log(arr.splice(1))
-let spawn = require('child_process').spawn
+//             return data.length == 0;
+//         }
+//         var count = 0;
+//         for (var i in data) {
+//             if (data.hasOwnProperty(i)) {
+//                 count++;
+//             }
+//         }
+//         return count == 0;
+//     }
 
-const os = require('os');
+//     console.log('??????', empty(' '.trim())) // true
+//     // empty(0) // true
+//     // empty(7) // false
+//     empty(" ") // true  return false;
+// }
+// if (typeof(data) == 'undefined' || data === null) {
+//     console.log('second if')
+
+//     return true;
+// }
+
+// empty((function() {
+//     return ""
+//   })) // false
+// let  dataObject={
+//     bosCode:'TRAILER107'
+// };
+// let arr=[];
+// console.log(arr.push(_.first([])))
+// console.log('arr',arr)
+// console.log(new Date(1562836459000))
+
+// console.log(moment(new Date('2019-10-22T05:48:08.000Z').getTime()))
+// console.log(0.0001+0.0000778);
+// var GoogleStrategy = require( 'passport-google-oauth' ).Strategy;
+//     const passport=require("passport");
+// passport.use(new GoogleStrategy({
+//     clientID: '53955008568-k5sjdeh3ujovche5oc46a5e6uek15m49.apps.googleusercontent.com',
+//     clientSecret: 'Ho30MecFkTA41eXW6Gq_WYPz',
+//     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
+//     callbackURL: 'http://localhost:/oauth2callback'
+// }, function(accessToken, refreshToken, profile, done) {
+//     // do your thing here
+//     var Gmail = require('node-gmail-api'),
+//         gmail = new Gmail(accessToken),
+//         s = gmail.messages('label:inbox', { max: 10 })
+
+//     s.on('data', function(d) {
+//         console.log(d.snippet)
+//     })
+// }))
 
 
-const dir = os.homedir() + '../node_modules';
-const ls = spawn("ls", [process.cwd()]);
 
-let ex = '90025';
-let str = 'AVQ.SG.3RDP.LIGHTHOUSE.TRANS_20190801.csv';
-// console.log('str includes',str.includes('TRANS'));
-var check = 0;
+
+// rr.slice(offset);
+
+// // console.log('newArr', newArr.splice(0, limit));
+
+// let spawn = require('child_process').spawn
+
+// const os = require('os');
+
+// const dir = os.homedir() + '../node_modules';
+// const ls = spawn("ls", [process.cwd()]);
+
+// let ex = '90025';
+// let str = 'IAM_Lighthouse_SECURITY MOVEMENT_SG_2019-09-17.CSV';
+// console.log('str includes', str.includes('SECURITY MOVEMENT'));
+// var check = 0;
 // var data;
+// console.log([1,2,3,4,5].slice(0,-1))
+
+// let fs = require('fs'),
+
+// let data='Bond - Preferred shar';
+
+//     if(_.contains(['Bond - Preferred share', 'Bond - bond', 'Bond - Perpetual bond', 'Bond - Floating rate bond'],undefined)){
+//        // console.log(moment(new Date('3/11/2049 12:00:00 AM').getTime()).format('YYYY-MM-DD'));
+
+//         console.log('true','<<<<<')
+//     }else{
+//         console.log(_.contains(['Bond - Preferred share', 'Bond - bond', 'Bond - Perpetual bond', 'Bond - Floating rate bond'],data))
+//     }
+
+//     let aee=1;
+// aee? callA(): callB();
+
+// function callA(){
+//     console.log('true')
+// }
+
+// function callB(){
+//     console.log('false')
+// }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// var AmountWithDate = {};
+// _.map(objectData, (v, k) => {
+//     console.log('key',k)
+//     // console.log(k, 'AmountWithDate[k]', AmountWithDate[k], 'AmountWithDate[k] == 0', AmountWithDate[k] == 0)
+//     if (AmountWithDate[k] && AmountWithDate[k] == 0) {
+//         // console.log('insdie if')
+//         AmountWithDate[k] = AmountWithDate[k] + objectData[k].transactionAmount;
+//     } else {
+//         AmountWithDate[k] = objectData[k].transactionAmount;
+//         // console.log('insdie else')
+//     }
+//     // console.log('AmountWithDate[k]', AmountWithDate)
+// })
+
+// const PDFDocument=require('pdf-lib');
+// // const pdfreader=require('pdfreader');
+//     const options={};
+
+//    async  function  createNewPdf(){
 
 
-var debtAsset = {
-    "weightage": 0.5,
-    "priority": 2,
-    "id": 45,
-    "isActive": true,
-    "createdDate": "2019-08-20T08:18:09.000Z",
-    "lastModifiedDate": "2019-08-20T08:18:09.000Z",
-    "modelPortfolioId": 23,
-    "assetId": 4,
-    "investmentAmount": 250000,
-    "numberOfSchemes": 4,
-    "categories": [{
-            "weightage": 0.65,
-            "priority": 1,
-            "id": 177,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:18:56.000Z",
-            "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-            "modelPortfolioId": 23,
-            "instrumentCategoryId": 54,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null,
-            "investmentAmount": 162500,
-            "schemes": [{
-                    "amount": 75000
-                },
-                {
-                    "amount": 75000
-                },
-                {
-                    "amount": 12500
-                }
-            ],
-            "NumberOfSchemesToShow": 3
-        },
-        {
-            "weightage": 0.2,
-            "priority": 2,
-            "id": 178,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:18:56.000Z",
-            "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-            "modelPortfolioId": 23,
-            "instrumentCategoryId": 53,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null,
-            "investmentAmount": 50000,
-            "schemes": [{
-                "amount": 50000
-            }],
-            "NumberOfSchemesToShow": 1
-        },
-        {
-            "weightage": 0.15,
-            "priority": 4,
-            "id": 180,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:18:56.000Z",
-            "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-            "modelPortfolioId": 23,
-            "instrumentCategoryId": 22,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null,
-            "investmentAmount": 37500,
-            "schemes": [{
-                "amount": 37500
-            }],
-            "NumberOfSchemesToShow": 1
-        }
-    ],
-    "numberOfCategories": 3,
-    "additionalAmountToRebase": 0,
-    "weightageForRebase": 1
+// const mergedPdf = await PDFDocument.create();
+
+//     const pdfBytes = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx564-8 - 26 Aug 2019.pdf');
+//     const pdf = await PDFDocument.load(pdfBytes);
+
+
+//   fs.writeFileSync('XYZ.pdf',pdf)
+
+//    }
+// createNewPdf();
+// let dataBuffer = fs.readFileSync("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx162 - 26 Aug 2019.pdf");
+
+//  fs.writeFileSync('./XYZ.pdf',dataBuffer)
+// pdf(dataBuffer,options).then(function(data) {
+//     console.log('data',data)
+//     fs.writeFileSync('./XYZ.pdf',data)
+//     //use new format
+// });
+
+//    let  PDFParser = require("pdf2json");
+
+// let pdfParser = new PDFParser();
+// pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
+// pdfParser.on("pdfParser_dataReady", pdfData => {
+//     console.log('pdfData',pdfData)
+//     fs.writeFileSync("./F1040EZ.json", JSON.stringify(pdfData));
+// });
+
+//pdfParser.loadPDF("/Users/admin/Desktop/xxx073 - 27 Aug 2019SaveAs.pdf");
+//pdfParser.loadPDF("/Users/admin/Desktop/xxx564-8 - 26 Aug 2019SaveAs.pdf");
+//pdfParser.loadPDF("/Users/admin/Desktop/xxx564-20 - 26 Aug 2019SaveAs.pdf");
+//pdfParser.loadPDF("/Users/admin/Desktop/xxx024-1 - 19 Aug 2019SaveAs.pdf");
+
+
+
+// try{
+//     console.log('insdie try')
+//    pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx564-20 - 26 Aug 2019SaveAs.pdf");
+// }catch(e){
+//     console.log('insdie catch')
+//     console.log(e)
+// }
+
+// pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx564-8 - 26 Aug 2019.pdf");
+///Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx107-26-Sep-2019.pdf
+//able to read
+// pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx107-26-Sep-2019.pdf");
+
+
+
+
+
+// let i=638;
+// let idArray=[];
+
+// while(i<700){
+//     idArray.push(i)
+//     i=i+1;
+// }
+// console.log(idArray)
+
+
+let mainObj = [{}, {}, {}, {}];
+
+
+// const fileMapper = {
+//   DBS: {
+//     fileExtension: ['.dat'],
+//     holdingFileName: 'POS',
+//     transactionFileName: 'TRANS'
+//   },
+//   DB: {
+//     fileExtension: ['.xls','.CSV'],
+//     holdingFileName: 'POS',
+//     transactionFileName: 'TRANS'
+//   },
+//   LGT: {
+//     fileExtension: ['.csv'],
+//     holdingFileName: 'POS',
+//     transactionFileName: 'TRX'
+//   },
+//   SS: {
+//     fileExtension: ['.xml'],
+//     holdingFileName: 'POS',
+//     transactionFileName: 'MOV'
+//   },
+//   BOS: {
+//     fileExtension: ['.CSV'],
+//     transactionFileName: 'SECURITY MOVEMENT',
+//     instrumentFileName: 'INSTRUMENTS'
+//   },
+//   SS: {
+//     fileExtension: ['.pdf'],
+//     holdingFileName: 'POS',
+//     transactionFileName: 'MOV'
+//   },
+// };
+
+//     const newVar={
+//         name:'dasdasd_POS.CS'
+//     };
+
+// console.log(fileMapper['DB']['fileExtension'].includes(path.extname(newVar.name)));
+
+
+
+// let dateArr = ['2019-08-09T00:00:00.000Z',
+//     '2019-08-10T00:00:00.000Z',
+//     '2019-08-11T00:00:00.000Z',
+//     '2019-08-12T00:00:00.000Z'
+// ]
+
+
+// let arr = [
+//     { transactionDate: '2019-08-10T00:00:00.000Z' },
+//     { transactionDate: '2019-08-09T00:00:00.000Z' },
+//     { transactionDate: '2019-08-01T00:00:00.000Z' },
+//     { transactionDate: '2019-08-11T00:00:00.000Z' }
+// ]
+let newObj = {
+    b: 1
 };
 
 
-var debtArrArr = [
-    [{
-            "weightage": 0.8,
-            "priority": 1,
-            "id": 7,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:20:15.000Z",
-            "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-            "instrumentId": 79512,
-            "modelPortfolioId": 23,
-            "modelPortfolioCategoryId": 177,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null
-        },
-        {
-            "weightage": 0.2,
-            "priority": 2,
-            "id": 8,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:20:15.000Z",
-            "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-            "instrumentId": 62774,
-            "modelPortfolioId": 23,
-            "modelPortfolioCategoryId": 177,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null
-        }
-    ],
-    [{
-            "weightage": 0.2,
-            "priority": 1,
-            "id": 10,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:20:15.000Z",
-            "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-            "instrumentId": 62774,
-            "modelPortfolioId": 23,
-            "modelPortfolioCategoryId": 178,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null
-        },
-        {
-            "weightage": 0.2,
-            "priority": 3,
-            "id": 6,
-            "isActive": true,
-            "createdDate": "2019-08-20T08:20:15.000Z",
-            "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-            "instrumentId": 62774,
-            "modelPortfolioId": 23,
-            "modelPortfolioCategoryId": 178,
-            "modelPortfolioAssetId": 45,
-            "modelPortfolioProductId": null
-        }
-    ],
-    []
-];
-// console.log(debtAsset.categories)
-let azzz = { 'abc': 123 };
-let bzzz = { 'def': 456, 'vvv': 567 };
+// accrued interest. in lgt. Q
+
+//     let value=parseFloat(replaceComma(newObj.a)) && newObj.b?newObj.a - newObj.b:null;
+//     console.log(value);
+
+// function replaceComma(numberString) {
+//     return typeof numberString === 'number' ? numberString : numberString.replace(/,/g, '');
+//   }
+// let datearray=getDateSpan(moment('2019-08-01T00:00:00.000'),moment('2019-08-02T00:00:00.000'));
+//
+// console.log('datearray',datearray);
+
+// function getDateSpan(startDate, endDate) {
+
+//     console.log('startDate, endDate', startDate, endDate)
+//     let dateArray = [];
+//     let temp = startDate;
+//     while (new Date(temp).getTime() <= new Date(endDate).getTime()) {
+
+//       dateArray.push(temp);
+//       temp = new Date(temp.getTime() + 86400000);
+//     }
+//     return dateArray;
+//   }
+
+// _.each(mainObj, mainItem => {
+//     let trxArr;
+
+// mainObj.newarr=_.each(dateArr, dateItem => {
+// _.map(arr, item => {
+// console.log('item.transactionDate', 'item.transactionDate ', item.transactionDate, 'dateItem', dateItem, item.transactionDate === dateItem);
+// let groupedData = _.groupBy(arr, 'transactionDate');
+
+// console.log('groupedData', groupedData);
+// _.each(dateArr, item => {
+//     console.log(item+ ' in ' + groupedData);
+//     console.log(item in groupedData);
+//     if ( item in groupedData) {
+//         // _.each(dateArr, item => {
+//         console.log(groupedData[item]);
+//         // })
+//     }
+// })
+
+// if (item.transactionDate == dateItem) {
+//     return item;
+// }
+// return null;
+// })
+// })
+// })
+
+// console.log('mainObj', JSON.stringify(mainObj, null, 2))
 
 
 
-    console.log(JSON.stringify(debtAsset,null,2))
-// console.log('azzz',azzz)
 
-let hashSet = new Set();
 
-hashSet.add('123-das');
-hashSet.add('123=dsa');
-hashSet.add('123-das');
-hashSet.add(4);
 
+// Promise.resolve()
+// .then(function(){
+
+//     return Promise.resolve(null)
+// }).then(function(data){
+//     console.log(data)
+//     if(data){
+//         console.log('true>>')
+//     }else{
+//         console.log('false>>>')
+//     }
+
+//     return Promise.resolve()
+// })
+
+
+if ([]) {
+    // console.log('true>>>')
+}
+
+// console.log(Number(Number(1)))
+// let jsonData = JSON.parse(fs.readFileSync('untitled.json', 'utf-8'))
+
+// console.log(require('./untitled.json'));
+
+
+// console.log(_.first([{'firstName':'AVQ.SG.3RDP.LIGHTHOUSE.TRANS_20190801.csv','lastName':'pradhan'},{'firstName':'asd','lastName':'rew'}]).firstName.includes('csv'));
+//
+
+// console.log('parsefloat', ''.replace(/,/g, ''))
+
+// _.reduce([1,2,3], function(acc,curval,idx){
+//     console.log(acc+curval)
+//     return acc
+// },1)
+
+
+
+
+
+// const parser = require('xmljson').to_json;
+var xmlParserValidator = require('fast-xml-parser');
+
+// readXMLfile().then(function() {
+
+
+// })
+
+
+// function readXMLfile() {
+//     let xmlData = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+
+//     var jsonObj = xmlParserValidator.parse(xmlData);
+//     // var he = require('he');
+
+//     var options = {
+//         // attributeNamePrefix: "",
+//         // attrNodeName: "Workbook", //default is 'false'
+//         // textNodeName: "#text",
+//         ignoreAttributes: true,       //removes datatype of each cell
+//         ignoreNameSpace: true,    //removes ss:
+//         allowBooleanAttributes: false,
+//         parseNodeValue: true,
+//         parseAttributeValue: true,
+//         trimValues: true,
+//         cdataTagName: "Worksheet", //default is 'false'
+//         // cdataPositionChar: "\\c",
+//         // localeRange: "", //To support non english character in tag/attribute values.
+//         parseTrueNumberOnly: true,
+//         // attrValueProcessor: a => he.decode(a, { isAttributeValue: true }), //default is a=>a
+//         // tagValueProcessor: a => he.decode(a) //default is a=>a
+//     };
+
+//     if (xmlParserValidator.validate(xmlData) === true) { //optional (it'll return an object in case it's not valid)
+//         var jsonObj = xmlParserValidator.parse(xmlData, options);
+//     }
+
+//     // Intermediate obj
+//     var tObj = xmlParserValidator.getTraversalObj(xmlData, options);
+//     var jsonObj = xmlParserValidator.convertToJson(tObj, options);
+
+//     console.log('tObj',tObj)
+//     console.log('jsonObj',JSON.stringify(jsonObj,null,2))
+
+//     // console.log(tObj,jsonObj)
+//     return Promise.resolve()
+
+// }
+
+
+
+
+
+// return new Promise((resolve, reject) => {
+
+//       // console.log('indsie convertXMLtoJSON filePath', filePath)
+//       let xml = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+//       parser(xml, function (error, data) {
+//         if (error) {
+//           reject(error);
+//         }
+
+//         console.log('data', JSON.stringify(data, null, 2))
+//         // let xmlData = _.values(data['m2:M006']['M005']);
+//         return resolve(xmlData);
+//       });
+//     });
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// var debtAsset = {
+//     "weightage": 0.5,
+//     "priority": 2,
+//     "id": 45,
+//     "isActive": true,
+//     "createdDate": "2019-08-20T08:18:09.000Z",
+//     "lastModifiedDate": "2019-08-20T08:18:09.000Z",
+//     "modelPortfolioId": 23,
+//     "assetId": 4,
+//     "investmentAmount": 250000,
+//     "numberOfSchemes": 4,
+//     "categories": [{
+//             "weightage": 0.65,
+//             "priority": 1,
+//             "id": 177,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:18:56.000Z",
+//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
+//             "modelPortfolioId": 23,
+//             "instrumentCategoryId": 54,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null,
+//             "investmentAmount": 162500,
+//             "schemes": [{
+//                     "amount": 75000
+//                 },
+//                 {
+//                     "amount": 75000
+//                 },
+//                 {
+//                     "amount": 12500
+//                 }
+//             ],
+//             "NumberOfSchemesToShow": 3
+//         },
+//         {
+//             "weightage": 0.2,
+//             "priority": 2,
+//             "id": 178,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:18:56.000Z",
+//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
+//             "modelPortfolioId": 23,
+//             "instrumentCategoryId": 53,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null,
+//             "investmentAmount": 50000,
+//             "schemes": [{
+//                 "amount": 50000
+//             }],
+//             "NumberOfSchemesToShow": 1
+//         },
+//         {
+//             "weightage": 0.15,
+//             "priority": 4,
+//             "id": 180,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:18:56.000Z",
+//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
+//             "modelPortfolioId": 23,
+//             "instrumentCategoryId": 22,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null,
+//             "investmentAmount": 37500,
+//             "schemes": [{
+//                 "amount": 37500
+//             }],
+//             "NumberOfSchemesToShow": 1
+//         }
+//     ],
+//     "numberOfCategories": 3,
+//     "additionalAmountToRebase": 0,
+//     "weightageForRebase": 1
+// };
+
+
+
+// curl -X DELETE 'http://localhost:9200/instrumentpricesreporting'
+// var debtArrArr = [
+//     [{
+//             "weightage": 0.8,
+//             "priority": 1,
+//             "id": 7,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:20:15.000Z",
+//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
+//             "instrumentId": 79512,
+//             "modelPortfolioId": 23,
+//             "modelPortfolioCategoryId": 177,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null
+//         },
+//         {
+//             "weightage": 0.2,
+//             "priority": 2,
+//             "id": 8,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:20:15.000Z",
+//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
+//             "instrumentId": 62774,
+//             "modelPortfolioId": 23,
+//             "modelPortfolioCategoryId": 177,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null
+//         }
+//     ],
+//     [{
+//             "weightage": 0.2,
+//             "priority": 1,
+//             "id": 10,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:20:15.000Z",
+//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
+//             "instrumentId": 62774,
+//             "modelPortfolioId": 23,
+//             "modelPortfolioCategoryId": 178,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null
+//         },
+//         {
+//             "weightage": 0.2,
+//             "priority": 3,
+//             "id": 6,
+//             "isActive": true,
+//             "createdDate": "2019-08-20T08:20:15.000Z",
+//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
+//             "instrumentId": 62774,
+//             "modelPortfolioId": 23,
+//             "modelPortfolioCategoryId": 178,
+//             "modelPortfolioAssetId": 45,
+//             "modelPortfolioProductId": null
+//         }
+//     ],
+//     []
+// ];
+// // console.log(debtAsset.categories)
+// let azzz = { 'abc': 123 };
+// let bzzz = { 'def': 456, 'vvv': 567 };
+
+
+
+// // console.log(JSON.stringify(debtAsset,null,2))
+// // console.log('azzz',azzz)
+
+// let hashSet = new Set();
+
+// hashSet.add('123-das');
+// hashSet.add('123=dsa');
+// hashSet.add('123-das');
+// hashSet.add(4);
+// console.log(_.drop([1, 2, 3], 3))
+// // )
+
+
+
+// console.log('isValid', moment('2019-08-20', 'YYYY-MM-DD', true).isValid())
 // console.log('hashSet',hashSet.has('123-das'))
-   // let
-
+// let
 
 
 // console.log(JSON.stringify(debtAsset, null, 2))
 
 
-     //  _.each(_.get(debtAsset, 'categories'), (catItem, catInd) => {.  //working
- //     _.zipWith(catItem.schemes, debtArrArr[catInd], function(a, b, c) {
- //         return a && b ? Object.assign(a, b) : a;
- //     })
- // })
+//  _.each(_.get(debtAsset, 'categories'), (catItem, catInd) => {.  //working
+//     _.zipWith(catItem.schemes, debtArrArr[catInd], function(a, b, c) {
+//         return a && b ? Object.assign(a, b) : a;
+//     })
+// })
 
 // Object.keys(debtAsset).map((keys)=>{      //working
 //     if(debtAsset['categories']){
@@ -236,25 +1087,40 @@ hashSet.add(4);
 // }
 
 
+// callPr()
+//     .then(Promise.reject())
 
+// function callPr() {
 
+//     return callPromise()
+//         .then(function() {
 
+//             return callAnotherPromise();
+//         }).then(function() {
+//             return resolve()
+//         }).catch(err => {
+//             console.log('insdie main catch')
+//         });
+// }
 
+// function callPromise() {
+//     console.log('called')
+//     try {
+//         if (true) {
+//             console.log('insdie reject');
+//             return Promise.reject();
+//         }
+//     } catch (e) {
+//         console.log('insdie  try catch')
+//         console.log(e)
+//     }
+//     return Promise.resolve();
+// }
 
+// function callAnotherPromise() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//     return Promise.resolve();
+// }
 
 
 // check?console.log('true'):console.log('false');
@@ -350,30 +1216,31 @@ hashSet.add(4);
 // });
 
 
+// var s = '1125.11';
+// s = parseFloat(s);
+// // let sum= (0.300 *10 + 5 * 10+ 0.100*10)/10 ;
+// console.log('s', s);
+// let newObj = {};
+// newObj.name = 'as';
+// console.log()
+
+// function areTheNumbersAlmostEqual(num1, num2) {
+// return Math.abs( 0.300 + 0.600+ 0.100)
+// }
+// console.log(areTheNumbersAlmostEqual(0.1 + 0.2, 0.3));
+// console.log(getJsDateFromExcel(Number('190819')))
+// 43691.229166666664
+
+// function getJsDateFromExcel(excelDate) {
+//     if (excelDate) {
+//         return new Date((excelDate - (25567 + 2)) * 86400 * 1000);
+//     } else {
+//         return null;
+//     }
+// }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// zip ubstrx14sept.zip -@ < ubsTrx14Sept.txt
 
 
 // whiteSpaceVariable?console.log('whiteSpaceVariable'):console.log('whiteSpaceVariable2');
@@ -425,45 +1292,7 @@ hashSet.add(4);
 
 // ls.on("close", function(code) {
 //     console.log(`child process exited with code ${code}`);
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// })
 
 
 // doAsync(fs).readFile('package.json', 'utf8')
@@ -662,8 +1491,8 @@ hashSet.add(4);
 // console.log('new Date()',new Date())
 
 let a = 1,
-    b = 2,
-    c = 3;
+b = 2,
+c = 3;
 // console.log({ a, b, c })
 
 // console.log(moment(1562739073000).utc().format('YYYY-MM-DD HH:mm:ss'))
@@ -745,28 +1574,28 @@ obj = {
     name: 'Lola',
     access: true,
     cars: [{
-            name: 'Family',
-            brand: 'Volvo',
-            cc: 1600
-        },
-        {
-            name: 'City',
-            brand: 'VW',
-            cc: 1200,
-            interior: {
-                wheel: 'plastic',
-                radio: 'blaupunkt'
-            }
-        },
-        {
-            cc: 2600,
-            name: 'Killer',
-            brand: 'Plymouth',
-            interior: {
-                wheel: 'wooden',
-                radio: 'earache!'
-            }
+        name: 'Family',
+        brand: 'Volvo',
+        cc: 1600
+    },
+    {
+        name: 'City',
+        brand: 'VW',
+        cc: 1200,
+        interior: {
+            wheel: 'plastic',
+            radio: 'blaupunkt'
         }
+    },
+    {
+        cc: 2600,
+        name: 'Killer',
+        brand: 'Plymouth',
+        interior: {
+            wheel: 'wooden',
+            radio: 'earache!'
+        }
+    }
     ]
 };
 // console.log(JSON.stringify(sortObjectKeys(obj), null, 2))
@@ -1035,25 +1864,6 @@ var getStatus = {
 
 // let data = 'May 30 2019 12/:00AM'
 
-
-// console.log(moment(data).format('MMM DD YYYY hh:mmA'))
-// let data=[{'SC_CODE': 'scCode',
-//     'DATE': 'priceDate',
-//     'ST_EXCHNG': 'stExchange',
-//     'CO_CODE': 'coCode',
-//     'HIGH': 'highPrice',
-//     'LOW': 'lowPrice',
-//     'OPEN': 'openPrice',
-//     'CLOSE': 'closePrice'}]
-
-// let newKey={
-//     'SC_CODE': '1',
-//     'DATE': '2',
-//     'ST_EXCHNG': '3',
-//     'CLOSE': '4'
-
-//   };
-
 // data.forEach( function(element, index) {
 
 //        for(let key in element){
@@ -1165,111 +1975,6 @@ var getStatus = {
 
 // fileWriteSync('coding.txt');
 // let data;
-// data = [{
-//         "weightage": 0,
-//         "priority": 1,
-//         "id": 1,
-//         "assetId": 5,
-//         "assetAmount": 15000,
-//         "allocatedAmount": 5000, //4600
-//         "newWeightage": 0.6,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.6,
-//             "assetId": 5
-//         }
-//     },
-//     {
-//         "weightage": 0.6,
-//         "priority": 2,
-//         "id": 2,
-//         "assetId": 5,
-//         "assetAmount": 15000,
-//         "allocatedAmount": 0, //
-//         "newWeightage": 0.6,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.6,
-//             "assetId": 5
-//         }
-//     },
-//     {
-//         "weightage": 0.1,
-//         "priority": 3,
-//         "id": 3,
-//         "assetId": 5,
-//         "assetAmount": 15000,
-//         "allocatedAmount": 1300,
-//         "newWeightage": 0.6,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.6,
-//             "assetId": 5
-//         }
-//     },
-//     {
-//         "weightage": 0.3,
-//         "priority": 4,
-//         "id": 4,
-//         "assetId": 5,
-//         "assetAmount": 15000,
-//         "allocatedAmount": 700,
-//         "newWeightage": 0.6,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.6,
-//             "assetId": 5
-//         }
-//     },
-//     {
-//         "weightage": 0.6,
-//         "priority": 1,
-//         "id": 5,
-//         "assetId": 4,
-//         "assetAmount": 6000,
-//         "allocatedAmount": 3600,
-//         "newWeightage": 0.4,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.4,
-//             "assetId": 4
-//         }
-//     },
-//     {
-//         "weightage": 0.25,
-//         "priority": 2,
-//         "id": 6,
-//         "assetId": 4,
-//         "assetAmount": 6000,
-//         "allocatedAmount": 1500,
-//         "newWeightage": 0.4,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.4,
-//             "assetId": 4
-//         }
-//     },
-//     {
-//         "weightage": 0.15,
-//         "priority": 3,
-//         "id": 7,
-//         "assetId": 4,
-//         "assetAmount": 6000,
-//         "allocatedAmount": 900,
-//         "newWeightage": 0.4,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.4,
-//             "assetId": 4
-//         }
-//     },
-//     {
-//         "weightage": 0,
-//         "priority": 4,
-//         "id": 8,
-//         "assetId": 4,
-//         "assetAmount": 6000,
-//         "allocatedAmount": 0,
-//         "newWeightage": 0.4,
-//         "modelPortfolioAsset": {
-//             "weightage": 0.4,
-//             "assetId": 4
-//         }
-//     }
-// ];
 
 
 // let categoryDebt = [],
@@ -1396,46 +2101,11 @@ var getStatus = {
 // }
 
 
-
-
-
-
-
-
 // function assignToTopPriority(firstIndex, belowThresholdIndex, data) {
 
 //     data[firstIndex].allocatedAmount += data[belowThresholdIndex].allocatedAmount;
 //     data[belowThresholdIndex].allocatedAmount = 0;
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1513,25 +2183,6 @@ var getStatus = {
 //     }
 //     return item;
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // function assignToNextTopPriority(categoryData) {
@@ -1707,96 +2358,6 @@ function callInScenario4(data) {
 
 
 // console.log(JSON.stringify(data,null,2))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

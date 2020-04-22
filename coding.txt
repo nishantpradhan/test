@@ -1,6 +1,0 @@
-Java
-JavaScript
-C++
-C
-C#
-Node JS
