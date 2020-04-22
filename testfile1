@@ -1,6 +1,19 @@
 master branch
 
-
+et instrumentArray = [{
+  "instrumentId": 34873,
+  "assetProductClassificationId": 10,
+  "instrumentCategoryName": "Equity - Sectoral Fund - Auto",
+  "instrumentSubAsset": "Equity ETF",
+  "countryId": 1,
+  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
+  "assetId": 5,
+  "instrumentAsset": "Equities",
+  "assetName": "Equity",
+  "instrumentQuantity": 500,
+  "instrumentWeight": 0.25,
+  "priority": 1
+}]
 
 sda
 d
