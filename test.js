@@ -24,7 +24,7 @@ let words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
 // });
 // console.log('words', words)
 let spArr = ["0,1,2,3,4,13,14"];
-// console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
+console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
 // console.log('newObj', newObj)
 
 
