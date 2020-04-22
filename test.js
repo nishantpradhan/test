@@ -26,7 +26,42 @@ let words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
 let spArr = ["0,1,2,3,4,13,14"];
 console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
 // console.log('newObj', newObj)
+let obj1 = [{
+    instrumentId: 34872,
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
 
+let obj2 = [{
+    instrumentId: '34872',
+    weightage: 0.5,
+    priority: 2,
+    modelPortfolioId: 46
+},
+{
+    instrumentId: 34873,
+    weightage: 0.5,
+    priority: 1,
+    modelPortfolioId: 46
+}
+];
+
+
+promise1
+.then(function(){
+    return Promise.delay(500);
+}).then(function(){
+
+    return resolve()
+})
 
 console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effectiveDate'].join(',') , '<<<<<<<', 'addition');
 
@@ -380,6 +415,33 @@ console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effec
 
 
 
+
+// Interest payment-S
+// Capital call-B
+// Dividend cash-B
+// Redemption-B
+// Credit-B
+// Redemption-S
+// Capital call-S
+// Close loan-S
+// Close loan-B
+// Payment-S
+// Fee-S
+// Delivery free of payment-S
+// FX spot-S
+// FX spot-B
+// Open new deposit-B
+// Open new deposit-S
+// Raise loan-S
+// Raise loan-B
+// Cancellation: raise loan-B
+// Unwind-S
+// Interest-B
+// Cancellation: raise loan-S
+// Payment-B
+// let string = "608768.84";
+// console.log('Number :',Number(string))
+
 // console.log(  string.split('##')[0] ? Number((string.split('##')[0]).replace(/,/g, '')) :0  );
 
 // const fs = require('fs');
@@ -712,10 +774,115 @@ let newObj = {
 // })
 
 
+if ([]) {
+    // console.log('true>>>')
+}
+
+// console.log(Number(Number(1)))
+// let jsonData = JSON.parse(fs.readFileSync('untitled.json', 'utf-8'))
+
+// console.log(require('./untitled.json'));
+
+
+// console.log(_.first([{'firstName':'AVQ.SG.3RDP.LIGHTHOUSE.TRANS_20190801.csv','lastName':'pradhan'},{'firstName':'asd','lastName':'rew'}]).firstName.includes('csv'));
+//
+
+// console.log('parsefloat', ''.replace(/,/g, ''))
+
+// _.reduce([1,2,3], function(acc,curval,idx){
+//     console.log(acc+curval)
+//     return acc
+// },1)
+
+
+
 
 
 // const parser = require('xmljson').to_json;
 var xmlParserValidator = require('fast-xml-parser');
+
+// readXMLfile().then(function() {
+
+
+// })
+
+
+// function readXMLfile() {
+//     let xmlData = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+
+//     var jsonObj = xmlParserValidator.parse(xmlData);
+//     // var he = require('he');
+
+//     var options = {
+//         // attributeNamePrefix: "",
+//         // attrNodeName: "Workbook", //default is 'false'
+//         // textNodeName: "#text",
+//         ignoreAttributes: true,       //removes datatype of each cell
+//         ignoreNameSpace: true,    //removes ss:
+//         allowBooleanAttributes: false,
+//         parseNodeValue: true,
+//         parseAttributeValue: true,
+//         trimValues: true,
+//         cdataTagName: "Worksheet", //default is 'false'
+//         // cdataPositionChar: "\\c",
+//         // localeRange: "", //To support non english character in tag/attribute values.
+//         parseTrueNumberOnly: true,
+//         // attrValueProcessor: a => he.decode(a, { isAttributeValue: true }), //default is a=>a
+//         // tagValueProcessor: a => he.decode(a) //default is a=>a
+//     };
+
+//     if (xmlParserValidator.validate(xmlData) === true) { //optional (it'll return an object in case it's not valid)
+//         var jsonObj = xmlParserValidator.parse(xmlData, options);
+//     }
+
+//     // Intermediate obj
+//     var tObj = xmlParserValidator.getTraversalObj(xmlData, options);
+//     var jsonObj = xmlParserValidator.convertToJson(tObj, options);
+
+//     console.log('tObj',tObj)
+//     console.log('jsonObj',JSON.stringify(jsonObj,null,2))
+
+//     // console.log(tObj,jsonObj)
+//     return Promise.resolve()
+
+// }
+
+
+
+
+
+// return new Promise((resolve, reject) => {
+
+//       // console.log('indsie convertXMLtoJSON filePath', filePath)
+//       let xml = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls', 'utf8');
+//       parser(xml, function (error, data) {
+//         if (error) {
+//           reject(error);
+//         }
+
+//         console.log('data', JSON.stringify(data, null, 2))
+//         // let xmlData = _.values(data['m2:M006']['M005']);
+//         return resolve(xmlData);
+//       });
+//     });
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
