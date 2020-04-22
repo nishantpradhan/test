@@ -28,7 +28,6 @@ console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
 // console.log('newObj', newObj)
 
 
-console.log(['instrumentId', 'weightage', 'priority', 'modelPortfolioId', 'effectiveDate'].join(',') , '<<<<<<<', 'addition');
 
 
 let instrumentArray = [{
