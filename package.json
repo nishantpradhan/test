@@ -33,7 +33,7 @@
     "he": "^1.2.0",
     "imap-simple": "^4.3.0",
     "jsonschema": "^1.2.5",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "mailparser-mit": "^1.0.0",
     "mailparser2-mit": "^1.0.1",
     "mathjs": "^6.2.3",
