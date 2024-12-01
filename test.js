@@ -1,3528 +1,1420 @@
-// iconsole.log("hello world");
-
-// var _ = require("lodash");
-var moment = require("moment");
-var Promise = require("bluebird");
-const fs = require('fs');
-const path = require('path');
-var _ = require('underscore');
-var uniqid = require('uniqid');
-let async = require('async');
-console.log(uniqid() + 'testCreation'); // -> 4n5pxq24kpiob12og9
-// console.log(uniqid(), uniqid());
-
-// console.log(Object.keys({ a: '', b: '' }).length);
-let Client = require('ssh2-sftp-client');
-const os = require('os');
-// const privKeyPath = path.join(os.homedir(), '.ssh', 'id_rsa');
-// const privKey = fs.readFileSync(privKeyPath);o
-// console.log(stooges,'stooges')
-
-let words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-// words = _.map(words, item => {
-//     return item.length > 6;
-// });
-// console.log('words', words)
-let spArr = ["0,1,2,3,4,13,14"];
-console.log('>>>>', spArr[0].split(',').every(item => parseInt(item) == item));
-// console.log('newObj', newObj)
-
-
-
-
-let instrumentArray = [{
-  "instrumentId": 34873,
-  "assetProductClassificationId": 10,
-  "instrumentCategoryName": "Equity - Sectoral Fund - Auto",
-  "instrumentSubAsset": "Equity ETF",
-  "countryId": 1,
-  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-  "assetId": 5,
-  "instrumentAsset": "Equities",
-  "assetName": "Equity",
-  "instrumentQuantity": 500,
-  "instrumentWeight": 0.25,
-  "priority": 1
-},
-{
-  "instrumentId": 34872,
-  "assetProductClassificationId": 11,
-  "instrumentSubAsset": "Cash Equivalents",
-  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-  "assetId": 5,
-  "instrumentAsset": "Cash and Cash Equivalents",
-  "assetName": "Equity",
-  "instrumentQuantity": 500,
-  "instrumentWeight": 0.25,
-  "priority": 2
-},
-{
-  "instrumentId": 34871,
-  "assetProductClassificationId": 10,
-  "instrumentSubAsset": "Equity Structured Products",
-  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-  "assetId": 5,
-  "instrumentAsset": "Equities",
-  "assetName": "Equity",
-  "instrumentQuantity": 500,
-  "instrumentWeight": 0.2,
-  "priority": 3
-},
-{
-  "instrumentId": 34870,
-  "assetProductClassificationId": 1,
-  "instrumentSubAsset": "Current Accounts",
-  "instrumentName": "12M USD CS FCN - SPOT/DIS/BA 260520",
-  "assetId": 5,
-  "instrumentAsset": "Cash and Cash Equivalents",
-  "assetName": "Equity",
-  "instrumentQuantity": 500,
-  "instrumentWeight": 0.2,
-  "priority": 4
-}
-];
-// async.parallel({
-//     one: function(callback) {
-//         setTimeout(function() {
-//             callback(null, 1);
-//         }, 200);
-//     },
-//     two: function(callback) {
-//         setTimeout(function() {
-//             callback(2, '');
-//         }, 100);
-//     }
-// }, function(err, results) {
-//     if (err) {
-//         console.log(results, 'inside rror')
-//     }
-
-
-
-//     console.log(results)
-//     // results is now equals to: {one: 1, two: 2}
-// });
-
-
-
-
-const groupByConfiguration = {
-  productId: {
-    fieldsToInclude: ['productId', 'productName']
-  },
-  assetId: {
-    fieldsToInclude: ['assetId', 'assetName']
-  },
-  taxAssetId: {
-    fieldsToInclude: ['taxAssetId', 'taxAssetName']
-  },
-  monthYear: {
-    fieldsToInclude: ['month', 'year', 'monthYear', 'monthLabel']
-  },
-  relationshipManagerId: {
-    fieldsToInclude: ['relationshipManagerId', 'relationshipManagerName', 'relationshipManagerEmail']
-  },
-  accountId: {
-    fieldsToInclude: ['accountId', 'accountName', 'accountUniqueId']
-  },
-  appUserId: {
-    fieldsToInclude: ['appUserId', 'appUserName', 'appUserEmail']
-  },
-  familyId: {
-    fieldsToInclude: ['familyId', 'familyName']
-  },
-  serviceProviderId: {
-    fieldsToInclude: ['serviceProviderId', 'serviceProviderName', 'serviceProviderShortName']
-  },
-  serviceProviderAccountId: {
-    fieldsToInclude: ['serviceProviderAccountId', 'serviceProviderAccountNumber']
-  },
-  instrumentId: {
-    fieldsToInclude: ['instrumentId', 'instrumentName', 'instrumentISINCode']
-  }
-};
-let filter = {
-  body: {
-    query: {
-      bool: {
-        filter: {
-          bool: {
-            must: 'termClause'
-          }
-        }
-      }
-    }
-  }
-};
-// console.log('filter', JSON.stringify(filter, null, 2));
-
-let groupBy = ['productId'];
-filter.body.aggs = {};
-let fieldsToInclude = [];
-
-try {
-  for (let i = 0; i < groupBy.length; i++) {
-    if (!groupByConfiguration[groupBy[i]]) {
-      return
-            // reject(new RestError(400, `Incorrect group by clause!`));
-          }
-        // console.log('inside for');
-
-        fieldsToInclude = fieldsToInclude.concat(groupByConfiguration[groupBy[i]].fieldsToInclude);
-        let currentClause = {
-          terms: {
-            field: groupBy[i],
-            size: 'limit'
-          },
-          aggs: {}
-        };
-        if (previousAggegationClause) {
-          previousAggegationClause[groupBy[i]] = currentClause;
-        } else {
-            // console.log("**************");
-            // console.log('inside else', JSON.stringify(filter, null, 2));
-            filter.body.aggs[groupBy[i]] = currentClause;
-
-            // console.log("##########");
-            // console.log(JSON.stringify(filter, null, 2));
-          }
-        // console.log(' currentClause.aggs', currentClause.aggs);
-
-        var previousAggegationClause = currentClause.aggs;
-        // console.log(i == groupBy.length - 1, 'previousAggegationClause******', previousAggegationClause);
-        if (i == groupBy.length - 1) {
-            // console.log('insdie group')
-            previousAggegationClause.totalRevenue = {
-              'sum': {
-                'field': 'revenueAmount'
-              }
-            };
-            // console.log(JSON.stringify(filter,null,2));
-            // console.log('^^^^^^^^^^^^^^^^^^^^')
-            previousAggegationClause.results = {
-              'top_hits': {
-                sort: 'orderBy',
-                size: 1,
-                _source: ['_id'].concat(fieldsToInclude)
-              }
-            };
-            // console.log('$$$$$$$$$$$$$')
-
-            // console.log('%%%%%', JSON.stringify(filter, null, 2));
-
-          }
-        // console.log('previousAggegationClause******', previousAggegationClause);
-      };
-    } catch (e) {
-      console.log(e)
-    }
-// console.log('filter', JSON.stringify(filter, null, 2));
-
-const data = {
-  value1: {
-    bucket: [{
-      value2: {
-        bucket: [{
-          result: {
-            hits: {
-              hits: [{ finalValue: 5 }, { finalValue: 4 }]
-            }
-          }
-        }]
-      }
-    },
-    {
-      value2: {
-        bucket: [{
-          result: {
-            hits: {
-              hits: [{ finalValue: 3 }, { finalValue: 2 }]
-            }
-          }
-        }]
-      }
-    }
-    ]
-  }
-}
-
-var _ = require('lodash');
-
-const flatData = [];
-// console.log('typeof flatData', typeof flatData)
-
-// console.log(JSON.stringify(data, null, 2));
-
-var finalArray = [];
-checkIfObjectOrArray(data)
-var cnt = 0;
-
-function checkIfObjectOrArray(data) {
-
-    // console.log(Array.isArray(data),data)
-    if (Array.isArray(data)) {
-        // console.log('insdie if***')
-        // console.log("array data==>",'AAA', data)
-        _.map(data, (item) => {
-          console.log('insdieeach', item)
-          return checkIfObjectOrArray(item)
-        })
-      } else {
-        console.log('OOO', data)
-        Object.keys(data).forEach(function(key, index) {
-          console.log('key', key, key == 'result');
-          if (key == 'result') {
-            console.log(data['result'], 'HHHHHHHHHHHHHH===>>', key);
-            finalArray.push(data['result']);
-          }
-          data = data[key];
-            // console.log(key)
-            // if(data[key]=='hits'){
-            //   console.log('key')
-            //   finalArray.push(data);
-            //   console.log(finalArray)
-            // }
-            // console.log(data)
-            return checkIfObjectOrArray(data)
-          });
-      }
-    }
-    console.log('finalArray', finalArray)
-
-// function flatter(data, pushTo, currentBucket) {
-//     if (data) {
-//         const keys = Object.keys(data);
-//         console.log('keys',keys);
-//         const values = keys.map(x => x);
-//         console.log('values',values);
-//         if ((values || []).indexOf('result') > -1) {
-//             return pushTo.push(data.result);
-//         }
-//         values.forEach(function(index) {
-//           console.log('values',values,'index',index,'inside finEach',data[index])
-//             return flatter(data[index], pushTo);
-//         })
-//     }
-// }
-
-// flatter(data, flatData)
-
-// console.log(JSON.stringify(flatData,null,2));
-
-// groupByIdAndCalculateWeightage(instrumentArray, ['instrumentAsset', 'instrumentSubAsset']);
-// var data = [{
-//     currencyShortCode: 'fears'
-// },
+// function insertionSort(arr, n)
 // {
-//     currencyShortCode: 'da'
-// }
-// ];
-// let data = [{ id: 1 }, { id: 5 }, { id: 4 }, { id: 3 }, { id: null }];
-// console.log(_.pluck(data, 'id').filter(item => item != null));
-// console.log(stooges,'stooges after dec')
-// let moment=require('moment-timezone');
-// let tenureDate='2019-11-12'
-// console.log(moment(tenureDate,'YYYY-MM-DD').format('DDMMYYYY'),'<<<<')
+//     let i, key, j;
+//     for (i = 1; i < n; i++)
+//     {
+//         key = arr[i];
+//         j = i - 1;
 
-//     let data=[{id:1},{id:1},{id:1}];
-//      let data1=  _.uniq( _.pluck(data,'id'));
-//      console.log('data1',data1)
+// const { set } = require("lodash")
 
-// fs.stat("./testfile1", function(err, stats){
-//     var mtime = stats.mtime;
-//     console.log(moment(mtime).format('YYYY-MM-DD'),'<<<<mtime');
-// });
+function insertionSort(arr, n) {
+  let i, key, j;
+  for (i = 1; i < n; i++) {
+    key = arr[i];
+    j = i - 1;
 
-// scp ubuntu@lighthouse-uat:/home/ubuntu/wealthfyfiles/holdingfiles/<fileName>  .
+    /* Move elements of arr[0..i-1], that are 
+        greater than key, to one position ahead 
+        of their current position */
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
+}
 
+// A utility function to print an array of size n
+function printArray(arr, n) {
+  let i;
+  for (i = 0; i < n; i++) console.log(arr[i]);
+}
 
+// Driver code
+let arr = [12, 11, 13, 5, 6];
+let n = arr.length;
 
+insertionSort(arr, n);
+printArray(arr, n);
 
-// let years=21;let output=product[0].weightage ?  'true':'false';
-//     console.log('output',output)
-// let arr = [11,22,12,23];
-
-// let hasDup = product.map(item=>{return item.priority}).some(function(val, i){
-//     console.log('i',i,'val',val);
-//       return    product.map(item=>{return item.priority}).indexOf(val) !== i;
-// })
-// console.log(hasDup,'<<<<<hasDup>>>>>>',_.isEmpty([{"a":""}]));
-
-// product = _.map(product, item => {
-//     return _.pick(item, 'priority', 'weightage', 'productId');
-// });
-// console.log('product', product);
-
-// Number(1) ? console.log('trueTTTTTT') :console.log('false>>>>');
-// var curlysWorstFear = _.keys(stooges);
-// let
-//       asstRef2= {
-//         "_": "USD",
-//         "$": {
-//           "refType": "CURRENCY"
+//         /* Move elements of arr[0..i-1], that are
+//         greater than key, to one position ahead
+//         of their current position */
+//         while (j >= 0 && arr[j] > key)
+//         {
+//             arr[j + 1] = arr[j];
+//             j = j - 1;
 //         }
-//       };
-// const makeDisplayName = name =>
-//   (name.charAt(0) + name.slice(1).replace(/a|e|i|o|u/g, ""))
-//     .toUpperCase()
-// setTimeout(function(){
-//   console.log('a')
-// }, 5);
-// console.log('b');
-
-
-// setTimeout(function(){
-//   console.log('a')
-// }, 0);
-// console.log('b');
-
-// console.log(null===undefined,'nullcheck');
-
-// _.each([1,2,3,4],item=>{
-//     if(item==2){
-//         return;
+//         arr[j + 1] = key;
 //     }
-//     return;
-//     console.log(item)
+// }
+
+// // A utility function to print an array of size n
+// function printArray(arr, n)
+// {
+//     console.log(arr)
+// }
+
+// // Driver code
+//     let arr = [12, 11, 13, 5, 6 ];
+//     let n = arr.length;
+
+//     insertionSort(arr, n);
+//     printArray(arr, n);
+
+// JavaScript program for Merge Sort
+
+// Merges two subarrays of arr[].
+// First subarray is arr[l..m]
+// Second subarray is arr[m+1..r]
+function merge(arr, l, m, r) {
+  var n1 = m - l + 1;
+  var n2 = r - m;
+
+  // Create temp arrays
+  var L = new Array(n1);
+  var R = new Array(n2);
+
+  // Copy data to temp arrays L[] and R[]
+  for (var i = 0; i < n1; i++) L[i] = arr[l + i];
+  for (var j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+
+  // Merge the temp arrays back into arr[l..r]
+
+  // Initial index of first subarray
+  var i = 0;
+
+  // Initial index of second subarray
+  var j = 0;
+
+  // Initial index of merged subarray
+  var k = l;
+
+  while (i < n1 && j < n2) {
+    if (L[i] <= R[j]) {
+      arr[k] = L[i];
+      i++;
+    } else {
+      arr[k] = R[j];
+      j++;
+    }
+    k++;
+  }
+
+  // Copy the remaining elements of
+  // L[], if there are any
+  while (i < n1) {
+    arr[k] = L[i];
+    i++;
+    k++;
+  }
+
+  // Copy the remaining elements of
+  // R[], if there are any
+  while (j < n2) {
+    arr[k] = R[j];
+    j++;
+    k++;
+  }
+}
+
+// l is for left index and r is
+// right index of the sub-array
+// of arr to be sorted */
+// function mergeSort(arr, l, r) {
+//   if (l >= r) {
+//     return; //returns recursively
+//   }
+//   var m = l + parseInt((r - l) / 2);
+//   mergeSort(arr, l, m);
+//   mergeSort(arr, m + 1, r);
+//   merge(arr, l, m, r);
+// }
+
+// UTILITY FUNCTIONS
+// Function to print an array
+// function printArray(A, size) {
+//   for (var i = 0; i < size; i++) console.log(A[i]);
+// };
+
+// var arr = [12, 11, 13, 5, 6, 7];
+// var arr_size = arr.length;
+
+// mergeSort(arr, 0, arr_size - 1);
+
+// printArray(arr, arr_size);
+
+// This code is contributed by SoumikMondal
+
+// const a = {b:'fish'}
+// a.b && set(a, 'b', 'fish2')
+// console.log('a',a)
+
+// let arr = [ 2, 3, 5, 4, 7 ];
+// let k = 3;
+
+// if (printPairs(arr, arr.length, k) == false)
+//   console.log("No such pair exists");
+
+// const { sortedLastIndex, map } = require("lodash");
+// const _ = require("@sailshq/lodash");
+// const sort = "atoz";
+// let arrayToSort = ["AA", "z"];
+// const tdpSku = "STRAIGHT";
+// const tdpSkuUpperCase = tdpSku.toLowerCase();
+// console.log(tdpSkuUpperCase, "tdpSkuUpperCase", tdpSku);
+
+// const sortTyres = (orderBy, tyres) => {
+//   return [...tyres].sort(function (x, y) {
+//     switch (orderBy) {
+//       case "alphabetically":
+//         return x.title.localeCompare(y.title);
+//       case "alphabetically-reversed":
+//         return -x.title.localeCompare(y.title);
+//       case "recommended":
+//       default:
+//         console.log("inside default");
+//         return 0;
+//     }
+//   });
+// };
+
+// let items = [
+//   "ssss",f
+//   "réservé",
+//   "Premier",
+//   "Cliché",
+//   "communiqué",
+//   "café",
+//   "Adieu",
+// ];
+// items.sort((a, b) => a.localeCompare(b));
+// arrayToSort = [...arrayToSort].sort((a, b) => {
+//   if (sort === "atoz") {
+//     return a.localeCompare(b);
+//   } else {
+//     return -a.localeCompare(b);
+//   }
 // });
-// function counter() {
-//   for (var count = 1; ; count++) {  // infinite loop
-//     console.log(count + 'A'); // until 5
-//       if (count === 5) {
-//         return;
+// console.log("arrayToSort", arrayToSort, items);
+// function WarningObj() {
+// const warningObj = {
+//   id: "w498351498838761357",
+//   productLine: "4W",
+//   warning: "notExactMatchWarning",
+//   winterWordingMobile: "",
+//   by4: "test",
+//   by4for4x4: "",
+//   runflat: "",
+//   byDimension: {
+//     items: [],
+//     type: "area",
+//   },
+//   byVehicle: {
+//     items: [],
+//     type: "area",
+//   },
+//   notExactMatchWarning: "by-dimension",
+//   "by-dimension": "",
+//   "by-vehicle": "",
+//   "by-plate": "",
+// };
+
+// const getWarningObject = (obj = {}) => {
+//   const requiredProperties = ["id", "productLine", "warning"]; //only properties require to be stored in db
+
+//   return requiredProperties.reduce((acc, key) => {
+//     acc[key] = obj[key];
+//     if (key === "warning") {
+//       var messageKey;
+//       if (obj[key] === "notExactMatchWarning") {
+//         messageKey = obj.notExactMatchWarning;
+//         acc.notExactMatchWarning = obj.notExactMatchWarning;
+//       } else {
+//         messageKey = obj[key];
 //       }
-//       console.log(count + 'B');  // until 4
+//       acc[messageKey] = obj[messageKey];
 //     }
-//   console.log(count + 'C');  // never appears
-// }
+//     return acc;
+//   }, {});
+// };
 
-// counter();
-// let shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// console.log("Warning Obj : ", getWarningObject(warningObj));
 
+// // const doc = {
+// //   searchWarnings: [
+// //     {
+// //       id: "ckm3komxi00u101pmrm6z85xp",
+// //       productLine: "4W",
+// //       byDimension: {
+// //         items: [
+// //           {
+// //             _id: "w842171021882894161",
+// //             personas: [],
+// //             type: "apostrophe-rich-text",
+// //             content:
+// //               '<p>When searching by tire size alone, please be aware that the displayed results may not be applicable (or recommended) for your vehicle due to several factors (including but not limited to size, speed rating, load capacity, intended service conditions, etc.).</p>\n\n<p><strong>To view MICHELIN<sup>®</sup> recommended tire options for your vehicle click "Search by Vehicle" and enter the required information.</strong></p>\n',
+// //             dialogIds: [],
+// //           },
+// //         ],
+// //         type: "area",
+// //       },
+// //       byVehicle: {
+// //         items: [
+// //           {
+// //             _id: "w448230208797096921",
+// //             personas: [],
+// //             type: "apostrophe-rich-text",
+// //             content:
+// //               '<p><strong>If modifications have been made to your vehicle, OE tire size information shown might not be relevant. Please <a href="/assistance">contact us</a> if you have any questions.</strong></p>\n',
+// //             dialogIds: [],
+// //           },
+// //         ],
+// //         type: "area",
+// //       },
+// //     },
+// //     {
+// //       id: "ckm3komxm00u201pmm4loe41n",
+// //       productLine: "MO",
+// //       byDimension: {
+// //         items: [
+// //           {
+// //             _id: "w842171021882894161",
+// //             personas: [],
+// //             type: "apostrophe-rich-text",
+// //             content:
+// //               '<p>When searching by tire size alone, please be aware that the displayed results may not be applicable (or recommended) for your vehicle due to several factors (including but not limited to size, speed rating, load capacity, intended service conditions, etc.).</p>\n\n<p><strong>To view MICHELIN<sup>®</sup> recommended tire options for your vehicle click "Search by Vehicle" and enter the required information.</strong></p>\n',
+// //             dialogIds: [],
+// //           },
+// //         ],
+// //         type: "area",
+// //       },
+// //       byVehicle: {
+// //         items: [
+// //           {
+// //             _id: "w448230208797096921",
+// //             personas: [],
+// //             type: "apostrophe-rich-text",
+// //             content:
+// //               '<p><strong>If modifications have been made to your vehicle, OE tire size information shown might not be relevant. Please <a href="/assistance">contact us</a> if you have any questions.</strong></p>\n',
+// //             dialogIds: [],
+// //           },
+// //         ],
+// //         type: "area",
+// //       },
+// //     },
+// //   ],
+// // };
+// let warnings = [];
 
-// let arr = '20190820072858419_2019-05-23_ZAN_83008699_AI5661_BAIBHDVSRBK7C8SA.txt'; //M006_MOV_lghths-sg_20191126_01.xml
-// console.log(arr.includes('_POS_'),'<<includes');
-// let arr='Transaction_29Nov-2Dec.xls';
-// console.log(arr.split('_')[1],arr.split('_')[2]);
-// console.log(arr.substring(arr.indexOf("_")+1,28),'<<');
-// let dateAndMonth=arr.substring(21,arr.lastIndexOf("."));
-// console.log(dateAndMonth,'dateAndMonth');
-// var thenum  = dateR.match([/\d/g]) // "3"
-// var re = /[\d -]+/g;
-// var str = thenum
-// var re = new RegExp(/[\d]+/g); //match digits
-// var re = new RegExp(/[\a-zA-Z]+/g); //match digits
-// var d = moment('2016-11-17').format('YYYY-MM-DD');
-// console.log('>>>',d)
-// var myArray = dateAndMonth.match(re);
-// console.log(myArray,'myArray');
-// var theAphha=dateR.match(/[a-zA-Z]+/g)
-// String  digits = dateR.replaceAll("[^0-9]", "");
-// let secondHalf=arr[0].lastIndexOf('.');
-// console.log('thenum',thenum,'<<<<','theAphha',theAphha)
-// console.log('Transaction', '20-21 Jan.xls');
+// const [a, b, c] = [1, 2, 3];
 
-// .map(makeDisplayName);
-// a.forEach((item, key) => {
-//     console.log(item.name);
-//     if(item.color == 'orange') {
-//         break;
+// console.log(a, b, c, "a, b, c");
+
+// console.log(JSON.stringify(warnings, null, 2), "warnings");
+
+// const objToTemplatize = {};
+// _.each(realData, (item) => {
+//   objToTemplatize[item.name] = item.selectedValue;
+// });
+
+// const compile = _.template();
+
+// console.log("objToTemplatize", objToTemplatize);
+// console.log(compile(objToTemplatize));
+// reverse an array
+
+// const obj = {
+//   loadedRadius: {
+//     unit: "inch",
+//     value: 12,
+//   },
+// };
+// // const output = [].concat(obj.loadedRadius || [])
+// // console.log(output, '<<<')
+
+// const doc = {
+//   // productPromoSlider: {
+//   // items:
+//   //  [{
+//   slides: [
+//     {
+//       id: "w41077619745425968",
+//       productIds: [null],
+//     },
+//     {
+//       id: "w492848744472110295",
+//       productIds: ["cjs31pzmt01ol0ho9k353vmch"],
+//     },
+//     {
+//       id: "w269937431231415706",
+//       productIds: [],
+//     },
+//   ],
+//   // }]
+//   // }
+// };
+
+// let initialValue = 0
+
+// console.log('promise',start())
+// const myfunction = async function(x, y) {
+//     return [
+//       x,
+//       y,
+//     ];
+//   }
+
+//   // Start function
+//   const start = async function(a, b) {
+//     const result = await myfunction('test', 'test');
+
+//     console.log(result);
+//   }
+
+// let slides = doc.slides.reduce((acc, item) => {
+//   const productIds = item.productIds.filter((id) => id !== null);
+//   if (newProductIds.length > 0) {
+//     acc.push({ id: item.id, productIds: productIds });
+//   }
+//   return acc;
+// }, [])
+
+let widgets = [
+  {
+    isAdaptive: false,
+    slides: [
+      {
+        id: "w962371733950363113",
+        productIds: ["cjftf69i40az00gmi09rq0bmh"],
+      },
+      {
+        id: "w177826455463875117",
+        productIds: ["cjftezx4m01f40gmic114bg52"],
+        _products: [],
+      },
+      {
+        id: "w31089165454349558",
+        productIds: ["cjftf7iln0cwd0gmi9c457qqc"],
+      },
+    ],
+    _id: "w157751078850696437",
+    title: "Other MICHELIN Primacy tyres",
+    type: "b2c-product-promo",
+    _edit: true,
+    __docId: "cjftf10f1036y0gmideoyilap",
+    __dotPath: "productPromoSlider.items.0.col0.items.0",
+  },
+];
+
+// [[widgets["slides"]]] = [];
+// const [{ slides }] = widgets;
+// console.log(slides, "slides");
+// widgets[0].slides = [];
+// console.log(widgets, "widgets");
+
+// widgets = widgets.reduce((acc, widget) => {
+//   widget.slides = widget.slides.filter((slide) => slide._products);
+//   acc.push(widget);
+//   return acc;
+// }, []);
+// const stop = () => {
+//   console.log("stop called");
+// };
+// const go = () => {
+//   console.log("go called");
+// };
+
+// const colour = "red";
+
+// const handleColour = {
+//   red: stop,
+//   amber: stop,
+//   green: go,
+//   "flashing amber": go,
+// };
+
+// const data = ["by41", "notExact2", "c"];
+
+// const obj = data.reduce((acc, value) => {
+//   switch (value) {
+//     case "by4":
+//       acc[value] = "1";
+//       break;
+//     case "notExact":
+//       acc["notExact"] = "2";
+//       break;
+//     case 3:
+//       acc[value] = "3";
+//       break;
+//     default:
+//       acc;
+//   }
+//   return acc;
+// }, {});
+// console.log("obj", obj);
+
+// handleColour[colour](); // logs "stop called"
+// const published = await self.apos.docs.db.find({
+//   _id: { $in: prodIds, published: true },
+// });
+
+// widgets.slides = published.map((pub, index) => {
+//   return {
+//     id: slides[index],
+//     productIds: [pub._id],
+//   };
+// });
+
+// Call start
+// start();
+// const reducer = async(acc, key) => {
+//     const response = await api(item);
+
+//     return {
+//       ...await acc, // <-- this would work just as well for OP
+//       [key]: reponse,
 //     }
+//   }
+// eslint-disable-next-line no-undef
+//   const result = await ['a', 'b', 'c', 'd'].reduce(reducer, {});
 
+// let  slides=doc.slides.reduce((acc,item)=> {
 
-// const iterable = [10, 20, 30];
+//     const productIds=  item.productIds.filter(id=>id!==null)
+//         if(newProductIds.length>0){
+//             acc.push({id:item.id,productIds:productIds})
+//         }
+//         return acc
 
-// for (const value of iterable) {
-//     console.log(value);
-// }
+// },[])
+// slides = []
+// console.log('slides###  ', ...slides)
+// slides=slides.filter(slide=>slide.productIds.length)
 
 // })
-// Promise.resolve()
-//     .then(function() {
-//         for (let i = 0; i < [1, 2].length; i++) {
-//             console.log('iiiiii>>',i)
-//             return Promise.reject('rejected');
-//         }
-//         return anotherFunction()
-//     }).then(function() {
-//         console.log('after another function');
-//     }).catch(err => {
-//         console.log('insdie catch')
-//     })
-
-// function anotherFunction() {
-//     console.log('insdie another function');
-//     return Promise.resolve();
-// }
-
-// let output= bothRecordsHaveCurrency(data);
-
-// console.log(output, '<<output', null != undefined);
-
-// console.log(sentence.toLowerCase().includes("my"),'<<<<<<<<<');
-// console.log('')
-
-
-// trade date ==trx  date
-
-// value date=order date for BOS security movement
-
-//  'TradeDate': 'transactionDate',
-//    'ValueDate': 'orderDate',
-// let nullCheck= undefined && 'asd';
-//
-
-// console.log(moment().subtract(1,'days'),'<<<<')
-
-// console.log(moment('2010-10-20').isBetween('2010-10-19', '2010-10-20'),'<<isBetween'); // true)
-// console.log(nullCheck,'nullCheck');
-
-// let aObj = [{ 'ad': 'da1', 'hasDailyHoldingForTransactionDate': true }, { 'ad': 'ddd2' }];
-
-// let bObj = [{ 'ad': 'da1', 'hasDailyHoldingForTransactionDate': true }, { 'ad': 'ddd2' }];
-
-// let aObjMap = {};
-// _.each(aObj, item => {
-//     aObjMap[item.ad] = item;
-// });
-// console.log('aObjMap', aObjMap);
-// _.each(bObj, item => {
-//         console.log(aObjMap[item.ad].hasDailyHoldingForTransactionDate==true,'asdsd');
-// });
-
-// let totalData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-// let litmi = 2;
-// let offset = 0;
-
-
-
-// let emptyArr = new Set();
-// let hashSet = [1, 1, 2, 3, 4];
-// _.each(hashSet, item => {
-//     if (!emptyArr.has(item)) {
-//         emptyArr.add(item)
-//     }
-// });
-
-// const today = moment('2019-01-01');
-// let dateArr = [];
-
-// function callRecursively(from_date) {
-//     let startDate = moment(from_date).add(1, 'days').weekday();
-//     if (startDate < 6 && startDate > 0 && moment(from_date).add(1, 'days').format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD')) {
-//         dateArr.push([from_date, moment(from_date).add(1, 'days')]);
-//         return callRecursively(moment(from_date).add(1, 'days'));
-//     } else if ((startDate == 6 || startDate == 0) && moment(from_date).add(1, 'days').format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD')) {
-//         dateArr.push([from_date, moment(from_date).add(3, 'days')]);
-//         return callRecursively(moment(from_date).add(3, 'days'));
-//     }
-// };
-// let from_date = moment('2019-12-01').startOf('isoweek');
-// callRecursively(from_date);
-// console.log(dateArr, 'dateArr');
-
-// const to_date = today.endOf('week');
-// console.log('from_date',from_date,moment(from_date).format('YYYY-MM-DD'),'from_date','to_date',to_date,'to_date',moment(to_date).format('YYYY-MM-DD'));
-
-
-// console.log(emptyArr);
-
-// var fibonacci = _.memoize(function(n) {
-//     // console.log(n)
-//   return n < 2 ? n: fibonacci(n - 1) + fibonacci(n - 2);
-// });
-// console.log(fibonacci(10));
-// console.log([0,2,3].splice(1,2),'dd', Number(0));
-// if(!['dsa']){
-//     console.log('true')
-// }else{
-//     console.log('false')
-// }
-// const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
-
-// // console.log(animals.slice(4,7),'slice');
-// // console.log);
-// let aaa=animals.splice(2);
-
-// var stooge = {name: 'moe'};
-// // stooge === _.identity(stooge);
-// let active = _.keys(_.pick(stooge, _.identity));
-// console.log(active,'<<active');
-// let sample = "The human body is a remarkably adaptable machine. Even if years and years of neglect have allowed pound after pound of fat to fill out your frame, you can rid yourself of that lard at a much faster rate than you brought it on board. In that sense, time is your side!";
-// console.log(_.defaults({}, {'abd':'1'}),'<<<defaults');
-// console.log('das',sample.includes("year"));
-
-
-// let instruementMap= {'abc':{
-
-//  },
-//  'cbs':{
-
-//  }}
-//          _.each(instument,item=>{
-//  let item.fndooCode='abc';
-//        item.instruement  =instruementMap[item.fndooCode]
-//  })
-
-// let sftp = new Client();
-// sftp.connect({
-//     host:'sftp.karvymfs.com',
-//     port: 990,
-//     username: 'BIMB_DDN_DATA_sftp',
-//     // password:'Bim$23-D09#19Sftp'
-//       password: privKey
-// }).then(() => {
-//     return sftp.list();
-//   //  return sftp.fastGet('/sftp/data/SG_LGT_POS_EXP_CSLHC_20190627.csv', 'download2.csv');
-// }).then((data) => {
-//    console.log(JSON.stringify(data, 'the data info'));
-// }).catch((err) => {
-//    console.log(err, 'catch error');
-// });
-
-
-
-// console.log(  string.split('##')[0] ? Number((string.split('##')[0]).replace(/,/g, '')) :0  );
-
-// const fs = require('fs');
-// const doAsync = require('dpoasyn);
-
-// const arr = [1, 2, 3, 4, 5];
-// let limit = 2,
-//     offset = 1;
-// function empty(data) {
-//     if (typeof(data) == 'number' || typeof(data) == 'boolean') {
-//         console.log('first if')
-//         if (typeof(data.length) != 'undefined') {
-//             console.log('third if')
-
-//             return data.length == 0;
-//         }
-//         var count = 0;
-//         for (var i in data) {
-//             if (data.hasOwnProperty(i)) {
-//                 count++;
-//             }
-//         }
-//         return count == 0;
-//     }
-
-//     console.log('??????', empty(' '.trim())) // true
-//     // empty(0) // true
-//     // empty(7) // false
-//     empty(" ") // true  return false;
-// }
-// if (typeof(data) == 'undefined' || data === null) {
-//     console.log('second if')
-
-//     return true;
-// }
-
-// empty((function() {
-//     return ""
-//   })) // false
-// let  dataObject={
-//     bosCode:'TRAILER107'
-// };
-// let arr=[];
-// console.log(arr.push(_.first([])))
-// console.log('arr',arr)
-// console.log(new Date(1562836459000))
-
-// console.log(moment(new Date('2019-10-22T05:48:08.000Z').getTime()))
-// console.log(0.0001+0.0000778);
-// var GoogleStrategy = require( 'passport-google-oauth' ).Strategy;
-//     const passport=require("passport");
-// passport.use(new GoogleStrategy({
-//     clientID: '53955008568-k5sjdeh3ujovche5oc46a5e6uek15m49.apps.googleusercontent.com',
-//     clientSecret: 'Ho30MecFkTA41eXW6Gq_WYPz',
-//     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
-//     callbackURL: 'http://localhost:/oauth2callback'
-// }, function(accessToken, refreshToken, profile, done) {
-//     // do your thing here
-//     var Gmail = require('node-gmail-api'),
-//         gmail = new Gmail(accessToken),
-//         s = gmail.messages('label:inbox', { max: 10 })
-
-//     s.on('data', function(d) {
-//         console.log(d.snippet)
-//     })
-// }))
-
-
-
-
-// rr.slice(offset);
-
-// // console.log('newArr', newArr.splice(0, limit));
-
-// let spawn = require('child_process').spawn
-
-// const os = require('os');
-
-// const dir = os.homedir() + '../node_modules';
-// const ls = spawn("ls", [process.cwd()]);
-
-// let ex = '90025';
-// let str = 'IAM_Lighthouse_SECURITY MOVEMENT_SG_2019-09-17.CSV';
-// console.log('str includes', str.includes('SECURITY MOVEMENT'));
-// var check = 0;
-// var data;
-// console.log([1,2,3,4,5].slice(0,-1))
-
-// let fs = require('fs'),
-
-// let data='Bond - Preferred shar';
-
-//     if(_.contains(['Bond - Preferred share', 'Bond - bond', 'Bond - Perpetual bond', 'Bond - Floating rate bond'],undefined)){
-//        // console.log(moment(new Date('3/11/2049 12:00:00 AM').getTime()).format('YYYY-MM-DD'));
-
-//         console.log('true','<<<<<')
-//     }else{
-//         console.log(_.contains(['Bond - Preferred share', 'Bond - bond', 'Bond - Perpetual bond', 'Bond - Floating rate bond'],data))
-//     }
-
-//     let aee=1;
-// aee? callA(): callB();
-
-// function callA(){
-//     console.log('true')
-// }
-
-// function callB(){
-//     console.log('false')
-// }
-
-
-// var AmountWithDate = {};
-// _.map(objectData, (v, k) => {
-//     console.log('key',k)
-//     // console.log(k, 'AmountWithDate[k]', AmountWithDate[k], 'AmountWithDate[k] == 0', AmountWithDate[k] == 0)
-//     if (AmountWithDate[k] && AmountWithDate[k] == 0) {
-//         // console.log('insdie if')
-//         AmountWithDate[k] = AmountWithDate[k] + objectData[k].transactionAmount;
-//     } else {
-//         AmountWithDate[k] = objectData[k].transactionAmount;
-//         // console.log('insdie else')
-//     }
-//     // console.log('AmountWithDate[k]', AmountWithDate)
-// })
-
-// const PDFDocument=require('pdf-lib');
-// // const pdfreader=require('pdfreader');
-//     const options={};
-
-//    async  function  createNewPdf(){
-
-
-// const mergedPdf = await PDFDocument.create();
-
-//     const pdfBytes = fs.readFileSync('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx564-8 - 26 Aug 2019.pdf');
-//     const pdf = await PDFDocument.load(pdfBytes);
-
-
-//   fs.writeFileSync('XYZ.pdf',pdf)
-
+// slides.reduce((item, index) => {
+//    if(item.productIds.length>0){
+//     acc.push(item)
 //    }
-// createNewPdf();
-// let dataBuffer = fs.readFileSync("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx162 - 26 Aug 2019.pdf");
-
-//  fs.writeFileSync('./XYZ.pdf',dataBuffer)
-// pdf(dataBuffer,options).then(function(data) {
-//     console.log('data',data)
-//     fs.writeFileSync('./XYZ.pdf',data)
-//     //use new format
-// });
-
-//    let  PDFParser = require("pdf2json");
-
-// let pdfParser = new PDFParser();
-// pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
-// pdfParser.on("pdfParser_dataReady", pdfData => {
-//     console.log('pdfData',pdfData)
-//     fs.writeFileSync("./F1040EZ.json", JSON.stringify(pdfData));
-// });
-
-//pdfParser.loadPDF("/Users/admin/Desktop/xxx073 - 27 Aug 2019SaveAs.pdf");
-//pdfParser.loadPDF("/Users/admin/Desktop/xxx564-8 - 26 Aug 2019SaveAs.pdf");
-//pdfParser.loadPDF("/Users/admin/Desktop/xxx564-20 - 26 Aug 2019SaveAs.pdf");
-//pdfParser.loadPDF("/Users/admin/Desktop/xxx024-1 - 19 Aug 2019SaveAs.pdf");
-
-
-
-// try{
-//     console.log('insdie try')
-//    pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx564-20 - 26 Aug 2019SaveAs.pdf");
-// }catch(e){
-//     console.log('insdie catch')
-//     console.log(e)
-// }
-
-// pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdfdump/xxx564-8 - 26 Aug 2019.pdf");
-///Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx107-26-Sep-2019.pdf
-//able to read
-// pdfParser.loadPDF("/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingpdf/xxx107-26-Sep-2019.pdf");
-
-
-
-
-
-// let i=638;
-// let idArray=[];
-
-// while(i<700){
-//     idArray.push(i)
-//     i=i+1;
-// }
-// console.log(idArray)
-
-
-let mainObj = [{}, {}, {}, {}];
-
-
-// const fileMapper = {
-//   DBS: {
-//     fileExtension: ['.dat'],
-//     holdingFileName: 'POS',
-//     transactionFileName: 'TRANS'
-//   },
-//   DB: {
-//     fileExtension: ['.xls','.CSV'],
-//     holdingFileName: 'POS',
-//     transactionFileName: 'TRANS'
-//   },
-//   LGT: {
-//     fileExtension: ['.csv'],
-//     holdingFileName: 'POS',
-//     transactionFileName: 'TRX'
-//   },
-//   SS: {
-//     fileExtension: ['.xml'],
-//     holdingFileName: 'POS',
-//     transactionFileName: 'MOV'
-//   },
-//   BOS: {
-//     fileExtension: ['.CSV'],
-//     transactionFileName: 'SECURITY MOVEMENT',
-//     instrumentFileName: 'INSTRUMENTS'
-//   },
-//   SS: {
-//     fileExtension: ['.pdf'],
-//     holdingFileName: 'POS',
-//     transactionFileName: 'MOV'
-//   },
-// };
-
-//     const newVar={
-//         name:'dasdasd_POS.CS'
-//     };
-
-// console.log(fileMapper['DB']['fileExtension'].includes(path.extname(newVar.name)));
-
-
-
-// let dateArr = ['2019-08-09T00:00:00.000Z',
-//     '2019-08-10T00:00:00.000Z',
-//     '2019-08-11T00:00:00.000Z',
-//     '2019-08-12T00:00:00.000Z'
-// ]
-
-
-// let arr = [
-//     { transactionDate: '2019-08-10T00:00:00.000Z' },
-//     { transactionDate: '2019-08-09T00:00:00.000Z' },
-//     { transactionDate: '2019-08-01T00:00:00.000Z' },
-//     { transactionDate: '2019-08-11T00:00:00.000Z' }
-// ]
-let newObj = {
-  b: 1
-};
-
-
-// accrued interest. in lgt. Q
-
-//     let value=parseFloat(replaceComma(newObj.a)) && newObj.b?newObj.a - newObj.b:null;
-//     console.log(value);
-
-// function replaceComma(numberString) {
-//     return typeof numberString === 'number' ? numberString : numberString.replace(/,/g, '');
-//   }
-// let datearray=getDateSpan(moment('2019-08-01T00:00:00.000'),moment('2019-08-02T00:00:00.000'));
-//
-// console.log('datearray',datearray);
-
-// function getDateSpan(startDate, endDate) {
-
-//     console.log('startDate, endDate', startDate, endDate)
-//     let dateArray = [];
-//     let temp = startDate;
-//     while (new Date(temp).getTime() <= new Date(endDate).getTime()) {
-
-//       dateArray.push(temp);
-//       temp = new Date(temp.getTime() + 86400000);
+//    return acc
+// },[])
+// doc.productPromoSlider?.items?.[0]?
+// console.log(JSON.stringify(slides, null, 2), 'slides')
+// const slugify = (raw = '') => {
+//     const replace = {
+//         '*': ' star ',
+//         '+': ' plus ',
+//         '#': ' hash ',
+//         '/': '-',
 //     }
-//     return dateArray;
-//   }
-
-// _.each(mainObj, mainItem => {
-//     let trxArr;
-
-// mainObj.newarr=_.each(dateArr, dateItem => {
-// _.map(arr, item => {
-// console.log('item.transactionDate', 'item.transactionDate ', item.transactionDate, 'dateItem', dateItem, item.transactionDate === dateItem);
-// let groupedData = _.groupBy(arr, 'transactionDate');
-
-// console.log('groupedData', groupedData);
-// _.each(dateArr, item => {
-//     console.log(item+ ' in ' + groupedData);
-//     console.log(item in groupedData);
-//     if ( item in groupedData) {
-//         // _.each(dateArr, item => {
-//         console.log(groupedData[item]);
-//         // })
-//     }
-// })
-
-// if (item.transactionDate == dateItem) {
-//     return item;
-// }
-// return null;
-// })
-// })
-// })
-
-// console.log('mainObj', JSON.stringify(mainObj, null, 2))
-
-
-
-
-
-
-// Promise.resolve()
-// .then(function(){
-
-//     return Promise.resolve(null)
-// }).then(function(data){
-//     console.log(data)
-//     if(data){
-//         console.log('true>>')
-//     }else{
-//         console.log('false>>>')
-//     }
-
-//     return Promise.resolve()
-// })
-
-
-
-
-// const parser = require('xmljson').to_json;
-var xmlParserValidator = require('fast-xml-parser');
-
-
-// var debtAsset = {
-//     "weightage": 0.5,
-//     "priority": 2,
-//     "id": 45,
-//     "isActive": true,
-//     "createdDate": "2019-08-20T08:18:09.000Z",
-//     "lastModifiedDate": "2019-08-20T08:18:09.000Z",
-//     "modelPortfolioId": 23,
-//     "assetId": 4,
-//     "investmentAmount": 250000,
-//     "numberOfSchemes": 4,
-//     "categories": [{
-//             "weightage": 0.65,
-//             "priority": 1,
-//             "id": 177,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 54,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 162500,
-//             "schemes": [{
-//                     "amount": 75000
-//                 },
-//                 {
-//                     "amount": 75000
-//                 },
-//                 {
-//                     "amount": 12500
-//                 }
-//             ],
-//             "NumberOfSchemesToShow": 3
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 2,
-//             "id": 178,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 53,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 50000,
-//             "schemes": [{
-//                 "amount": 50000
-//             }],
-//             "NumberOfSchemesToShow": 1
-//         },
-//         {
-//             "weightage": 0.15,
-//             "priority": 4,
-//             "id": 180,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:18:56.000Z",
-//             "lastModifiedDate": "2019-08-20T08:18:56.000Z",
-//             "modelPortfolioId": 23,
-//             "instrumentCategoryId": 22,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null,
-//             "investmentAmount": 37500,
-//             "schemes": [{
-//                 "amount": 37500
-//             }],
-//             "NumberOfSchemesToShow": 1
-//         }
-//     ],
-//     "numberOfCategories": 3,
-//     "additionalAmountToRebase": 0,
-//     "weightageForRebase": 1
-// };
-
-
-
-// curl -X DELETE 'http://localhost:9200/instrumentpricesreporting'
-// var debtArrArr = [
-//     [{
-//             "weightage": 0.8,
-//             "priority": 1,
-//             "id": 7,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 79512,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 177,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 2,
-//             "id": 8,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 177,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         }
-//     ],
-//     [{
-//             "weightage": 0.2,
-//             "priority": 1,
-//             "id": 10,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 178,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         },
-//         {
-//             "weightage": 0.2,
-//             "priority": 3,
-//             "id": 6,
-//             "isActive": true,
-//             "createdDate": "2019-08-20T08:20:15.000Z",
-//             "lastModifiedDate": "2019-08-20T08:20:15.000Z",
-//             "instrumentId": 62774,
-//             "modelPortfolioId": 23,
-//             "modelPortfolioCategoryId": 178,
-//             "modelPortfolioAssetId": 45,
-//             "modelPortfolioProductId": null
-//         }
-//     ],
-//     []
-// ];
-// // console.log(debtAsset.categories)
-// let azzz = { 'abc': 123 };
-// let bzzz = { 'def': 456, 'vvv': 567 };
-
-
-
-// // console.log(JSON.stringify(debtAsset,null,2))
-// // console.log('azzz',azzz)
-
-// let hashSet = new Set();
-
-// hashSet.add('123-das');
-// hashSet.add('123=dsa');
-// hashSet.add('123-das');
-// hashSet.add(4);
-// console.log(_.drop([1, 2, 3], 3))
-// // )
-
-
-
-// console.log('isValid', moment('2019-08-20', 'YYYY-MM-DD', true).isValid())
-// console.log('hashSet',hashSet.has('123-das'))
-// let
-
-
-// console.log(JSON.stringify(debtAsset, null, 2))
-
-
-//  _.each(_.get(debtAsset, 'categories'), (catItem, catInd) => {.  //working
-//     _.zipWith(catItem.schemes, debtArrArr[catInd], function(a, b, c) {
-//         return a && b ? Object.assign(a, b) : a;
+//     console.log('called inside...')
+//     return raw.replace(/\*|\+|\/|#/gi, function (match) {
+//         console.log(match, '<<')
+//         replace[match] || ''
 //     })
+// }
+// console.log(slugify(raw))
+
+// str.replace(/\*|\+|\/|#/gi, function(match) {
+// console.log('called')
+// return replace[match] || ''
+// }
+
+// console.log('str',str)
+// str  = str.replace(/[^a-zA-Z0-9-]/g, '') //allow alphabets with dash
+//           .replace(/^-+|-+$/gi,'')  // trim dash at start and end of string
+//           .replace(/-+/gi,'-')  //trim more than one dash in string
+
+// let raw = '©™™®TEst---Test*#-michelin--©©™™®©--';
+
+// const replace = {
+//     '*': ' star ',
+//     '+': ' plus ',
+//     '#': ' hash ',
+//     '/': '-',
+// }
+
+// let formatters = [{
+//         pattern: /\*|\+|\/|#/gi,
+//         replacement:  (match) => replace[match] || ''
+//     },
+//     {
+//         pattern: /[^a-zA-Z0-9-]/g,
+//         replacement: '',
+//     },
+//     {
+//         pattern: /^-+|-+$/g,
+//         replacement: '',
+//     },
+//     {
+//         pattern: /-+/g,
+//         replacement: '-',
+//     },
+// ];
+
+// let output = formatters.reduce(function (raw, f) {
+//     return raw.replace(f.pattern, f.replacement)
+// }, raw)
+
+// console
+//   .log(Number.NEGATIVE_INFINITY, "<<<")
+
+//   [
+// const data=str.replace(/\*|\+|\/|#/gi, function(match) {
+// console.log('called',match)
+//  replace[match] || ''
 // })
-
-// Object.keys(debtAsset).map((keys)=>{      //working
-//     if(debtAsset['categories']){
-//         _.forEach(debtAsset['categories'],(catItem,catIndex)=>{
-//                 _.forEach(catItem.schemes,(schItem,schInd)=>{
-//                     if(debtArrArr[catIndex][schInd] && catItem.id==debtArrArr[catIndex][schInd].modelPortfolioCategoryId &&
-//                         catItem.modelPortfolioAssetId == debtArrArr[catIndex][schInd].modelPortfolioAssetId){
-//                              Object.assign(schItem, debtArrArr[catIndex][schInd])
-//                     }
-//                 })
-//         })
-//     }
-// })
-// _.forEach(debtArr, debtItem => {
-
-// })
-
-// console.log(eachcategory.id, debtItem.modelPortfolioCategoryId, 'index', index)
-// if(debtItem && eachcategory.id==debtItem.modelPortfolioCategoryId && eachcategory.modelPortfolioAssetId==debtItem.modelPortfolioAssetId){
-// && eachcategory.modelPortfolioAssetId==debtItem.modelPortfolioAssetId){
-
-//                debtArr= debtArr.reduce((acc,curArr)=>{
-//                     return curArr.length>0? neglectIds.indexOf()> -1:  neglectIds.push(curObj.id)
-//                 },[])
-//   Object.assign(schemeItem,debtItem)
-// console.log('debtItem',debtItem)
-// debtArr=_.filter(debtArr,item=>!item.id)
-
-// debtArr= debtArr.length==index? debtArr.splice(index+1):debtArr
-// console.log('debtArr',debtArr)
-
-// }
-
-
-// callPr()
-//     .then(Promise.reject())
-
-// function callPr() {
-
-//     return callPromise()
-//         .then(function() {
-
-//             return callAnotherPromise();
-//         }).then(function() {
-//             return resolve()
-//         }).catch(err => {
-//             console.log('insdie main catch')
-//         });
-// }
-
-// function callPromise() {
-//     console.log('called')
-//     try {
-//         if (true) {
-//             console.log('insdie reject');
-//             return Promise.reject();
-//         }
-//     } catch (e) {
-//         console.log('insdie  try catch')
-//         console.log(e)
-//     }
-//     return Promise.resolve();
-// }
-
-// function callAnotherPromise() {
-
-//     return Promise.resolve();
-// }
-
-
-// check?console.log('true'):console.log('false');
-
-// var whiteSpaceVariable=' ';
-//    whiteSpaceVariable= whiteSpaceVariable.trim();
-
-// var downloadEmailAttachments = require('download-email-attachments');
-
-// var onEnd = function (result) {
-//   if (result.error) {
-//     console.log(result.error)
-//     return
-//   }
-//   console.log("done")
-//   console.log(result.latestTime)
-// }
-
-// downloadEmailAttachments({
-//   invalidChars: /[^A-Z]/g, //Regex of Characters that are invalid and will be replaced by X
-//   account: '"lit2015013@iiitl.ac.in":Saurabh1999*@imap.gmail.com:993', // all options and params besides account are optional
-//   directory: './',
-//   // filenameTemplate: '{day}-{filename}',
-//   filenameFilter: /.xlsx?$/,
-//   timeout: 3000,
-//   log: {warn: console.warn, debug: console.info,  info: console.info },
-//   since: '2015-01-12',
-//   // lastSyncIds: ['234', '234', '5345'], // ids already dowloaded and ignored, helpful because since is only supporting dates without time
-//   attachmentHandler: function (attachmentData, callback, errorCB) {
-//     console.log(attachmentData)
-//     callback()
-//   }
-// }, onEnd)
 // console.log('data',data)
 
-// var shell = require('shelljs');
-//     let lsout=shell.ls('-R','/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/');
-//     console.log(lsout)
+// main()
 
-
-//     const exec = require('child_process').exec;
-// const child = exec('../test/hw.sh', (error, stdout, stderr) => {
-//         console.log(stdout);
-//         console.log(stderr);
-//         if (error !== null) {
-//             console.log(`exec error: ${error}`);
-//         }
-// });
-// shell.ls( '/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls');
-// const readXlsxFile = require('read-excel-file/node');
-
-// File path.
-// readXlsxFile('/Users/admin/work/code/work/wealthfy/server/wealthfyfiles/holdingfiles/Positions_23Aug.xls',{ sheet: 'Sheet1' })
-// .then((rows,error) => {
-//         // if(error){
-//         //     console.log(error)
-//         // }
-//       // `rows` is an array of rows
-//   // each row being an array of cells.
-//   console.log(rows)
-// }).catch()
-
-// Readable Stream.
-
-
-// let headerObj;finalArr=[];
-// for (let i = 0; i < data.length; i++) {
-//     if (Object.keys(data[i]).length > 100 && data[i]['field1']=='Asset code' && !headerObj) {
-//         headerObj=data[i];
-//             finalArr.push(headerObj);
-//     } else if (Object.keys(data[i]).length > 100 && headerObj) {
-//             finalArr.push(data[i])
-//     }
-// }
-
-// let testarr=[1,2,3,34,5,6];
-// let newtestArr=testarr.slice(1,4);
-// console.log(JSON.stringify(finalArr,null,2));
-
-
-// _.each(data, (item, index) => {
-
-//     if (item.field1 && item.field1 == 'Asset code') {
-//         data = data.splice(index+1, data.length);
-//         console.log(data.length)
-//         console.log('true inside Asset code data.length', data.length)
-
-//     } else {
-//         if (Object.keys(item).length > 100) {
-//             console.log('true')
-//         }
-//     }
-// });
-
-
-// var s = '1125.11';
-// s = parseFloat(s);
-// // let sum= (0.300 *10 + 5 * 10+ 0.100*10)/10 ;
-// console.log('s', s);
-// let newObj = {};
-// newObj.name = 'as';
-// console.log()
-
-// function areTheNumbersAlmostEqual(num1, num2) {
-// return Math.abs( 0.300 + 0.600+ 0.100)
-// }
-// console.log(areTheNumbersAlmostEqual(0.1 + 0.2, 0.3));
-// console.log(getJsDateFromExcel(Number('190819')))
-// 43691.229166666664
-
-// function getJsDateFromExcel(excelDate) {
-//     if (excelDate) {
-//         return new Date((excelDate - (25567 + 2)) * 86400 * 1000);
-//     } else {
-//         return null;
-//     }
-// }
-
-
-// zip ubstrx14sept.zip -@ < ubsTrx14Sept.txt
-
-
-// whiteSpaceVariable?console.log('whiteSpaceVariable'):console.log('whiteSpaceVariable2');
-//     console.log(_.uniq([1,2,3,4,5,5]));
-// console.log('difference',_.difference([1,2,3,4,5,5], [1,3]));
-
-//     // console.log('union',_.union([],[]));
-
-// let arrayToReturn=[1,2,3,1,1,1];
-
-//     let str='AVQ.SG.3RDP.LIGHTHOUSE.POS_20190801.csv';
-
-//     console.log('date',moment(str.split('_')[1].split('.')[0],'YYYYMMDD').format('YYYY-MM-DD'));
-
-
-// arrayToReturn=_.map(arrayToReturn,item=>{
-//     if(item>1){
-//         return item
-//     }
-
-// })
-
-
-//     console.log('arrayToReturn',arrayToReturn)
-
-// let fileList = [];
-// let fileArray=[]
-
-// ls.stdout.on("data", function(data) {
-
-//     fileList = data.toString().split('\n');
-
-//     console.log('fileList',fileList)
-//     _.each(fileList, item => {
-//         if (item.includes('ZAH')) {
-//             // console.log(item)
-//             fileArray.push(item);
-//         }
-//     })
-
-// });
-
-// ls.stderr.on("data", function(data) {
-
-//      reject()
-//   //  fileList = data.toString().split('\n');
-//    // console.log('insdie stderr',fileList);
-// });
-
-// ls.on("close", function(code) {
-//     console.log(`child process exited with code ${code}`);
-// })
-
-
-// doAsync(fs).readFile('package.json', 'utf8')
-//   .then(result => {
-//     console.dir(JSON.parse(result), {colors: true});
-//   });
-//  ../../../ubuntu/wealthfyfiles/holdingfiles/
-// /home/ubuntu/wealthfyfiles/holdingfiles/
-///home/ubuntu/UBS/XYZ
-// let str='M006_POS_lghths-sg_20190719_01.xml';
-// console.log()
-//                    scp source   dest
-// scp    ubuntu@lighthouse-uat:/home/ubuntu/UBS/XYZ/20190606125737257_ZAF_download.txt  /var/lib/jenkins
-
-// const dl = require('download-file-with-progressbar');
-
-// option = {
-//     filename: 'the filename to store, default = path.basename(YOUR_URL) || "unknowfilename"',
-//     dir: 'the folder to store, default = os.tmpdir()',
-//     onDone: (info)=>{
-//         console.log('done', info);
-//     },
-//     onError: (err) => {
-//         console.log('error', err);
-//     },
-//     onProgress: (curr, total) => {
-//         console.log('progress', (curr / total * 100).toFixed(2) + '%');
-//     },
-// }
-
-// var dd = dl('YOUR_URL', option);
-
-// dd.abort()
-
-
-
-
-// to abort the download
-// console.log(moment(1497052800000).format("YYYY-MM-DD"))
-
-// console.log(moment(1497225600000).format("YYYY-MM-DD"))
-
-
-// let letA = [
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090001",
-//   "0546008610090003",
-//   "0546008610090003",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546008662250001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546001337330001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008326930001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008662130001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001",
-//   "0546008672750001"
-// ]
-
-// console.log(_.union(letA))
-// console.log('new Date()',new Date())
-
-let a = 1,
-b = 2,
-c = 3;
-// console.log({ a, b, c })
-
-// console.log(moment(1562739073000).utc().format('YYYY-MM-DD HH:mm:ss'))
-let obj = {};
-
-let item = {
-  hldPos: {
-        //     posnQty: 2,
-        //     hldId: {
-        //         asstDetail: {
-        //             prcFactor: 1
-        //         }
-        //     }
-      }
-    };
-
-
-// if (item.hldPos && item.hldPos.posnQty && item.hldPos.hldId && item.hldPos.hldId.asstDetail && item.hldPos.hldId.asstDetail.prcFactor) {
-//     obj.quantity = item.hldPos.posnQty * item.hldPos.hldId.asstDetail.prcFactor;
-// } else if (item.hldPos && !item.hldPos.posnQty) {
-//     console.log('insdie else if')
-//     obj.quantity = item.hldPos.posnQty;
-// } else {
-//     obj.quantity = 0;
-// }
-
-// console.log(obj)
-
-let mat = '3.08 % TIME LOANS MAT 31/07/19 coupon 3.08';
-
-// console.log(Number(mat.split('%')[0].trim()));
-//
-// console.log('###', moment(mat.split('MAT ')[1].split(' ')[0].trim(), 'DD-MM-YYYY').format('YYYY-MM-DD'))
-// let str = "accountNumber": "DEMAND IB ACCOUNT - 6225780300";
-// let str1 = "accountNumber": "DEMAND IB ACCOUNT - 6525780401##Interest 01 MAR 2019 - 26 MAR 2019",
-obj = {
-  "1": {
-    "_": "19930049",
-    "$": {
-      "refType": "Valor"
-    }
-  },
-  "0": {
-    "_": "IE00B84J9L26",
-    "$": {
-      "refType": "BSIN"
-    }
-  },
-  "2": {
-    "_": "000064235309",
-    "$": {
-      "refType": "ZARA"
-    }
-  },
-  "3": {
-    "_": "000064235309",
-    "$": {
-      "refType": "AARA"
-    }
-  }
-}; //[3,2,1]
-// function sortObjectKeys(obj) {
-//     return Object.keys(obj).sort().reduce((acc, key) => {
-//         if (Array.isArray(obj[key])) {
-//             acc[key] = obj[key].map(sortObjectKeys);
-//         }
-//         if (typeof obj[key] === 'object') {
-//             acc[key] = sortObjectKeys(obj[key]);
-//         } else {
-//             acc[key] = obj[key];
-//         }
-//         return acc;
-//     }, {});
-// }
-
-// test it
-obj = {
-  telephone: '069911234124',
-  name: 'Lola',
-  access: true,
-  cars: [{
-    name: 'Family',
-    brand: 'Volvo',
-    cc: 1600
-  },
-  {
-    name: 'City',
-    brand: 'VW',
-    cc: 1200,
-    interior: {
-      wheel: 'plastic',
-      radio: 'blaupunkt'
-    }
-  },
-  {
-    cc: 2600,
-    name: 'Killer',
-    brand: 'Plymouth',
-    interior: {
-      wheel: 'wooden',
-      radio: 'earache!'
-    }
-  }
-  ]
-};
-// console.log(JSON.stringify(sortObjectKeys(obj), null, 2))
-// console.log(Object.values(obj).sort((a,b)=> a['$'].refType>b['$'].refType))
-// (function(s){var t={};Object.keys(s).sort().forEach(function(k){t[k]=s[k]});return t})({b:2,a:1,c:3})
-
-
-// nestedSort = (prop1, prop2 = null, direction = 'asc') => (e1, e2) => {
-//     const a = prop2 ? e1[prop1][prop2] : e1[prop1],
-//         b = prop2 ? e2[prop1][prop2] : e2[prop1],
-//         sortOrder = direction === "asc" ? 1 : -1
-//     return (a < b) ? -sortOrder : (a > b) ? sortOrder : 0;
-// }
-
-// let sortedValue = Object.values(obj).sort((a, b) => { return a['$'].refType > b['$'].refType ? 1 : a['$'].refType < b['$'].refType ? -1 : 0; });
-
-// console.log(sortedValue)
-
-
-// var array = [{ fruit: 'Tomato' }, { fruit: 'Banana' }, { fruit: 'Apple' }, { fruit: 'Orange' }]
-// array.sort(function(a, b) {
-//     //return (a.fruit < b.fruit ? -1 : (a.fruit > b.fruit ? 1 : 0));
-//     return a.fruit < b.fruit ? 1 : a.fruit > b.fruit ? -1 : 0; //if a > b then swap =1 if a is less then swap =-1  else 0 no swap
-// })
-
-
-// console.log(array)
-
-// {
-//     '1': { _: '19930049', '$': { refType: 'Valor' } },
-//     '2': { _: '000064235309', '$': { refType: 'SARA' } }
-// }
-// let unicode = '5.625% Electricit� de France EDF Notes 2014-Perpetual Reg-S';
-// console.log(unicode.replace(/[^\x00-\x7F]/g, ""));
-
-// { _: 'USD', '$': { refType: 'CURRENCY' } }
-
-
-
-// let ISIN, sspc;
-// ISIN = _.map(obj, (v, k) => {
-//     if (v['$'] && v['$'].refType == 'ISIN') {
-
-//         return v['_'];
-//     }
-// }).filter(item => {
-//     return item;
-// })[0];
-
-// let arr = arr// let sortedValue;
-// console.log('ISIN', ISIN)
-// if (!ISIN) {
-
-// }
-// console.log('sortedValue', sortedValue)
-// [objs].sort(nestedSort("moreDetails", "age"));
-
-
-// }
-
-// console.log(str.replace(/##/g, ' '))
-
-
-
-var param = {
-  "startTransfer": {
-    "version": "2",
-    "uniqueRequestNo": "Vishwa40141",
-    "appID": "453733",
-    "customerID": "453733",
-    "debitAccountNo": "000190600017042",
-    "beneficiary": {
-
-      "beneficiaryDetail": {
-
-
-        "beneficiaryName": {
-
-          "fullName": "Motilal Oswal  LTD"
-        },
-        "beneficiaryAddress": {
-
-          "address1": "IFC",
-          "country": "IN"
-        },
-        "beneficiaryContact": {
-          "mobileNo": "919920655985",
-          "emailID": "XYZ@MS.com"
-        },
-        "beneficiaryAccountNo": "200300000824",
-        "beneficiaryIFSC": "ICIC00PCTBL",
-      }
-    },
-    "transferType": "IMPS",
-    "transferCurrencyCode": "INR",
-    "transferAmount": "1000",
-    "remitterToBeneficiaryInfo": "FUND TRANSFER"
-  }
-};
-
-
-
-
-var getBalance = {
-  "getBalance": {
-    "version": "2",
-    "appID": "453733",
-    "customerID": "453733",
-    "AccountNumber": "188201500403"
-  }
-};
-
-
-var getStatus = {
-  "getStatus": {
-    "version": "1",
-    "appID": "453733",
-    "customerID": "453733",
-    "requestReferenceNo": "Vishwa40145"
-  }
-};
-
-// const fs = require('fs')
-// , path = require('path')
-// let certFile = path.resolve(__dirname, 'ysl-uat.crt');
-// let keyFile = path.resolve(__dirname, 'ysl-uat.key');
-// let UserId = 'testclient';
-// let Password = 'OxYcool@123';
-// let request = require('request');
-// let auth = new Buffer(UserId + ':' + Password).toString('base64');
-// const options = {
-//     url: 'https://uatsky.yesbank.in:444/app/uat/fundtransfer2R/startTransfer',
-//     // url: 'https://uatsky.yesbank.in:444/app/uat/fundtransfer2R/getbalance',
-//     // url: 'https://uatsky.yesbank.in:444/app/uat/fundtransfer2R/getstatus',
-//     // auth: {
-//     //     username: 'testclient',
-//     //     password: 'OxYcool@123'
-//     // },
-//     headers: {
-//         "Content-Type": "application/json",
-//         Authorization: 'Basic ' + auth,
-//         "X-IBM-Client-Id": "6f4458b7-abdd-4de6-a11c-015c3ac33940",
-//         // "UserId": "testclient",
-//         "X-IBM-Client-Secret": "jM4jP0aT0wG1rP5kR0jS8gT4sO7jD2xA3dQ3lG7bC5mJ4pM7oR",
-//         // "Password": "OxYcool@123"
-//     },
-//     agentOptions: {
-//         cert: fs.readFileSync(certFile),
-//         key: fs.readFileSync(keyFile),
-//     },
-
-//     // Or use `pfx` property replacing `cert` and `key` when using private key, certificate and CA certs in PFX or PKCS12 format:
-//     // pfx: fs.readFileSync(pfxFilePath),
-//     // passphrase: 'OxYcool@123',
-//     // securityOptions: 'SSL_OP_NO_SSLv3',
-
-//     json: true,
-//     // form: param
-//     // body: getStatus
-//     body: param
-
-// };
-
-// request.post(options, function(error, response, body) {
-
-
-// console.log('response==>', JSON.stringify(response, null, 2))
-// if (response.statusCode == 201) {
-// console.log('document saved as',+response)
-// } else {
-// console.log('response',response)
-
-// console.log('URL: ' + response['request'].uri.href)
-// console.log('headers :' + JSON.stringify(response['request'].headers, null, 2))
-// console.log('Response: ' + JSON.parse(response.body,null,2))
-// let reponseData = JSON.parse(response.body, null, 2);
-// console.log('reponseData', reponseData)
-
-// console.log(body)
-// }
-// });
-
-
-// {
-//     "Fault": {
-//         "Code": {
-//             "Value": "soapenv12:Sender",
-//             "Subcode": {
-//                 "Value": "ns:E400",
-//                 "Subcode": { "Value": "iib:E5016" }
-//             }
-//         },
-//         "Reason": { "Text": "Bad Request" },
-//         "Detail": {
-//             "MessageList": ",uniqueRequestNo[12345678940000],fieldType",
-//             "ExceptionList": {
-//                 "RecoverableException": {
-//                     "File": "/build/slot3/S1000_P/src/DataFlowEngine/PluginInterface/ImbJniNode.cpp",
-//                     "Line": 1267,
-//                     "Function": "ImbJniNode::evaluate",
-//                     "Type": "ComIbmJavaComputeNode",
-//                     "Name": "gen/fundsTransferByCustomerMobileService2#FCMComposite_1_1.wla/HTTPInputJSONHandler2#FCMComposite_1_1.wla/HTTPInputJSONHandler#FCMComposite_1_2",
-//                     "Label": "gen.fundsTransferByCustomerMobileService2.HTTPInputJSONHandler2.HTTPInputJSONHandler.JSON2XML",
-//                     "Catalog": "BIPmsgs",
-//                     "Severity": 3,
-//                     "Number": 2230,
-//                     "Text": "Caught exception and rethrowing",
-//                     "Insert": { "Type": 14, "Text": "gen.fundsTransferByCustomerMobileService2.HTTPInputJSONHandler2.HTTPInputJSONHandler.JSON2XML" },
-//                     "RecoverableException": {
-//                         "File": "/build/slot3/S1000_P/src/DataFlowEngine/BasicNodes/ImbCheckNode.cpp",
-//                         "Line": 424,
-//                         "Function": "ImbValidateNode::evaluate",
-//                         "Type": "ComIbmValidateNode",
-//                         "Name": "gen/fundsTransferByCustomerMobileService2#FCMComposite_1_1.wla/HTTPInputJSONHandler2#FCMComposite_1_1.wla/HTTPInputJSONHandler#FCMComposite_1_4",
-//                         "Label": "gen.fundsTransferByCustomerMobileService2.HTTPInputJSONHandler2.HTTPInputJSONHandler.Validate",
-//                         "Catalog": "BIPmsgs",
-//                         "Severity": 3,
-//                         "Number": 2230,
-//                         "Text": "Caught exception and rethrowing",
-//                         "Insert": { "Type": 14, "Text": "gen.fundsTransferByCustomerMobileService2.HTTPInputJSONHandler2.HTTPInputJSONHandler.Validate" },
-//                         "ParserException": { "File": "/build/slot3/S1000_P/src/MTI/MTIforBroker/GenXmlParser4/ImbXMLNSCParser.cpp", "Line": 939, "Function": "ImbXMLNSCParser::refreshBitStreamFromElementsCommon", "Type": "ComIbmWSInputNode", "Name": "gen/fundsTransferByCustomerMobileService2#FCMComposite_1_19", "Label": "gen.fundsTransferByCustomerMobileService2.HTTP Input", "Catalog": "BIPmsgs", "Severity": 3, "Number": 5010, "Text": "XML Writing Errors have occurred", "ParserException": { "File": "/build/slot3/S1000_P/src/MTI/MTIforBroker/GenXmlParser4/ImbXMLNSCWriter.cpp", "Line": 1015, "Function": "ImbXMLNSCWriter::writeMisc", "Type": "", "Name": "", "Label": "", "Catalog": "BIPmsgs", "Severity": 3, "Number": 5016, "Text": "Unexpected XML type at this point in document.", "Insert": [{ "Type": 5, "Text": "uniqueRequestNo[12345678940000]" }, { "Type": 5, "Text": "fieldType" }] } }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-//nou found
-
-// Dadra and Nagar Haveli
-
-
-
-// console.log(data)
-// const a=[];
-// a.push("b");
-// console.log(a);ı
-// or import promiseEach from "promise-each-concurrency";
-
-
-
-// function fileWriteSync(filePath) {
-
-//     var fd = fs.openSync(filePath, 'w');
-
-//     var codingArray = ['Java', 'JavaScript', 'C++', 'C', 'C#', 'Node JS'];
-
-//     var length = codingArray.length;
-
-//     for(var i=0;i<length; i++)
-
-//     {
-//         var bytes = fs.writeSync(fd, codingArray[i] + '\n', null, null);
-
-//         console.log('Write string %s which is %d bytes.', codingArray[i], bytes);
-//     }
-
-//     fs.closeSync(fd);
-// }
-
-// let amount = 500;
-// let arr2 = [1, 2, 3, 4,4,4,4111111,4,4,3,1,1,1];
-// // console.log(arr1.concat(arr2))
-// let variableScope = 0;
-
-
-// let data = 'May 30 2019 12/:00AM'
-
-// data.forEach( function(element, index) {
-
-//        for(let key in element){
-//            element[newKey[key]]=element[key];
-
-//            delete key;
-//        }
-// });
-// console.log(data)
-
-// 'HIGH': 'highPrice',
-//     'LOW': 'lowPrice',
-//     'OPEN': 'openPrice',
-//     'CLOSE': 'closePrice'
-
-// let data={ '"505021"|"5021"|"A.P.SCOOTERS"|"B"|"D"|""|""|""|""|""|""|""|""|""|""|""|""|""|"2"|"AP Scooters"|"Andhra Pradesh Scooters Ltd(liquidated)"|"APSCOOTERS"|"+505021+5021+AP Scooters+APSCOOTERS+2+A.P.SCOOTERS+Andhra Pradesh Scooters Ltd(liquidated)+"|"*"|"*"|"Automobiles - Scooters And 3 - Wheelers"|"Auto-Scooter/3Wh"|"00000008"|"Escorts"|"Escorts"|"ED"|""|""|""|""|""|""|""|""|""|""|""|""|""|""|""|""|""|"*"|""|""|""|"0"|"10.66"|"10"|"1"|"BSE"|""|"APSC IN"|""|"in;APS"|""|""|""|"00000014"|""|""|""|""|""|""|""|""|""|""|""|""|"Automobile"|""<</EOR>>': '"532752"|""|"APOLLO SINDOORI HOTE"|""|""|""|""|""|""|""|""|""|""|""|""|""|""|""|"24625"|"Apollo Sindoori"|"Apollo Sindoori Hotels Ltd"|"APOLSINHOT"|"+532752+Apollo Sindoori+APOLSINHOT+APOLLOSINDOORI+24625+APOLLO SINDOORI HOTEL LTD+Apollo Sindoori Hotels Ltd+"|"*"|"*"|"Hotels"|"Hotels"|"00000057"|"Apollo Hospitals"|"Apollo Hospitals"|"APP"|"APOLSINHOT"|""|""|"EQ"|"EQ"|""|""|""|""|""|""|""|""|""|""|""|""|""|""|""|"04/05/2019 12:00:00 AM"|"0"|"1.3"|"5"|"1"|"NSE"|"INE451F01024"|"APOL IN"|""|""|""|""|""|"00000170"|""|""|""|""|""|""|""|""|""|""|""|""|"Hotels & Restaurants"|""<</EOR>>' }
-
-
-// console.log(data.split('|'));
-// let pushData=[];
-// data=JSON.stringify(data,null,2);
-// // console.log(data.split('|'))
-// data=data.split('|');
-
-//     _.forEach(data, function(item, index) {
-//         item=item.replace(/\\/g,"")
-//         // pushData.push(item)
-
-//         console.log(item.split('<</EOR>>'))
-
-//     });
-// console.log('pushData',JSON.stringify(pushData,null,2))
 // function main() {
-//code omitted
-
-//get result
-// let result = getResultsUsingArrayShift();
-// console.log('result',result)
-//code omitted
+//     let arr = [1, 2, 3, 4, 5, 6];
+//     console.log('before',arr)
+//     reversearr(arr);
+//     console.log('after',arr)
 // }
 
-// console.log(sortByFrequency(arr2));
-
-
-//sort by frequency
-
-// function sortByFrequency(array) {
-//     var frequency = {};
-//     var sortAble = [];
-//     var newArr = [];
-
-//     array.forEach(function(value) {
-//         if ( value in frequency )
-//             frequency[value] = frequency[value] + 1;
-//         else
-//             frequency[value] = 1;
-//     });
-//     console.log('frequency',frequency)
-
-//     for(var key in frequency){
-//         sortAble.push([key, frequency[key]])
+// function reversearr(arr) {
+//     let start = 0;
+//     let end = arr.length - 1;
+//     while (start <= end) {
+//         let temp = arr[start];
+//         arr[start] = arr[end]
+//         arr[end]=temp
+//         start++
+//         end--
 //     }
-
-//     console.log('sortAble',sortAble)
-
-//     sortAble.sort(function(a, b){
-//         return b[1] - a[1]
-//     })
-
-
-//     sortAble.forEach(function(obj){
-//         for(var i=0; i < obj[1]; i++){
-//             newArr.push(obj[0]);
-//         }
-//     })
-//     return newArr;
-
 // }
 
-//rotate array
+//sum of digits
+// var value = 2568,
+//     sum = 0;
 
-// function getResultsUsingArrayShift() {
-//   let temp = arr2.slice(0);
-//   console.log('temp',temp)
-//   for (let i=0; i<3; i++) {
-//     let first = temp.shift();
-//     console.log('first',first)
-//     temp.push(first);
+// while (value) {
+//     sum += value % 10;
+//     console.log('sum',sum)
+//     value = Math.floor(value / 10);
+//     console.log('console',value)
+// }
+
+// console.log(sum);
+
+//isPalindrome
+// function isPalindrome(str)
+// {
+//   // Start from leftmost and rightmost corners of str
+//   let l = 0;
+//   let h = str.length - 1;
+
+//   // Keep comparing characters while they are same
+//   while (h > l)
+//   {
+//       if (str[l++] != str[h--])
+//       {
+//           console.log("%s is Not Palindrome", str);
+//           return;
+//       }
 //   }
-//   return temp;
+//   console.log("%s is palindrome", str);
 // }
 
-// main();
-// function scope(){
+// isPalindrome("abba");
+// isPalindrome("abbccbba");
+// isPalindrome("geeks");
 
-//     var data=100;
-//     underScope();
-//     function underScope(){
-//         let data=10;
-//      console.log('data',data)
+// minmax
+
+// let arr = [1000, 11, 445, 1, 330, 3000];
+
+// let obj = {
+//     min: 0,
+//     max: 0
+// }
+
+// function findMinMax(arr) {
+//     let n = arr.length||[];
+//     obj.min = arr[0]||0
+//     obj.max = arr[0]||0
+//     for (let i = 0; i < n; i++) {
+//         let value = arr[i]
+//         obj.min = value < obj.min ? value : obj.min;
+//         obj.max = value > obj.max ? value : obj.max
 //     }
-//     console.log('outsideScope',data)
+//     return obj
 // }
-//     scope();
 
+// console.log(findMinMax(arr))
 
+//find frequency of numbers
+// const arr = [2,5,7,8,5,3,5,7,8,5,3,4,2,4,2,1,6,8,6];
 
-
-
-// fileWriteSync('coding.txt');
-// let data;
-
-
-// let categoryDebt = [],
-//     categoryEquity = [];
-// let categoryAmount = 12000;
-// let firstIndex = 0;
-// let belowThresholdIndex = 0;
-
-// console.log('categoryEquity.length', categoryEquity.length)
-
-// console.log('categoryDebt.length', categoryDebt.length);
-
-// let assetIds = [];
-
-// assetIds = data.map(item => item.assetId)
-//     .filter((value, index, self) => self.indexOf(value) === index).sort()
-
-// data = _.groupBy(data, 'assetId');
-
-// // console.log('categoryAmount', categoryAmount)
-
-
-// for (assetId in data) {
-
-//     if (categoryAmount > 10000) {
-
-//         let thresholdData = assignUptoThreshold(data[assetId], categoryAmount)
-
-//         if (thresholdData.surplusAmount) {
-
-//             let finalData = rebaseWiththreshold(thresholdData.data, thresholdData.surplusAmount, thresholdData.totalWeightage)
-//             // console.log('finalData+', finalData)
-
-//         }
+// const getFrequency = (array) => {
+//     const map = {};
+//     for (let i=0;i<array.length;i++){
+//        if(map[array[i]]){
+//           map[array[i]]++;
+//        }else{
+//           map[array[i]] = 1;
+//        }
 //     }
-// }
+//     return map;
+//  };
+//  console.log(getFrequency(arr));
 
-// if (categoryAmount <= 10000) {
+// prefix sum array
 
-//     data = assignToOnlyTopPriority(data['5'], categoryAmount)
-// }
+// I forgot to mention that it is a piece schema and there is a join field as well.
 
-// function assignToOnlyTopPriority(data, categoryAmount) {
+// 1 st field in schema
 
-//     _.each(data, (item, index) => {
+//tempSchema.js
 
-//         if (item.weightage > 0 && categoryAmount) {
-//             item.allocatedAmount = categoryAmount;
-//             categoryAmount -= categoryAmount;
-//         } else {
-//             item.allocatedAmount = 0
+// {
+//     name: "_colour",
+//     type: "select",
+//     required: true,
+//     choices: [{
+//             label: "Pastel Green",
+//             value: "#61ED70"
+//         },
+//         {
+//             label: "Confetti",
+//             value: "#EDEB61"
+//         },
+//         {
+//             label: "Cornflower Blue",
+//             value: "#6C61ED"
 //         }
-//         // console.log('item', item)
-//         if (index == data.length - 1) {
-//             _.each(data, item => {
-
-//                 if (item.allocatedAmount < 5000) {
-//                     item.allocatedAmount = 0;
-//                 }
-//             })
+//     ]
+// },
+// {
+//     name: "_panel"
+//     label: "Panel",
+//     type: 'joinByArray',
+//     required: true,
+//     withType: 'colour-panel'
+//     idsField: 'panelIds',
+//     filters: {
+//         projection: {
+//             colour: 1,
+//             shades: 1,
+//             //...all the other fields in panel
 //         }
-//     })
-//     return data
-// }
-
-
-
-// function assignUptoThreshold(categoryData, categoryAmount) {
-//     let totalWeightage = 0,
-//         requiredSurplus = 0;
-//     let firstIndex = 0;
-//     let nextTopPriorityIndex = 0;
-//     let threshold = {};
-
-
-//     _.each(categoryData, (item, index) => {
-//         if (item.weightage == 0) {
-//             item.allocatedAmount = 0;
-//         }
-//         if (categoryAmount >= 5000 && item.weightage > 0) {
-//             item.allocatedAmount = 5000;
-//             categoryAmount -= 5000;
-//             totalWeightage += item.weightage * 100;
-//         } else if (item.priority > 1 && item.weightage > 0 && !nextTopPriorityIndex) {
-//             nextTopPriorityIndex = index;
-//         }
-
-//         if (item.priority > 1 && item.weightage > 0) {
-
-//             if (index == categoryData.length - 1 && nextTopPriorityIndex) {
-//                 categoryData[nextTopPriorityIndex].allocatedAmount = requiredSurplus;
-//             }
-//         }
-
-//         if (index == categoryData.length - 1) {
-//             _.each(categoryData, item => {
-
-//                 if (item.allocatedAmount < 5000) {
-//                     item.allocatedAmount = 0;
-//                 }
-//             })
-//         }
-//     })
-
-//     threshold.data = categoryData;
-//     threshold.totalWeightage = totalWeightage;
-//     threshold.surplusAmount = categoryAmount;
-//     return threshold
-// }
-
-
-// function rebaseWiththreshold(categoryData, surplusAmount, totalWeightage) {
-//     let newWeightage = 0;
-//     let amountToBeAdded = 0;
-
-//     _.each(categoryData, (item, index) => {
-//         if (item.allocatedAmount) {
-//             newWeightage = (100 / totalWeightage) * item.weightage;
-//             amountToBeAdded = newWeightage * surplusAmount;
-//             item.allocatedAmount = item.allocatedAmount + amountToBeAdded;
-//         }
-//     })
-//     return categoryData;
-// }
-
-
-// function assignToTopPriority(firstIndex, belowThresholdIndex, data) {
-
-//     data[firstIndex].allocatedAmount += data[belowThresholdIndex].allocatedAmount;
-//     data[belowThresholdIndex].allocatedAmount = 0;
-// }
-
-
-
-
-// function updateItem(i, item, array) {
-//     console.log('item', item)
-//     array[i].allocatedAmount += item.allocatedAmount;
-//     item.allocatedAmount = 0;
-//     if (item.requiredAmount) {
-//         item.requiredAmount = 0;
-
-//     }
-//     if (item.surplusAmount) {
-//         item.surplusAmount = 0
 //     }
 // }
 
+// function fillPrefixSum(arr, n, prefixSum) {
+//     prefixSum[0] = arr[0];
 
-
-
-// if (categoryDebt.length == 4 || noOfSchemes == 1) {
-
-//     assignToTopPriority(data['4'], 1, 4, false)
-// }
-
-
-// if (categoryEquity.length == 4 || noOfSchemes == 1) {
-//     console.log('insde categoryEquity')
-
-//     assignToTopPriority(data['5'], 1, 5, false)
-// }
-
-// if (categoryEquity.length == 3 && data['5'][0].allocatedAmount < 5000) {
-//     // console.log(data)
-//     // data = _.groupBy(data, 'assetId');
-//     callInScenario2(data['5'])
-// }
-
-// if (categoryEquity.length == 3 && data['5'][0].allocatedAmount >= 5000) {
-//     console.log(JSON.stringify(data, null, 2))
-//     // data = _.groupBy(data, 'assetId');
-//     assignToNextTopPriority(data['5'])
-// }
-// if (categoryDebt.length == 3) {
-
-//     callInScenario2(data['4'])
-// }
-
-// if (categoryEquity.length == 2 && data['5'][0].allocatedAmount < 5000) {
-
-//     getRequiredSurplus(data['5'])
-// }
-
-// if (categoryEquity.length == 1) {
-
-//     getRequiredSurplus(data['5'])
-
-// }
-
-
-// data = _.map(data, item => {
-//     if (item.allocatedAmount < 5000 && item.assetId == 4) {
-//         item.requiredAmount = 5000 - item.allocatedAmount;
-//         categoryDebt.push(1);
-
-//     } else if (item.assetId == 4) {
-//         item.surplusAmount = item.allocatedAmount - 5000;
+//     // Adding present element
+//     // with previous element
+//     for (let i = 1; i < n; ++i) {
+//         console.log('i: ', i)
+//         prefixSum[i] = prefixSum[i - 1] + arr[i];
 //     }
-//     if (item.allocatedAmount < 5000 && item.assetId == 5) {
-//         item.requiredAmount = 5000 - item.allocatedAmount;
+// }
 
-//         categoryEquity.push(1);
-//     } else if (item.assetId == 5) {
-//         item.surplusAmount = item.allocatedAmount - 5000;
-//     }
-//     return item;
+// let ex=['a','b']
+
+// let arr = ['10', '4', '16', '20'];
+// const index=arr.findIndex((el)=>el==='20')
+// console.log(index,'index <<<')
+// const data=ex.map(el=>`${arr[index]}-${el}`)
+// console.log('data',data,'arr',arr)
+// arr.splice(2)
+// console.log(arr)
+// console.log(ooo,'<<<')
+// var a1 = [1,2,3,4,5];
+// var a2 = [21,22];
+// a1.splice(2, 0, ...a2);
+// console.log(a1) // => [1,2,21,22,3,4,5]
+
+// Who is the ruler of Southeros?
+// Ouput: None
+// Allies of Ruler?
+// Output: None
+// Input Messages to kingdoms from King Shan:
+// Input: Air, “oaaawaala”
+// Input: Land, “a1d22n333a4444p”
+// Input: Ice, “zmzmzmzaztzozh”
+// Who is the ruler of Southeros?
+// Output: King Shan
+// Allies of Ruler?
+// Output: Air, Land, Ice
+
+// console.log('hello world')
+
+// [
+//   {
+//     x: 1,
+//   },
+//   {
+//     x: 2,
+//   },
+//   {
+//     x: 3,
+//   },
+// ].map((item, index) => {
+//   console.log(item, index);
 // });
 
-
-// function assignToNextTopPriority(categoryData) {
-//     let requiredThreshold = 0;
-//     arrayOfIndex = [];
-//     // console.log('categoryData',categoryData)
-//     _.each(categoryData, (item, index) => {
-//         // console.log('index', index)
-//         if (item.priority > 1 && item.allocatedAmount != 0) {
-//             // console.l/og(item)
-//             requiredThreshold += item.allocatedAmount;
-//             arrayOfIndex.push(index)
-//             if (requiredThreshold >= 5000) {
-//                 // totalPercent+=item.weightage*100;
-//                 surplusAmount = Math.abs(5000 - requiredThreshold)
-//                 // console.log('totalPercent',totalPercent,'surplusAmount',surplusAmount)
-//                 assignByPriority(categoryData, arrayOfIndex, surplusAmount)
-//                 // console.log('arrayOfIndex',arrayOfIndex)
-//             }
-//         }
-//         // else if(item.priority ==1 )
-//         // {
-//         //    totalPercent+=item.weightage*100;
-//         // }
-//     })
-// }
-
-
-// function assignByPriority(categoryData, arrayOfIndex, surplusAmount) {
-//     console.log('arrayOfIndex', arrayOfIndex)
-
-//     for (let i = 0; i < arrayOfIndex.length; i++) {
-//         console.log('i', i)
-//         console.log(categoryData[arrayOfIndex[i]], 'RRRR', categoryData[arrayOfIndex[i + 1]])
-//         // 'aaaaaaaaa',categoryData[arrayOfIndex[i]].priority<categoryData[arrayOfIndex[i+1]].priority)
-
-
-//         if (categoryData[arrayOfIndex[i]].priority < categoryData[arrayOfIndex[i + 1]].priority) {
-//             categoryData[arrayOfIndex[i]].allocatedAmount += categoryData[arrayOfIndex[i + 1]].allocatedAmount;
-//             categoryData[arrayOfIndex[i + 1]].allocatedAmount = 0;
-//             categoryData[arrayOfIndex[i]].requiredAmount = 0
-//             break;
-//         } else {
-//             categoryData[arrayOfIndex[i + 1]].allocatedAmount += categoryData[arrayOfIndex[i]].allocatedAmount;
-//             categoryData[arrayOfIndex[i]].allocatedAmount = 0;
-//             categoryData[arrayOfIndex[i + 1]].requiredAmount = 0
-//             break;
-//             console.log('insdie else')
-//         }
-//     }
-//     if (surplusAmount > 0) {
-//         let totalPercent = 0;
-//         _.each(categoryData, item => {
-//             if (item.allocatedAmount) {
-//                 totalPercent += item.weightage * 100
-//             }
-//         })
-//         _.each(categoryData, item => {
-//             if (item.allocatedAmount) {
-//                 item.allocatedAmount += (item.allocatedAmount / totalPercent) * item.weightage
-//             }
-//         })
-//         console.log('categoryData', categoryData)
-//     }
-
-// }
-
-
-function callInScenario4(data) {
-    // console.log('inside callInScenario4', data)
-  }
-
-
-// function getRequiredSurplus(categoryData) {
-//     let index = 0,
-//         j = 0,
-//         firstIndex = 0;
-//     let totalItemAmountsRequired = [];
-//     requiredSurplus = 0;
-//     console.log('data in getRequiredSurplus', categoryData.length)
-//     for (j = 0; j < categoryData.length; j++) {
-//         // console.log('true',j,index)
-//         if (categoryData[j].priority == 1 && categoryData.allocatedAmount < 5000) {
-//             firstIndex = j;
-//             requiredAmount = categoryData[i].requiredAmount;
-//         } else if (categoryData[j].priority != 1 && categoryData[j].surplusAmount) {
-
-//             requiredSurplus += categoryData[j].surplusAmount;
-//         }
-//         console.log('categoryData[j].id', categoryData[j].id,
-//             'requiredSurplus ,categoryData[firstIndex].requiredAmount',
-//             requiredSurplus, categoryData[firstIndex].requiredAmount)
-//         if (categoryData[j].priority > 1 &&
-//             requiredSurplus >= categoryData[firstIndex].requiredAmount) {
-//             totalItemAmountsRequired.push(categoryData[j].id)
-//             console.log('true', totalItemAmountsRequired)
-//             borrow(totalItemAmountsRequired, categoryData, firstIndex)
-//             break;
-//         } else if (categoryData[j].priority != 1) {
-//             totalItemAmountsRequired.push(categoryData[j].id)
-//             console.log('fasle')
-//         }
-//     }
-// }
-
-// console.log('data', data)
-
-
-// function borrow(surplusIds, categoryData, firstIndex) {
-//     console.log('surplusId', surplusIds, categoryData.length)
-//     let filteredItems;
-//     _.map(surplusIds, id => {
-//         let item = _.find(categoryData, surplusItem => {
-//             return surplusItem.id == id
-//         })
-//         categoryData[firstIndex].allocatedAmount += item.surplusAmount;
-//         categoryData[firstIndex].requiredAmount = 0;
-//         item.allocatedAmount -= item.surplusAmount;
-//         item.surplusAmount = 0;
-//     })
-// }
-
-
-
-// function assignToTopPriority(value, priority, assetId, scenario2) {
-//     if (scenario2 == true) {
-//         _.each(value, (item, index) => {
-//             if (item.priority == priority && item.assetId == assetId) {
-//                 i = index;
-//                 item.requiredAmount = 0;
-//                 item.surplusAmount = 0
-//             } else if ((item.allocatedAmount < 5000 ||
-//                     item.allocatedAmount > 5000) &&
-//                 item.assetId == assetId) {
-//                 updateItem(i, item, value)
-//             }
-//         });
-//     } else {
-
-//         _.each(value, (item, index) => {
-//             if (item.priority == priority && item.assetId == assetId) {
-//                 i = index;
-//                 item.requiredAmount = 0;
-//             } else if (item.allocatedAmount < 5000 && item.assetId == assetId) {
-//                 updateItem(i, item, value)
-//             }
-//         });
-//     }
-// }
-
-// function updateItem(i, item, array) {
-//     array[i].allocatedAmount += item.allocatedAmount;
-//     item.allocatedAmount = 0;
-//     if (item.requiredAmount) {
-//         item.requiredAmount = 0;
-
-//     }
-//     if (item.surplusAmount) {
-//         item.surplusAmount = 0
-//     }
-// }
-
-
-
-
-// function callInScenario2(categoryWise) {
-//     let priorityItem;
-
-//     assignToTopPriority(categoryWise, 1, 5, true)
-
-// }
-
-
-
-// console.log(JSON.stringify(data,null,2))
-
-
-
-// CONSTRAINT fk_ingredient_list FOREIGN KEY(ingredient_id) REFERENCES ingredient_list(id)
-
-// Promise.map(z,callFunction).then(result=>{
-//   return Promise.resolve("done")
-// }).catch(err=>{
-//   console.log(err)
-// })
-
-// SELECT * FROM INFORMATION_SCHEMA.TABLES;
-
-// let data = [{
-//         "assetId": 5,
-//         "assetName": "Equity",
-//         "children": [{
-//                 "productId": 5,
-//                 "productName": "Mutual Funds",
-//                 "children": [{
-//                         "instrumentId": 64316,
-//                         "instrumentISINCode": "INF789F01AG5",
-//                         "instrumentName": "UTI VALUE OPPORTUNITIES FUND - GROWTH PLAN",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "UTI VALUE OPPORTUNITIES FUND - GROWTH PLAN"
-//                     },
-//                     {
-//                         "instrumentId": 64746,
-//                         "instrumentISINCode": "INF789F01513",
-//                         "instrumentName": "UTI-EQUITY FUND-GROWTH PLAN-GROWTH",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "UTI-EQUITY FUND-GROWTH PLAN-GROWTH"
-//                     },
-//                     {
-//                         "instrumentId": 69778,
-//                         "instrumentISINCode": "INF200K01T51",
-//                         "instrumentName": "SBI SMALL CAP FUND  - DIRECT PLAN - GROWTH",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "SBI SMALL CAP FUND  - DIRECT PLAN - GROWTH"
-//                     },
-//                     {
-//                         "instrumentId": 72699,
-//                         "instrumentISINCode": "INF200K01QX4",
-//                         "instrumentName": "SBI BLUE CHIP FUND - DIRECT PLAN - GROWTH",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "SBI BLUE CHIP FUND - DIRECT PLAN - GROWTH"
-//                     },
-//                     {
-//                         "instrumentId": 75915,
-//                         "instrumentISINCode": "INF200K01180",
-//                         "instrumentName": "SBI BLUE CHIP FUND - GROWTH",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "SBI BLUE CHIP FUND - GROWTH"
-//                     },
-//                     {
-//                         "instrumentId": 84093,
-//                         "instrumentISINCode": "INF204K01HY3",
-//                         "instrumentName": "RELIANCE SMALL CAP FUND - GROWTH PLAN - GROWTH OPTION",
-//                         "productId": 5,
-//                         "assetId": 5,
-//                         "taxAssetName": "Equity",
-//                         "taxAssetId": 5,
-//                         "assetName": "Equity",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 67.43151084599995,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "RELIANCE SMALL CAP FUND - GROWTH PLAN - GROWTH OPTION"
-//                     },
-//                     {
-//                         "total": "Total",
-//                         "revenueAmountValue": 67.43151084599995
-//                     }
-//                 ],
-//                 "parentName": "PRODUCT",
-//                 "parentValue": "Mutual Funds"
-//             },
-//             {
-//                 "total": "Total",
-//                 "revenueAmountValue": 67.43151084599995
-//             }
-//         ],
-//         "parentName": "ASSET",
-//         "parentValue": "Equity"
-//     },
-//     {
-//         "assetId": 4,
-//         "assetName": "Debt",
-//         "children": [{
-//                 "productId": 5,
-//                 "productName": "Mutual Funds",
-//                 "children": [{
-//                         "instrumentId": 77742,
-//                         "instrumentISINCode": "INF090I01CL8",
-//                         "instrumentName": "FRANKLIN INDIA ULTRA SHORT BOND FUND - SUPER INSTITUTIONAL PLAN-DAILY DIVIDEND REINVESTMENT",
-//                         "productId": 5,
-//                         "assetId": 4,
-//                         "taxAssetName": "Debt",
-//                         "taxAssetId": 4,
-//                         "assetName": "Debt",
-//                         "productName": "Mutual Funds",
-//                         "revenueAmountValue": 0,
-//                         "parentName": "INSTRUMENT",
-//                         "parentValue": "FRANKLIN INDIA ULTRA SHORT BOND FUND - SUPER INSTITUTIONAL PLAN-DAILY DIVIDEND REINVESTMENT"
-//                     },
-//                     {
-//                         "total": "Total",
-//                         "revenueAmountValue": 0
-//                     }
-//                 ],
-//                 "parentName": "PRODUCT",
-//                 "parentValue": "Mutual Funds"
-//             },
-//             {
-//                 "total": "Total",
-//                 "revenueAmountValue": 0
-//             }
-//         ],
-//         "parentName": "ASSET",
-//         "parentValue": "Debt"
-//     }
-// ]
-
-// let groupBy = ['assetId', 'instrumentId', 'productId', 'transactionId'];
-
-// function reCallSort(data) {
-
-//     _.each(data, item => {
-
-//         for (let key in item) {
-
-
-//             if (groupBy.indexOf(key) > -1) {
-
-//                 data = sort(data, key)
-//                 if (item.children) {
-//                     data = item.children;
-//                     reCallSort(data)
-//                 }
-
-//             }
-//         }
-//     })
-// }
-// reCallSort(data);
-// console.log(JSON.stringify(data,null,2))
-
-// function sort(data, key) {
-
-//     data.sort((a, b) => {
-//         return a[key]-b[key] ;
-//     });
-//     return data
-// }
-//           let returnData = handlePagination(finalData, undefined, limit, offset);
-
-
-// function handlePagination(esAggregationData, returnData = { data: [], totalCount: 0 }, limit, offset) {
-//     let arrayLength = esAggregationData.length || 0;
-//     for (let i = 0; i < arrayLength; i++) {
-//       if (!esAggregationData[i].children && esAggregationData[i].total == undefined) {
-//         returnData.totalCount += 1;
-//         if (returnData.totalCount > offset && returnData.totalCount <= (limit + offset)) {
-//           //let it be
-//         } else {
-//           esAggregationData.splice(i, 1);
-//           i = i - 1;
-//           arrayLength = arrayLength - 1;
-//         }
-//       } else if (esAggregationData[i].children) {
-//         handlePagination(esAggregationData[i].children, returnData, limit, offset);
-//       }
-//     }
-//     return returnData;
-//   }
-
-
-// let rData = [];
-
-// function fetchElements(data) {
-//     // console.log(data)
-
-//     _.forEach(data.elements, item => {
-//         // if(item)
-//         if (item['name'] == 'NS1:verifyOTPResponse') {
-//             rData = item['elements'];
-//             // console.log(data)
-//             return;
-//         }
-//         return fetchElements(item)
-//     })
-//     return rData;
-// }
-
-
-// let requiredData = fetchElements(data);
-// function callFunction(eachObj){
-//   console.log("insdie eachObj")
-//  console.log(eachObj.length)
-//   return eachObj
-// }
-//
-// console.log(JSON.stringify(requiredData, null, 2))
-
-// function removeUnwantedKeys(requiredData) {
-
-
-//     _.forEach(requiredData, item => {
-
-//       delete item['type'];
-
-//       // console.log(item)
-//       return removeUnwantedKeys(item['elements']);
-
-//     })
-
-//     return requiredData;
-// }
-
-// let requiredDataAfterDeleting=removeUnwantedKeys(requiredData);
-
-
-// console.log(JSON.stringify(requiredDataAfterDeleting,null,2));
-
-// var Promise = require("bluebird");
-
-// Promise.try(function(){
-//   return callFunction(z)
-
-// }).map(function(topLevelItem){
-
-//   console.log("inside MAP")
-//   return Promise.try(function(){
-//     console.log("insdie prmise.try after MAP",topLevelItem)
-//     return callFunction([topLevelItem]);
-//   }).map(function(childItem){
-//             console.log("childItem")
-//       return callFunction(childItem)
-//     // })
-//   })
-// }).then(function(finalResult){
-//   console.log("finalResult",finalResult)
-//   console.log("finish...")
-//   /* finalResult will contain an array of arrays, all of it asynchronously resolved. */
-// })
-
-// Promise.try(function(){
-//   return callFunction(z)
-
-// }).map(function(topLevelItem){
-
-//   console.log("inside MAP",topLevelItem)
-//   return Promise.try(function(){
-//     console.log("insdie prmise.try after MAP")
-//     return callFunction(topLevelItem);
-//   }).map(function(childItem){
-//     return callFunction(childItem);
-//   });
-// }).then(function(finalResult){
-//   /* finalResult will contain an array of arrays, all of it asynchronously resolved. */
-// })
-
-
-
-
-
-
-
-
-
-
-
-// let diff =moment()
-
-
-
-
-//   dateRanges.push(getMonthDateRange(betweenDates[i].from, moment().month(betweenDates[i].month).format("M")));
-// console.log(moment().month("July").format("M"))
-
-//   console.log(moment().month("January").format("M"));
-
-//   function differenceCalculatedInMonthsByUnix(startDate, endDate){
-// startDate = new Date(startDate).getTime();
-// endDate= new Date(endDate).getTime();
-// var difference = endDate - startDate;
-// return timeMe(difference);
-// }
-
-// function timeMe(unix_timestamp){
-//     unix_timestamp = parseInt(unix_timestamp);
-//     var date = new Date(unix_timestamp);
-//     var days = date.getDate();
-//     var month = date.getMonth() + 1;
-//     var year = date.getFullYear()
-//     // hours part from the timestamp
-//     var hours = date.getHours();
-//     // minutes part from the timestamp
-//     var minutes = "0" + date.getMinutes();
-//     // seconds part from the timestamp
-//     var seconds = "0" + date.getSeconds();
-//     // will display time in 10:30:23 format
-//     var formattedTime = days + "." + month + "." + year + " at:" + hours + ":" + minutes.substr(minutes.length-2) + ":" + seconds.substr(seconds.length-2);
-//     return (12 * year) + month
-// }
-
-// console.log(differenceCalculatedInMonthsByUnix("2018-10-04","2019-01-04"));
-// const startOfMonth = moment(["2018"]).startOf("month").format("YYYY-MM-DD hh:mm");
-// const endOfMonth   = moment(["2018"]).endOf("month").format("YYYY-MM-DD hh:mm");
-
-// console.log(startOfMonth,endOfMonth);
-
-// function getMonthDateRange(year, month) {
-//     var moment = require("moment");
-
-//     // month in moment is 0 based, so 9 is actually october, subtract 1 to compensate
-//     // array is "year", "month", "day", etc
-//     var startDate = moment([year, month - 1]);
-
-//     // Clone the value before .endOf()
-//     var endDate = moment(startDate).endOf("month");
-
-//     // just for demonstration:
-//     console.log(startDate.toDate());
-//     console.log(endDate.toDate());
-
-//     // make sure to call toDate() for plain JavaScript date type
-//     return { start: startDate, end: endDate };
-// }
-// console.log(getMonthDateRange("2018",2));
-
-
-// let a={
-//     "assetName": {
-//         "terms": { "field": "assetName.keyword", "order": {}, "missing": "N/A", "size": 10000 },
-//         "meta": { "parentName": "ASSET", "keysToInclude": ["assetId"] },
-//         "aggs": {}
-//     }
+// Who is the ruler of Southeros?
+// Output: None
+// Allies of King Shan?
+// Output: None
+// Input Messages to kingdoms from King Shan: Input: Air, “Let’s swing the sword together”
+// Input: Air, “oaaawaala” Input: Land, “Die or play the tame of thrones”
+// Input: Land, “a1d22n333a4444p” Input: Ice, “Ahoy! Fight for me with men and money”
+// Input: Ice, “zmzmzmzaztzozh” Input: Water, “Summer is coming”
+//Input: Water, “Summer is coming”
+// Input: Fire, “Drag on Martin!”
+// Who is the ruler of Southeros?
+// Output: King Shan
+// Allies of King Shan?
+// Output: Air, Land, Ice, Fire
+
+// var fs = require('fs'),
+//     words = [],
+//     i = 0,
+//     lineArr = [],
+//     l = 0,
+//     j = 0,
+//     //kings = [],
+//     AllieKings = '',
+//     inputMessage = '',
+//     messageLines = [];
+
+// var kAndK = {
+//   OCTOPUS: "WATER",
+//   OWL: "AIR",
+//   PANDA: "LAND",
+//   DRAGON: "FIRE",
+//   MAMMOTH: "ICE",
 // };
-// // console.log(a.assetName)
 
+// var kings = ["OCTOPUS", "OWL", "PANDA", "DRAGON", "MAMMOTH"];
 
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-// {
-//   "size": 10000,
-//   "query": {
-//       "range": {
-//           "effectiveDate": {
-//               "gte": "2019-01-01T00:00:00.000Z",
-//               "lte": "2019-12-01T00:00:00.000Z"
-//           }
-//       }
-//   },
-//   "aggs": {
-//     "amount_per_month": {
-//       "date_histogram": {
-//         "field": "effectiveDate",
-//         "interval": "1M"
-//       },
-//       "aggs": {
-//         "total_amount": {
-//           "sum": {
-//             "field": "revenueAmount"
-//           }
+// fs.readFile("messageText", function(error, data) {
+//     if (error) { throw error; }
+
+//     data.toString().split("\n").forEach(function(line, index, arr) {
+//         if (index === arr.length - 1 && line === "") { return; }
+//         //console.log("line",line)
+//         messageLines.push(line)
+//     });
+//     var i = 0;
+//     callRecursively(messageLines, i);
+
+//     function callRecursively(messageLines, i) {
+//         if (i > messageLines.length - 1) {
+//             i++;
+//             return
 //         }
-//       }
+//         checkIfAlliesExists(messageLines[i])
+//         i++;
+//         //console.log(i)
+//         return callRecursively(messageLines, i)
 //     }
-//   }
-// }
-// "
 
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-
-// {
-//   "size": 0,
-//   "query": {
-//       "range": {
-//           "Date": {
-//               "gte": "2018-01-01T00:00:00.000Z",
-//               "lt": "2018-02-01T00:00:00.000Z"
-//           }
-//       }
-//   },
-//   "aggs": {
-//     "group_by_month": {
-//       "date_histogram": {
-//         "field": "effectiveDate",
-//         "interval": "month"
-//       },
-//       "aggs": {
-//         "group_by_Type": {
-//           "terms": {
-//             "field": "effectiveDate"
-//           }
-//         }
-//       }
-//     }
-//   }
-// }"
-
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-
-//   "query": {
-//       "range": {
-//           "Date": {
-//               "gte": "2018-01-01T00:00:00.000Z",
-//               "lt": "2018-02-01T00:00:00.000Z"
-//           }
-//       }
-//   },
-//       "aggs": {
-//             "monthWise": {
-//               "effectiveDate": {
-//                 "field": "effectiveDate",
-//                 "interval": "1M"
-//               },
-//               "aggs": {
-//                 "revenueAmount": {
-//                   "sum": {
-//                     "field": "revenueAmount"
-//                   }
-//                 }
-//               }
-//             },
-//             "revenueAmount": {
-//               "sum": {
-//                 "field": "revenueAmount"
-//               }
-//             },
-//           }"
-
-
-
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-
-// {
-//     "aggs": {
-//         "range": {
-//             "date_range": {
-//                 "field": "effectiveDate",
-//                 "format": "MM-yyy",
-//                 "ranges": [
-//                     { "from": "01-2018",  "to": "02-2018", "key": "quarter_01" },
-//                     { "from": "03-2015", "to": "04-2015", "key": "quarter_02" }
-//                 ],
-//                 "keyed": true
-//             }
-//         }
-//     }
-// }"
-
-
-
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-// {
-//   "aggs": {
-//     "range": {
-//       "date_range":{
-//               "field": "effectiveDate",
-//               "ranges":[{
-//                 "from":"2017-12-01",
-//                 "to":"2017-12-31"
-//               }]
-//             },
-//             "aggs": {
-//               "total_amount": {
-//                 "sum": {
-//                   "field": "revenueAmount"
-//                 }
-//               }
-//             }
-//           }
-//      }
-// }"
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-// {
-//    "aggs":{
-//       "date_range":{
-//          "range":{
-//             "field":"effectiveDate",
-//             "ranges":[
-//                {
-//                   "from":"2017-12-01",
-//                   "to":"2017-12-31"
-//                }
-//             ]
-//          },
-//          "aggs":{
-//             "revenueAmount":{
-//                "sum":{
-//                   "field":"revenueAmount"
-//                }
-//             }
-//          }
-//       }
-//    }
-// }"
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-
-// {
-//   "size": 0,
-//   "query": {
-//       "range": {
-//           "effectiveDate": {
-//               "from": "2017-12-01T00:00:00.000Z",
-//               "to": "2017-12-31T00:00:00.000Z"
-//           }
-//       }
-//   },
-//   "aggs": {
-//     "group_by_month": {
-//       "date_histogram": {
-//         "field": "effectiveDate",
-//         "interval": "month"
-//       },
-//       "aggs": {
-//         "group_by_Type": {
-//           "terms": {
-//             "field": "effectiveDate"
-//           }
-//         }
-//       }
-//     }
-//   }
-// }"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// {
-//    "aggs":{
-//       "date_range":{
-//          "range":{
-//             "field":"effectiveDate",
-//             "ranges":[
-//                {
-//                   "from":"2017-12-01",
-//                   "to":"2017-12-31"
-//                }
-//             ]
-//          },
-//          "aggs":{
-//             "revenueAmount":{
-//                "sum":{
-//                   "field":"revenueAmount"
-//                }
-//             }
-//          }
-//       }
-//    }
-// }
-
-
-// {
-//   "size": 0,
-//   "query": {
-//     "filtered": {
-//       "filter": {
-//         "bool": {
-//           "must": [
-//             {
-//               "range": {
-//                 "DateTime": {
-//                   "from": "2015-11-10T11:00:00",
-//                   "to": "2015-11-13T11:00:00"
-//                 }
-//               }
-//             }
-//           ]
-//         }
-//       }
-//     }
-//   },
-//   "aggs": {
-//     "Website": {
-//       "terms": {
-//         "field": "Website",
-//         "size": 0,
-//         "order": {
-//           "_count": "desc"
-//         }
-//       },
-//       "aggs": {
-//         "HitCount": {
-//           "terms": {
-//             "field": "HitCount",
-//             "size": 0,
-//             "order": {
-//               "_count": "desc"
-//             }
-//           },
-//           "aggs": {
-//             "DateTime": {
-//               "date_histogram": {
-//                 "field": "DateTime",
-//                 "interval": "8h",
-//                 "min_doc_count": 0,
-//                 "offset": "+11h"
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-// curl -X POST "localhost:9200/revenuesreporting/_search?size=0" -H "Content-Type: application/json" -d"
-// {
-//     "aggs": {
-//         "range": {
-//             "date_range": {
-//                 "field": "effectiveDate",
-//                 "format": "01-2018",
-//                 "ranges": [
-//                     { "to": "now-10M/M" },
-//                     { "from": "now-10M/M" }
-//                 ]
-//             }
-//         }
-//     }
-// }
-// "
-// console.log(moment().endOf("year"));
-
-
-//   console.log(typeof z);
-
-//   console.log(typeof a);
-// console.log(JSON.stringify(a,null,2));
-// console.log(typeof JSON.stringify(a))
-// {
-//     "productName": {
-//         "terms": { "field": "productName.keyword", "order": {}, "missing": "N/A", "size": 10000 },
-//         "meta": { "parentName": "PRODUCT", "keysToInclude": ["productId"] },
-//         "aggs": {}
-//     }
-// }
-
-// const a = [{
-//   item:"value",
-//   item1:"value2"
-// }, {
-//   item:"value",
-//   item1:"value2"
-// },{
-//   item:"value3",
-//   item1:"value4"
-// }]
-// tId"] }, "aggs": {} } }console.log(_.groupBy(a,"item"));
-// promiseEach(
-//   [1, 2, 3],
-//   function(x) {
-//     return new Promise(function(resolve) {
-//       setTimeout(resolve.bind(undefined, x), 1000);
-//     })
-//   },
-//   {
-//     concurrency: 1
-//   }
-// // node --max-old-space-size=8192 --optimize-for-size --max-executable-size=8192  --max_old_space_size=8192 --optimize_for_size --max_executable_size=8192 node_modules/karma/bin/karma start --single-run --max_new_space_size=8192   --prod --aot
-// new chanfed
-// adding one line
-
-// // let a=[ 1541010600000,
-// //   1542825000000,
-// //   1543257000000,
-// //   1543602600000,
-// //   1544553000000 ];
-
-//   let b=a;
-//   a.push(1);
-// console.log("a",a,"b",b)
-
-// console.log(a.indexOf("1542825000000"));
-// c
-
-
-// console.log("arr",arr);
-
-// let users = [{
-//     name: "John",
-//     email: "johnson@mail.com",
-//     age: 25,
-//     address: "USA"
-//   },
-//   {
-//     name: "Tom",
-//     email: "tom@mail.com",
-//     age: 35,
-//     address: "England"
-//   },
-//   {
-//     name: "Mark",
-//     email: "mark@mail.com",
-//     age: 28,
-//     address: "England"
-//   },{
-//     name: "Mark",
-//     email: "mark@mail.com",
-//     age: 28,
-//     address: "England"
-//   }
-// ];
-
-// let anotheruser=[];
-// console.log("FFFF",users.concat(anotheruser));
-
-//  //  _.forEach(users)
-//  // let isPresent=   users.some(item=>{
-//  //      return item.name==name;
-//  //    });
-//  // console.log("isPresent",isPresent);
-
-
-
-
-// var arr = [{
-//   class: "second",
-//   fare: "a",
-//   plane:"aaa"
-// }, {
-//   class: "second",
-//   fare: "b"
-// }, {
-//   class: "first",
-//   fare: "a"
-// }, {
-//   class: "first",
-//   fare: "a"
-// }, {
-//   class: "second",
-//   fare: "a",
-//   plane:"bbb"
-
-// }, {
-//   class: "first",
-//   fare: "c"
-// }]
-// var _unArray = [];
-// arr.forEach(function(item) {
-//   var isPresent = _unArray.filter(function(elem) {
-//     return (elem.class === item.class && elem.fare === item.fare)
-//   })
-//   if (isPresent.length == 0) {
-//     _unArray.push(item)
-//   }
+//     //console.log(messageLines)
 // })
-// console.log(_unArray)
 
-const groupByConfiguration = {
-  productId: {
-    fieldsToInclude: ['productId', 'productName']
-  },
-  assetId: {
-    fieldsToInclude: ['assetId', 'assetName']
-  },
-  taxAssetId: {
-    fieldsToInclude: ['taxAssetId', 'taxAssetName']
-  },
-  monthYear: {
-    fieldsToInclude: ['month', 'year', 'monthYear', 'monthLabel']
-  },
-  relationshipManagerId: {
-    fieldsToInclude: ['relationshipManagerId', 'relationshipManagerName', 'relationshipManagerEmail']
-  },
-  accountId: {
-    fieldsToInclude: ['accountId', 'accountName', 'accountUniqueId']
-  },
-  appUserId: {
-    fieldsToInclude: ['appUserId', 'appUserName', 'appUserEmail']
-  },
-  familyId: {
-    fieldsToInclude: ['familyId', 'familyName']
-  },
-  serviceProviderId: {
-    fieldsToInclude: ['serviceProviderId', 'serviceProviderName', 'serviceProviderShortName']
-  },
-  serviceProviderAccountId: {
-    fieldsToInclude: ['serviceProviderAccountId', 'serviceProviderAccountNumber']
-  },
-  instrumentId: {
-    fieldsToInclude: ['instrumentId', 'instrumentName', 'instrumentISINCode']
-  }
-};
-let filter = {
-  body: {
-    query: {
-      bool: {
-        filter: {
-          bool: {
-            must: 'termClause'
-          }
-        }
-      }
-    }
-  }
-};
-// console.log('filter', JSON.stringify(filter, null, 2));
-
-let groupBy = ['productId'];
-filter.body.aggs = {};
-let fieldsToInclude = [];
-
-try {
-  for (let i = 0; i < groupBy.length; i++) {
-    if (!groupByConfiguration[groupBy[i]]) {
-      return
-            // reject(new RestError(400, `Incorrect group by clause!`));
-          }
-        // console.log('inside for');
-
-        fieldsToInclude = fieldsToInclude.concat(groupByConfiguration[groupBy[i]].fieldsToInclude);
-        let currentClause = {
-          terms: {
-            field: groupBy[i],
-            size: 'limit'
-          },
-          aggs: {}
-        };
-        if (previousAggegationClause) {
-          previousAggegationClause[groupBy[i]] = currentClause;
-        } else {
-            // console.log("**************");
-            // console.log('inside else', JSON.stringify(filter, null, 2));
-            filter.body.aggs[groupBy[i]] = currentClause;
-
-            // console.log("##########");
-            // console.log(JSON.stringify(filter, null, 2));
-          }
-        // console.log(' currentClause.aggs', currentClause.aggs);
-
-        var previousAggegationClause = currentClause.aggs;
-        // console.log(i == groupBy.length - 1, 'previousAggegationClause******', previousAggegationClause);
-        if (i == groupBy.length - 1) {
-            // console.log('insdie group')
-            previousAggegationClause.totalRevenue = {
-              'sum': {
-                'field': 'revenueAmount'
-              }
-            };
-            // console.log(JSON.stringify(filter,null,2));
-            // console.log('^^^^^^^^^^^^^^^^^^^^')
-            previousAggegationClause.results = {
-              'top_hits': {
-                sort: 'orderBy',
-                size: 1,
-                _source: ['_id'].concat(fieldsToInclude)
-              }
-            };
-            // console.log('$$$$$$$$$$$$$')
-
-            // console.log('%%%%%', JSON.stringify(filter, null, 2));
-
-          }
-        // console.log('previousAggegationClause******', previousAggegationClause);
-      };
-    } catch (e) {
-      console.log(e)
-    }
-// console.log('filter', JSON.stringify(filter, null, 2));
-
-const data = {
-  value1: {
-    bucket: [{
-      value2: {
-        bucket: [{
-          result: {
-            hits: {
-              hits: [{ finalValue: 5 }, { finalValue: 4 }]
-            }
-          }
-        }]
-      }
-    },
-    {
-      value2: {
-        bucket: [{
-          result: {
-            hits: {
-              hits: [{ finalValue: 3 }, { finalValue: 2 }]
-            }
-          }
-        }]
-      }
-    }
-    ]
-  }
-}
-
-var _ = require('lodash');
-
-const flatData = [];
-// console.log('typeof flatData', typeof flatData)
-
-// console.log(JSON.stringify(data, null, 2));
-
-var finalArray = [];
-checkIfObjectOrArray(data)
-var cnt = 0;
-
-function checkIfObjectOrArray(data) {
-
-    // console.log(Array.isArray(data),data)
-    if (Array.isArray(data)) {
-        // console.log('insdie if***')
-        // console.log("array data==>",'AAA', data)
-        _.map(data, (item) => {
-          console.log('insdieeach', item)
-          return checkIfObjectOrArray(item)
-        })
-      } else {
-        console.log('OOO', data)
-        Object.keys(data).forEach(function(key, index) {
-          console.log('key', key, key == 'result');
-          if (key == 'result') {
-            console.log(data['result'], 'HHHHHHHHHHHHHH===>>', key);
-            finalArray.push(data['result']);
-          }
-          data = data[key];
-            // console.log(key)
-            // if(data[key]=='hits'){
-            //   console.log('key')
-            //   finalArray.push(data);
-            //   console.log(finalArray)
-            // }
-            // console.log(data)
-            return checkIfObjectOrArray(data)
-          });
-      }
-    }
-    console.log('finalArray', finalArray)
-
-// function flatter(data, pushTo, currentBucket) {
-//     if (data) {
-//         const keys = Object.keys(data);
-//         console.log('keys',keys);
-//         const values = keys.map(x => x);
-//         console.log('values',values);
-//         if ((values || []).indexOf('result') > -1) {
-//             return pushTo.push(data.result);
-//         }
-//         values.forEach(function(index) {
-//           console.log('values',values,'index',index,'inside finEach',data[index])
-//             return flatter(data[index], pushTo);
-//         })
-//     }
-// }
-
-// flatter(data, flatData)
-
-// console.log(JSON.stringify(flatData,null,2));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// RevenuesReporting.fetchRevenues('2017-11-01','2019-01-01',{"instrumentName":"","accountName":"", "transactionTypeName":""},10,0, ["relationshipManagerId"],[{"relationshipManagerId":"ASC"}])
-
-
-
-// RevenuesReporting.fetchRevenues('2017-11-01','2019-01-01',{"instrumentName":"","accountName":"", "transactionTypeName":""},10,0, ["transactionId"],[{"transactionId":"ASC"}])
-
-
-// accountIds [ 7, 99 ]
-//  appUserIds [ 17 ]
-//  familyIds [ 8 ]
-//  groupIds []
-//   type all
-//   fromDate undefined
-//   toDate undefined
-//   productIds []
-//    assetIds []
-//    isHeldAway undefined
-//    searchFilter
-//    { instrumentName: '',
-//   accountName: '',
-//   transactionTypeName: '',
-//   serviceProviderAccountNumber: '',
-//   productName: '',
-//   assetName: '' }
-//    limit 7
-//    offset 0
-//     groupBy [ 'productName' ]
-//     orderBy [ { productName: 'ASC' }, { transactionDate: 'DESC' } ]
-//     fieldsToInclude [ '_id',
-//   'orderId',
-//   'accountName',
-//   'accountIsHeldAway',
-//   'accountIsProspect',
-//   'serviceProviderAccountNumber',
-//   'transactionDate',
-//   'productId',  'quantity',
-//   'openingQuantity',
-//   'closingQuantity',
-//   'openingAmount',
-//   'closingAmount',
-//   'totalAmount',
-//   'serviceProviderReferenceNumber',
-//   'transactionStatus',
-//   'transactionStatusLabel',
-//   'transactionTypeId',
-//   'transactionTypeName',
-//   'productName',
-//   'assetId',
-//   'assetName',
-//   'instrumentName',
-//   'instrumentId',
-//   'appUserId',
-//   'appUserName',
-//   'familyId',
-//   'familyName',
-//   'transactionSubType',
-//   'transactionSubTypeLabel',
-//   'pricePerUnit',
-//   'serviceProviderId',
-//   'serviceProviderName' ]
-
-
-
-
-
-//    getAggregationObject: function (model, groupByConfig, groupBy, orderBy) {
-//     console.log('orderBy', orderBy);
-//     let aggs = {};
-//     let self = this;
-//     let addAggregationLevel = (obj, key, lvl) => {
-//       console.log('obj', obj, 'key', key, 'lvl', lvl);
-//       let config = groupByConfig[key];
-//       obj[key] = {};
-//       // console.log('self.isEmbeddedKeywordField(key, model) ? `${key}.keyword` : `${key}`', self.isEmbeddedKeywordField(key, model));
-//       let orderByKeyName = self.isEmbeddedKeywordField(key, model) ? `${key}.keyword` : `${key}`;
-//       console.log('orderBy, key', orderBy, key);
-//       obj[key]['terms'] = {
-//         field: orderByKeyName,
-//         order: {
-//           _term: orderBy[lvl - 1][key]
-//         },
-//         missing: 'N/A',
-//         size: 10000
-//       };
-//       console.log(obj);
-//       obj[key]['meta'] = config.meta;
-
-//       obj[key]['aggs'] = {};
-//       if (lvl < groupBy.length) {
-//         addAggregationLevel(obj[key]['aggs'], groupBy[lvl], lvl + 1);
-//       } else {
-//         // nth Child Reached;
-//         obj[key]['meta']['totalColumnName'] = config['totalColumnName'];
-//         obj[key]['meta']['totalColumnKeys'] = config['totalColumnKeys'];
-//         // console.log('obj', obj);
-//         // console.log('obj', JSON.stringify(obj));
-//         //Add the total columns summation;
-//         _.each(config.meta.totalColumnKeys, function (keyToInclude) {
-//           obj[key]['aggs'][keyToInclude] = {
-//             sum: {
-//               field: keyToInclude
-//             }
-//           };
-//           // console.log(JSON.stringify(obj));
-//         });
-//       }
+// function checkIfAlliesExists(messageLine) {
+//     //try{
+//     var line = '' + messageLine,
+//         king;
+//     //console.log(l < kings.length,king = kings[l].toString())
+//     while (l < kings.length ) {
+//         console.log("eeeeeee")
+//         king = kings[l].toString();
+//         l++;
+//         console.log("33333")
 //     };
 
-//     addAggregationLevel(aggs, groupBy[0], 1);
+//     //console.log()
+//     console.log("nnewline", king);
+//     var kl = king.toString().length - 1;
+//     console.log("kl", kl)
+//     for (j = 0; j < kl; j++) {
+//         console.log("j", j)
+//         if (line.indexOf(king[j]) > 0) {
+//             console.log("true", king[j])
+//         } else {
+//             console.log("inside else", j);
+//             console.log(line.indexOf(king[j]) > 0, king[j], line.indexOf(king[j]), line)
+//             console.log(king[j]);
+//             //break;
+//             //     	//l++;
+//         }
+//         //l++;
+//     }
+// }catch(e){
+//     	console.log(e)
+//     }
+//l++;
+//console.log(line[j])
+// }
 
-//     return aggs;
+// //  const obj={loadedRadius:{unit:'inch',value:12}}
+// // const output=[].concat(obj.loadedRadius|| [])
+// // console.log(output,'<<<')
+// const { capitalize } = require("lodash");
+// const _ = require("lodash");
+
+// const test = require("./text.json");
+// console.log(Math.random() * 1000000000);
+// console.log(id);
+
+// var m = pathToMatch.match(/[^\/]+$/)[0];
+// var n = bicyclePagesDefaultPath.match(/[^\/]+$/)[0];
+// console.log(
+//   "m ",
+//   pathToMatch.substring(pathToMatch.lastIndexOf("/") + 1, pathToMatch.length)
+// );
+// if (m) {
+//   position = m-n
+//   console.log(position,'<<<')
+// }
+
+// const regex=/\b-(city|'')-\b/
+// console.log(regex.test('/bicycle-tubes-en-us-deduplicate-ck9tvz2jt04r201mmzyh2y62v'),'<<<<')
+
+// const nestObj = {
+//   title: {
+//     items: [
+//       {
+//         ad: "title",
+//       },
+//     ],
 //   },
+//   description: {
+//     pp: "Connecting-with-technology",
+//   },
+// };
+// console.log(nestObj.description.pp.split("-").reverse().join("-"));
+
+// for (let i== 0; i <= 3; i++) {
+console.log("hello");
+// }
+
+// console.log('test',test)
+
+// const main = () => {
+//   let str = "<h4 class=\"h4-like\">Connecting with technology</h4>\r\n\n<p>Unique knowledge creates the perfect tyre: ultra-performance compounds, peak performance shell and patented lamellas. In search of excellence, our engineers and drivers work together, striving for performance and safety.</p>\n";
+//   let newstr = str.replaceAll(/<\/?[^>]+(>|$)/g, "")
+//                 .replaceAll('\n','');
+//   console.log(newstr,newstr.length )
+// }
+// console.log('/sads'.split('/').filter(item => item).length === 1, '<<<<<<')
+
+//()? use for optional match
+// (da|sad) use for OR condition in regex
+// const bicyclePagesDefaultPath =
+//   "/bicycle-tubes-en-us/bicycle-tubes-(road|city|mt)(-en-us)?/michelin-";
+// console.log(bicyclePagesDefaultPath, "<<<");
+// // const pathToMatch = '/bicycle-tubes-en-us/bicycle-tubes-mt'
+// const pathToMatch =
+//   "/bicycle-tubes-en-us/bicycle-tubes-city-en-us/michelin-protek-max-city";
+
+// console.log(bicyclePagesDefaultPath.test(pathToMatch))
+// const types = ['city', 'mtb']
+// const stt='Connecting with technology'
+// console.log(types.some(e => nestObj.description.pp.startsWith(`Connecting with ${e}`)))
+
+// const nestObj = {
+//   slides: [{
+//     title: {
+//       items: [{
+//         ad: 'title'
+//       }]
+//     },
+//     description: {
+//       items: [{
+//         pp: 'description'
+//       }]
+//     }
+//   }]
+// }
+
+//  nestObj.slides.forEach(ele => {
+//    const { title, description } = ele
+
+//     const [charProperty]=   title.items
+
+// console.log(title,description,charProperty)
+// })
+
+// const browsebytemplate= {
+//   'animal': {
+//     cat:'pet'
+//   }
+// }
+// const native = require('/Users/nishantpradhan/Downloads/localization.json').Sheet1
+// console.log(native)
+
+//(\b\S+\b)  full words
+//($|\s+)  capturing groups of words
+// \1 matches the same text as most recently matched by the 1st capturing group
+// $1 to replace it once by the same word   e.g if words are repeating it will occur only once.
+// https://regex101.com/
+// const re=/(\b\S+\b)(($|\s+)\1)+/gi
+// const check = 'Michelin CrossClimate -dekk Dekk | MICHELI Norge'.replace(re, (match) => {
+//   console.log(match, 'match')
+//   return ''
+// })
+
+// String.prototype.updateSeo = function () {
+//   let str = this.toString()
+//   const re=new RegExp('{{asd}}')
+//   str= str.replace(re, match => {
+//         return 'audi'
+//   })
+//   return str
+// }
+
+// const dataToUpdate = 'vue.ts.seo.persona.classic'
+
+// const getSeo = () => {
+//   const out = [].reduce((acc, item) => {
+//     console.log('acc',acc,'item',item)
+//       acc[item] = ''
+//     return acc
+//   }, {})
+//   return out
+// }
+
+// const seo = {
+//   'en-hk_seotitle': 'sad a',
+//   'en-hk_seoDescription': 'sad a',
+//   'zh-hk_seotitle': 'asd',
+//   'zh-hk_seoDesc':'asd',
+// }
+
+// let localStorage = [];
+// Object.keys(seo).filter(item=>item.endsWith('seotitle')).forEach(item => {
+//   console.log(item.split('_'), '<<')
+//   localStorage.push(item.split('_')[0])
+//   localStorage.push(`${item.split('_')[0]}-draft`)
+// })
+// console.log(localStorage)
+
+// const byBicycle = () => {
+//   return 'true'
+// }
+
+// console.log(!(null))
+// console.log(!(undefined))
+// console.log(!(''))
+
+// const pages = {
+//   isBicyclePage: byBicycle()
+// };
+
+// const output='f'
+
+// const req= {
+//     data: {
+//       piece: {
+//         address: {
+//           // streetAdd: [{type:'asdsa'}],
+//           postal: 'asdsad',
+//         }
+//       }
+//     }
+// }
+
+// Rera account details:
+// Indian Overseas Bank
+// A/c Name: SG & BHP Developers
+// Type: Current Account
+// A/c no: 210602000003146
+// IFSC code: IOBA0002106
+
+// const add = req.data.piece?.address?.streetAdd || []
+// console.log(add,'<<<<<')
+
+// // if (add.streetAdd && add.postal) {
+// //   console.log(add)
+// // }
+// console.log('req?.data','<<<<<<<<<<<<')
+
+// // console.log(output.substring(3),'<<<<<<<Fish')
+
+// const arrayToChange = ['sasadsa', 'dsas ', 'asd']
+
+// console.log(arrayToChange.map(item=>capitalize(item)).join(' '))
+
+//   console.log(pages.isBicyclePage,'<<<')
+
+// let obj = {
+//   seoTitle: '',
+//   seoDescription:''
+// }
+
+// obj=getSeo()
+
+//   console.log(obj)
+
+// console.log(dataToUpdate.split('.').pop()==='classic','<<<')
+// let A = ["S", "c", "a", "l", "e", "r", "A", "c", "a", "d", "e", "m", "y", "2", "0", "2", "0"];
+// A = A.join('')
+// let out=/^[0-9a-zA-Z]+$/.test(A)
+// console.log(out,'<<<')
+// let out=!A.test(/^[0-9a-zA-Z]+$/)
+
+// console.log(check,'check')
+
+const data = [
+  "Africa",
+  "Argentina",
+  "Australia",
+  "Austria",
+  "Belgium",
+  "Brazil",
+  "Bulgaria",
+  "Cambodia",
+  "Canada",
+  "Chile",
+  "Colombia",
+  "Croatia",
+  "Czech Repulic",
+  "Denmark",
+  "Finland",
+  "France",
+  "Germany",
+  "Greece",
+  "Hong Kong",
+  "Hungary",
+  "India",
+  "Indonesia",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Japan",
+  "Korea",
+  "Laos",
+  "Malaysia",
+  "Mexico",
+  "Middle-East",
+  "Myanmar",
+  "Netherlands",
+  "New Zealand",
+  "Norway",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Romania",
+  "Russia",
+  "Serbia",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "South Africa",
+  "Spain",
+  "Sweden",
+  "Swiss",
+  "Thailand",
+  "Turkey",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States of America",
+  "Vietnam",
+];
+
+let newObj = {};
+// console.log(native)
+// for (let ele of data) {
+//   let found = native.find(function (country) {
+//     return country.countryName === ele
+//   })
+//   if (found) {
+//     newObj[ele]=found.native
+//   } else {
+//     console.log('not Found:',ele)
+//   }
+// }
+// console.log('native',newObj)
+
+// let data =[
+//   {
+//     id: 'w578063584797309583',
+//     productLine: '4W',
+//     warning: 'winterWordingMobile',
+//     winterWordingMobile: 'Monte hiver'
+//   },
+//   {
+//     id: 'w272176993232042276',
+//     productLine: '4W',
+//     warning: 'by4',
+//     by4: "Vous pouvez équiper votre véhicule avec des pneumatiques ne possédant pas de marquage constructeur ou un marquage d'un autre constructeur, et nous vous recommandons de remplacer simultanément les 4 pneumatiques."
+//   },
+//   {
+//     id: 'w207048689736737215',
+//     productLine: '4W',
+//     warning: 'by4for4x4',
+//     by4for4x4: 'Votre véhicule étant 4 roues motrices, nous vous conseillons de remplacer simultanément les 4 pneumatiques.'
+//   },
+//   {
+//     id: 'w399114720350808527',
+//     productLine: '4W',
+//     warning: 'runflat',
+//     runflat: 'Votre véhicule est équipé d’origine de pneumatiques RunFlat, qui vous permettent de continuer à rouler même en cas de crevaison. Afin d’obtenir l’équipement le plus adapté, nous vous recommandons de suivre les conseils du constructeur de votre véhicule ou de vous rapprocher de votre revendeur de pneus habituel.'
+//   },
+//   {
+//     id: 'w91996310182077104',
+//     productLine: 'MO',
+//     warning: 'notExactMatchWarning',
+//     notExactMatchWarning: 'by-dimension',
+//     'by-dimension': "{{ size }} NB :  La législation en vigueur autorise de monter des indices de vitesse et/ou de charge recommandés ou supérieurs à ceux montés d'origine sur votre véhicule."
+//   },
+//   {
+//     id: 'w328001463659044341',
+//     productLine: 'CL',
+//     warning: 'notExactMatchWarning',
+//     notExactMatchWarning: 'by-vehicle',
+//     'by-vehicle': "La taille originale : {{ size }} n'existe plus. Nous vous conseillons ces pneus."
+//   }
+// ]
+// var str = "I have a cat, a dog, and a goat.";
+// var mapObj = {
+//   cat: {
+//     dog: 'asd+HG'
+//   }
+// };
+// console.log(_.get(mapObj,'cat.dog','').replace(/\+.*/,''))
+// str = str.replace(/cat|dog|goat/gi, function(matched){
+//   return mapObj[matched];
+// });
+// const capitalize = (slug) => {
+//   return slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
+// }
+// const bicycleTypeSlugs = ['city', 'mtb', 'road']
+// const str = '/bicycle-tubes/bicycle-tubes-city';
+// const match = bicycleTypeSlugs.reduce((acc, item) => {
+//   if (str.indexOf(item) > -1) {
+//      acc=item
+//    }
+//   return acc ? acc.capitalize():''
+//  }, '')
+
+var tubeName = "/city";
+const searchMask = "michelin";
+// console.log(searchMask.slice(1).toLowerCase(),'<<<<')
+
+// const [,,tubeProduct] = tubeName.replace('michelin', '').split('/').filter(x => x)
+// const out = [.reduce((acc, f) => {
+//     console.log(this.f.apply(null,'/'))
+// },tubeName)
+
+const replace = ["audi", "909090"];
+
+const textarea = "{{brand}}, {{segment}} hellow world";
+// const mapObj = {
+//   '{{segment}}': '90',
+//   '{{brand}}':'audi'
+// }
+
+// let find =textarea.match(/\{{[^)]*\}}/g)
+// console.log('find',find[0].trim())
+// let text = Object.keys(mapObj).reduce((acc, item) => {
+//   const regex = new RegExp(item, "g");
+//   console.log(regex,'<<<item')
+//   acc = acc.replace(regex, (match) => mapObj[match]);
+//   return acc
+// }, textarea);
+// console.log('text',text)
+// console.log( tubeName.split('/').filter(x=>x).length===3)
+
+// let text = "en-us-draft"; let pattern = /en-gb/;
+// let result = pattern.test(text);
+// console.log(result,'result<<')
+// console.log('London+GB'.replace(/\+.*/,''))
+// const url = '/Controller/Action/London+GB?id=1111&value=2222'
+// const path = url.replace(/\+.*/, '');
+// console.log(path)
+// console.log('/asd'.slice(1));
+
+// {
+//   position: 'front',
+//   vintageSize: '213'
+// },
+// {
+//   position: 'rear',
+//   vintageSize: '12'
+// },
+// {
+//   position: 'both',
+//   vintageSize: '321'
+// }
+// let fitment = ''
+// let acc = data.reduce((acc, item) => {
+//   acc[item.position] = item.vintageSize
+//   return acc
+// }, {})
+// console.log('acc', acc.front)
+// if (acc.front && acc.rear && acc.front !== acc.rear) {
+//   fitment = fitment.concat(acc.front, ' - ', acc.rear)
+// } else if (acc.front || acc.rear) {
+//   fitment = fitment.concat(acc.front || acc.rear)
+// } else if (acc.both) {
+//   fitment = fitment.concat(acc.both)
+// }
+// console.log(fitment, '<<<<')
+
+// console.log()
+
+// const map1 = new Map();
+
+// map1.set("a", 1);
+// map1.set("b", 2);
+// map1.set("c", 3);
+
+// console.log(map1.get("a"));
+// // expected output: 1
+
+// map1.set("a", 97);
+
+// console.log(map1.get("a"), "<<<");
+// // expected output: 97
+
+// console.log(map1.size);
+// // expected output: 3
+
+// map1.delete("b");
+
+// console.log(map1.size);
+// expected output: 2
+
+// var twodrray = [
+//     [1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1]
+// ]]]]]
+
+// let R = C = 5
+// // var table = [row0, row1, row2, row3, row4];
+// // console.log(table// Get the first item in the array
+// const arr2d = Array.from({
+//     length: 5
+// }, () => Array.from({
+//     length: 5
+// }, () => 0));
+
+// arr2d[0][0] = twodrray[0][0];
+
+// for (let i = 1; i < C; i++) {
+//     arr2d[0][i] = arr2d[0][i - 1] + twodrray[0][i];
+//     for (let j = 1; j < R; j++) {
+//         console.log('C:', i, 'R:', j)
+//         arr2d[j][0] = arr2d[j - 1][0] + twodrray[j][0];
+//     }
+// }
+// console.log('arr2d===>',arr2d )
+
+// for (let i = 1; i < R; i++) {
+//     for (let j = 1; j < C; j++) {
+
+//         // values in the cells of new
+//         // array are updated
+//         console.log(arr2d[i - 1][j] )
+//         console.log(arr2d[i][j - 1])
+//         console.log(arr2d[i - 1][j - 1])
+//         console.log(twodrray[i][j])
+//         // console.log(arr2d[i - 1][j - 1] + twodrray[i][j])
+//         arr2d[i][j] = arr2d[i - 1][j] + arr2d[i][j - 1] - arr2d[i - 1][j - 1] + twodrray[i][j];
+//         console.log('Ans:',arr2d[i][j])
+//     }
+// }
+// console.log(arr2d, 'arr2d')
+let arr = [19, 15, 13, 12, 12, 11, 4, 2, 12, -3];
+
+// const mapper = new Map();
+
+// for (let i = 0; i < arr.length; i++) {
+//   if (!mapper.has(arr[i])) {
+//     mapper.set(arr[i], arr[i]);
+//   } else {
+//     let existingVal = mapper.get(arr[i]);
+//     mapper.set(arr[i], arr[i] + existingVal);
+//   }
+// }
+// console.log(
+//   [...mapper.entries()].sort((a, b) => b[1] - a[1]),
+//   "<<<"
+// );
+
+//  function getMaximumSum(arr)
+//  {
+//      // Number of elements in the array
+//      let n = arr.length;
+
+//      // Largest element in the array
+//      let max = Number.MIN_VALUE;
+//      for(let i = 0; i < n; i++)
+//      {
+//          max = Math.max(max, arr[i]);
+//      }
+
+//      // An array to count the occurence of each element
+//      let freq = new Array(max + 1);
+//      freq.fill(0);
+
+//      for(let j = 0; j < n; j++)
+//      {
+//        freq[arr[j]]++;
+//      }
+
+//      // ans to store the result
+//      let ans = 0, i=max;
+
+//      // Using the above mentioned approach
+//      while(i>0){
+
+//        // if occurence is greater than 0
+//        if(freq[i] > 0){
+//          // add it to ans
+//          ans += i;
+
+//          // decrease i-1th element by 1
+//          freq[i-1]--;
+
+//          // decrease ith element by 1
+//          freq[i]--;
+//        }else{
+//          // decrease i
+//          i--;
+//        }
+//      }
+
+//      return ans;
+//  }
+// function getMaximumSum(arr, n)
+// {
+//     let incl = arr[0];
+//     let excl = 0;
+//     let excl_new;
+//     let i;
+
+//     for(i = 1; i < n; i++)
+//     {
+
+//         // Current max excluding i
+//         excl_new = (incl > excl) ? incl : excl;
+
+//         // Current max including i
+//         incl = excl + arr[i];
+//         excl = excl_new;
+//     }
+
+//     // Return max of incl and excl
+//     return ((incl > excl) ? incl : excl);
+// }
+//  console.log(getMaximumSum(arr,arr.length))
+//  arr.reduce((a, b) => a + b, 0)
